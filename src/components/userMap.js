@@ -9,6 +9,7 @@ import { OpenStreetMapProvider } from 'react-leaflet-geosearch';
 // import "react-leaflet-geosearch/node_modules/leaflet-geosearch/assets/css/leaflet.css";
 //import * as ELG from "esri-leaflet-geocoder";
 import { useGeoLocation } from '../geolocation/useGeoLocation';
+import Routing from "./Routing";
 
 const UserMap = () => {
   const [position, setPosition] = useState({
@@ -36,6 +37,7 @@ const UserMap = () => {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
           <UserMarker />
+          <Routing />
         </MapContainer>
       </div>
       <div id='controlBar'>
