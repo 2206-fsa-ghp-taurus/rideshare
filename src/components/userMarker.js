@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Marker, Popup, FeatureGroup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useGeoLocation } from '../hooks/useGeoLocation';
+import { useGeoLocation } from '../geolocation/useGeoLocation';
 import { useMap } from 'react-leaflet/hooks';
 import L from 'leaflet';
 
