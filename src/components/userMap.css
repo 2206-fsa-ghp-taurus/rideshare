@@ -1,4 +1,11 @@
 .leaflet-container { 
+    position: absolute;
+    top: 40px;
     width: 80vw;
     height: 40vh; 
   }
+
+#geosearch {
+    position: absolute;
+    top: 400px;
+}
