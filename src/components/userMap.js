@@ -1,13 +1,10 @@
 import './UserMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import { UserMarker } from './UserMarker';
 import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
-//import { OpenStreetMapProvider } from 'react-leaflet-geosearch';
-// import "react-leaflet-geosearch/node_modules/leaflet-geosearch/assets/css/leaflet.css";
-//import * as ELG from "esri-leaflet-geocoder";
-import Routing from "./Routing";
+import Routing from './Routing';
 
 const UserMap = () => {
   const [position, setPosition] = useState({
@@ -15,7 +12,7 @@ const UserMap = () => {
     lng: -94.56373267199132,
   });
 
-  const [selectPosition, setSelectPosition] = useState(null)
+  const [selectPosition, setSelectPosition] = useState(null);
 
   return (
     <div>
@@ -33,7 +30,10 @@ const UserMap = () => {
         {/* {map ? (
           <SearchControl container='controlBar' map={map} provider={prov} />
         ) : null} */}
-        <SearchBar selectPosition={selectPosition} setSelectPosition={setSelectPosition}/>
+        <SearchBar
+          selectPosition={selectPosition}
+          setSelectPosition={setSelectPosition}
+        />
       </div>
     </div>
   );
