@@ -27,7 +27,7 @@ export const UserMarker = () => {
   }, [location.coordinates.lat, location.coordinates.lng, map]);
 
   return (
-    <div>
+    <>
       {location.loaded && !location.error && (
         <FeatureGroup>
           <Marker
@@ -43,6 +43,6 @@ export const UserMarker = () => {
           </Marker>
         </FeatureGroup>
       )}
-    </div>
+    </>
   );
 };
