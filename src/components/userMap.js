@@ -1,14 +1,12 @@
-import './userMap.css';
+import './UserMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { UserMarker } from './UserMarker';
-import SearchControl from './SearchControl';
+import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
-import { OpenStreetMapProvider } from 'react-leaflet-geosearch';
+//import { OpenStreetMapProvider } from 'react-leaflet-geosearch';
 // import "react-leaflet-geosearch/node_modules/leaflet-geosearch/assets/css/leaflet.css";
 //import * as ELG from "esri-leaflet-geocoder";
-import { useGeoLocation } from '../geolocation/useGeoLocation';
 import Routing from "./Routing";
 
 const UserMap = () => {
@@ -17,21 +15,12 @@ const UserMap = () => {
     lng: -94.56373267199132,
   });
 
-  const prov = OpenStreetMapProvider();
-
-  const [map, setMap] = useState(null);
-  // const location = useGeoLocation();
-
-  // useEffect(() => {
-  //   setPosition({
-  //     lat: location.coordinates.lat, lng: location.coordinates.lng
-  //   });
-  // }, [location.coordinates.lat, location.coordinates.lng]);
+  const [selectPosition, setSelectPosition] = useState(null)
 
   return (
     <div>
       <div className='container'>
-        <MapContainer ref={setMap} center={position} zoom={13} scrollWheelZoom>
+        <MapContainer center={position} zoom={13} scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -41,9 +30,10 @@ const UserMap = () => {
         </MapContainer>
       </div>
       <div id='controlBar'>
-        {map ? (
+        {/* {map ? (
           <SearchControl container='controlBar' map={map} provider={prov} />
-        ) : null}
+        ) : null} */}
+        <SearchBar selectPosition={selectPosition} setSelectPosition={setSelectPosition}/>
       </div>
     </div>
   );
