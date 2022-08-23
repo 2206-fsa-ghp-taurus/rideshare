@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Marker, Popup, FeatureGroup, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useGeoLocation } from '../geolocation/useGeoLocation';
+import { UseGeolocation } from './UseGeolocation';
 import { useMap } from 'react-leaflet/hooks';
 import L from 'leaflet';
 
@@ -18,7 +18,7 @@ export const UserMarker = () => {
     shadowAnchor: null,
   });
 
-  const location = useGeoLocation();
+  const location = UseGeolocation();
 
   useEffect(() => {
     map.flyTo([location.coordinates.lat, location.coordinates.lng], 15, {
