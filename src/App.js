@@ -4,6 +4,8 @@ import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
+import SelectRide from './components/SelectRide';
+import RiderDetails from './components/RiderDetails';
 
 const App = () => {
   const {loading, authObj} = useAuthInit();
@@ -19,7 +21,13 @@ const App = () => {
             <Route exact path = '/login'>
               <Login/>
             </Route>
-           
+            <Route exact path = '/selectride'>
+              <SelectRide />
+            </Route>
+            <Route exact path = '/riderdetails'>
+              <RiderDetails/>
+            </Route>
+
            {/* home route, now rendering UerMap component */}
             <Route exact path='/home'>
               <UserMap />

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
-import { auth} from '../firebase'; // import the auth service 
+import { auth} from '../firebase'; // import the auth service
 import {signInWithEmailAndPassword} from "firebase/auth" // for firebase 9, signinwithemailandpwd is not on auth
 console.log('auth from firebase', auth)
 
@@ -13,11 +13,11 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      setStatus({ loading: true, error: false }); // start loading 
+      setStatus({ loading: true, error: false }); // start loading
       const credential = await signInWithEmailAndPassword(auth, email, password);
       console.log('user credential:', credential);
     } catch (error) {
-      setStatus({ loading: false, error: true }); // error 
+      setStatus({ loading: false, error: true }); // error
       console.log('error:', error);
     }
   };
@@ -52,7 +52,7 @@ const Login = () => {
         <button> <Link to ="/register" />  Don't have an account yet? Sign Up  </button>
 
   {/* loading message */}
-        {status.loading ? <p> Loading Now </p> : ''} 
+        {status.loading ? <p> Loading Now </p> : ''}
 
     </div>
   );
