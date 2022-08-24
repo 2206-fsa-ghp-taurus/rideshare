@@ -4,6 +4,8 @@ import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
+import SelectRide from './components/SelectRide';
+import RiderDetails from './components/RiderDetails';
 import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Hello from './components/Hello';
@@ -27,7 +29,12 @@ const App = () => {
             <Route exact path = '/login'>
               <Login/>
             </Route>
-           
+            <Route exact path = '/selectride'>
+              <SelectRide />
+            </Route>
+            <Route exact path = '/riderdetails'>
+              <RiderDetails/>
+</Route>
            {/* signup rote */}
            <Route exact path = '/signup'>
               <Signup/>
