@@ -26,12 +26,12 @@ const UserMap = () => {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
           <UserMarker />
-          <Routing pickUpCoords={pickUpCoords}/>
+          <Routing pickUpCoords={pickUpCoords} dropOffCoords = {dropOffCoords}/>
         </MapContainer>
       </div>
       <div>
         <LocationPickUp pickUpCoords={pickUpCoords} setPickUpCoords={setPickUpCoords}/>
-        <LocationDropOff dropOffCoords={dropOffCoords} setDropoffCoords={setDropOffCoords}/>
+        <LocationDropOff dropOffCoords={dropOffCoords} setDropOffCoords={setDropOffCoords}/>
       </div>
     </div>
   );
