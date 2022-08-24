@@ -10,20 +10,26 @@ const LocationDropOff = (props) => {
     setAddress(address);
   };
 
-  async function handleSelect(address) {
-        geocodeByAddress(address)
-            .then((results) => getLatLng(results[0]))
-            .then(({ lat, lng }) => {
-                console.log("latitude and longitude");
-                setDropOffCoords({ lat, lng });
-            });
-    }
+  // function handleSelect(address) {
+  //       geocodeByAddress(address)
+  //           .then((results) => getLatLng(results[0]))
+  //           .then(({ lat, lng }) => {
+  //               console.log("latitude and longitude");
+  //               setDropOffCoords({ lat, lng });
+  //           });
+  //   }
+
 
   return (
     <PlacesAutocomplete
       value={address}
       onChange={handleChange}
-      onSelect={handleSelect(address)}
+      onSelect={()=>{geocodeByAddress(address)
+        .then((results) => getLatLng(results[0]))
+        .then((coordinates) => {
+            console.log("drop off latitude and longitude", coordinates.lat, coordinates.lng);
+            setDropOffCoords((coordinates));
+      })}}
     >
       {({getInputProps, suggestions, getSuggestionItemProps, loading}) => (
         <div>

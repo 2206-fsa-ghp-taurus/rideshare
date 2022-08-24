@@ -27,7 +27,6 @@ const Login = () => {
     return (
         <div> 
             <p> Success - Placeholder Message</p>
-            <button onClick = {()=> auth.signOut()}> Logout</button>
         </div>
     )
 

@@ -10,21 +10,25 @@ const LocationPickUp = (props) => {
     setAddress(address);
   };
 
-  const handleSelect = (address) => {
-    geocodeByAddress(address)
-      .then((results) => getLatLng(results[0]))
-      .then(({lat, lng}) => {
-      console.log("latitude and longitude")
-      setPickUpCoords({lat, lng})
-    });
-  
-  };
+  // const handleSelect = (address) => {
+  //   geocodeByAddress(address)
+  //     .then((results) => getLatLng(results[0]))
+  //     .then(({lat, lng}) => {
+  //     console.log("latitude and longitude")
+  //     setPickUpCoords({lat, lng})
+  //    });
+  // };
 
   return (
     <PlacesAutocomplete
       value={address}
       onChange={handleChange}
-      onSelect={handleSelect(address)}
+      onSelect={()=>{geocodeByAddress(address)
+        .then((results) => getLatLng(results[0]))
+        .then((coordinates) => {
+            console.log("pick up latitude and longitude", coordinates.lat, coordinates.lng);
+            setPickUpCoords((coordinates));
+      })}}
     >
       {({getInputProps, suggestions, getSuggestionItemProps, loading}) => (
         <div>
