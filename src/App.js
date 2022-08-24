@@ -4,14 +4,11 @@ import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
-<<<<<<< HEAD
 import SelectRide from './components/SelectRide';
 import RiderDetails from './components/RiderDetails';
-=======
 import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Hello from './components/Hello';
->>>>>>> f7a39cfd37f63dd98039499b5e702a7c360f3478
 
 const App = () => {
   const {loading, authObj} = useAuthInit();
@@ -32,14 +29,12 @@ const App = () => {
             <Route exact path = '/login'>
               <Login/>
             </Route>
-<<<<<<< HEAD
             <Route exact path = '/selectride'>
               <SelectRide />
             </Route>
             <Route exact path = '/riderdetails'>
               <RiderDetails/>
-=======
-           
+
            {/* signup rote */}
            <Route exact path = '/signup'>
               <Signup/>
@@ -48,7 +43,6 @@ const App = () => {
             {/* createProfile rote */}
            <Route exact path = '/createProfile'>
               <CreateProfile/>
->>>>>>> f7a39cfd37f63dd98039499b5e702a7c360f3478
             </Route>
 
            {/* home route, now rendering UerMap component */}
