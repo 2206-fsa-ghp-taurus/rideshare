@@ -5,7 +5,13 @@ import { useMap } from "react-leaflet";
 
 //
 
+
 const Routing = (props) => {
+  
+    // const {pickUpCoords} = props
+    // const {dropOffCoords} = props
+    // console.log('props', props.pickUpCoords)
+
   const map = useMap();
   const routing = L.Routing.control({
     waypoints: [L.latLng(29.788800, -95.378350), L.latLng(29.799720, -95.387878)],
