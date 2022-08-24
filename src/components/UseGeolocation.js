@@ -41,7 +41,7 @@ export const UseGeolocation = () => {
 
     setInterval(() => {
     navigator.geolocation.getCurrentPosition(onSuccess, onError);
-  }, 100);
+  }, 1000);
   }, []);
 
     return location;
