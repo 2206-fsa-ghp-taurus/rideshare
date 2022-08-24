@@ -2,11 +2,11 @@ import './UserMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import React, { useState } from 'react';
 import { UserMarker } from './UserMarker';
-import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
 import Routing from './Routing';
 import LocationPickUp from "./LocationPickUp"
 import LocationDropOff from "./LocationDropOff"
+
 
 const UserMap = () => {
   const [position, setPosition] = useState({
@@ -14,7 +14,8 @@ const UserMap = () => {
     lng: -94.56373267199132,
   });
 
-  const [selectPosition, setSelectPosition] = useState(null);
+  const [pickUpCoords, setPickUpCoords] = useState({});
+  const [dropOffCoords, setDropOffCoords] = useState({});
 
   return (
     <div>
@@ -25,12 +26,12 @@ const UserMap = () => {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
           <UserMarker />
-          <Routing />
+          <Routing pickUpCoords={pickUpCoords}/>
         </MapContainer>
       </div>
       <div>
-        <LocationPickUp />
-        <LocationDropOff />
+        <LocationPickUp pickUpCoords={pickUpCoords} setPickUpCoords={setPickUpCoords}/>
+        <LocationDropOff dropOffCoords={dropOffCoords} setDropoffCoords={setDropOffCoords}/>
       </div>
     </div>
   );

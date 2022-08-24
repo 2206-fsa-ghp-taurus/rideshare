@@ -2,18 +2,22 @@ import React, {useState} from "react";
 import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
 import PlacesAutocomplete from "react-places-autocomplete";
 
-const LocationDropOff = () => {
+const LocationDropOff = (props) => {
   const [address, setAddress] = useState("");
+  const {dropOffCoords, setDropOffCoords} = props
 
   const handleChange = (address) => {
     setAddress(address);
   };
 
-  const handleSelect = (address) => {
-    geocodeByAddress(address)
-      .then((results) => getLatLng(results[0]))
-      .then(({lat, lng}) => console.log("latitude and longitude", {lat, lng}));
-  };
+  async function handleSelect(address) {
+        geocodeByAddress(address)
+            .then((results) => getLatLng(results[0]))
+            .then(({ lat, lng }) => {
+                console.log("latitude and longitude");
+                setDropOffCoords({ lat, lng });
+            });
+    }
 
   return (
     <PlacesAutocomplete
@@ -32,13 +36,6 @@ const LocationDropOff = () => {
           <div className="autocomplete-dropdown-container">
             {loading && <div>Loading...</div>}
             {suggestions.map((suggestion) => {
-              // const className = suggestion.active
-              //   ? "suggestion-item--active"
-              //   : "suggestion-item";
-              // // inline style for demonstration purpose
-              // const style = suggestion.active
-              //   ? {backgroundColor: "#fafafa", cursor: "pointer"}
-              //   : {backgroundColor: "#ffffff", cursor: "pointer"};
               return (
                 <div
                   {...getSuggestionItemProps(suggestion)}
