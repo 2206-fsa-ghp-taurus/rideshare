@@ -34,7 +34,7 @@ const App = () => {
             </Route>
             <Route exact path = '/riderdetails'>
               <RiderDetails/>
-
+</Route>
            {/* signup rote */}
            <Route exact path = '/signup'>
               <Signup/>
