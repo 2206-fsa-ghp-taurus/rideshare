@@ -5,6 +5,8 @@ import { UserMarker } from './UserMarker';
 import SearchBar from './SearchBar';
 import 'leaflet/dist/leaflet.css';
 import Routing from './Routing';
+import LocationPickUp from "./LocationPickUp"
+import LocationDropOff from "./LocationDropOff"
 
 const UserMap = () => {
   const [position, setPosition] = useState({
@@ -26,14 +28,9 @@ const UserMap = () => {
           <Routing />
         </MapContainer>
       </div>
-      <div id='controlBar'>
-        {/* {map ? (
-          <SearchControl container='controlBar' map={map} provider={prov} />
-        ) : null} */}
-        <SearchBar
-          selectPosition={selectPosition}
-          setSelectPosition={setSelectPosition}
-        />
+      <div>
+        <LocationPickUp />
+        <LocationDropOff />
       </div>
     </div>
   );
