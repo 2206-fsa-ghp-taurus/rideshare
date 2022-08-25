@@ -7,8 +7,8 @@ import { useAuth } from '../auth';
 import { Link, Redirect } from 'react-router-dom';
 
 function SelectRide(props) {
-  const user = useAuth()
-  if (!user){
+  const {loggedIn} = useAuth()
+  if (!loggedIn){
     return <Redirect to ='/home' />
   }
   const {isDriver, setIsDriver} = props
