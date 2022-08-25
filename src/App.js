@@ -9,7 +9,7 @@ import RiderDetails from './components/RiderDetails';
 import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
-
+import Home from './components/Home';
 
 const App = () => {
   const {loading, authObj} = useAuthInit();
@@ -23,33 +23,37 @@ const App = () => {
       <AuthContext.Provider value = {authObj}>
         <Navbar/>
         <Switch>
-            {/* login route */}
+
             <Route exact path = '/login'>
               <Login/>
             </Route>
+
             <Route exact path = '/selectride'>
             <SelectRide isDriver={isDriver} setIsDriver={setIsDriver} />
             </Route> 
 
             <Route exact path = '/riderdetails'>
               <RiderDetails/>
-            </Route>
-           {/* signup rote */}
+            </Route>       
+
            <Route exact path = '/signup'>
               <Signup/>
             </Route>
 
-            {/* createProfile rote */}
            <Route exact path = '/createProfile'>
               <CreateProfile/>
             </Route>
 
-           {/* home route, now rendering UerMap component */}
             <Route exact path='/home'>
-              <UserMap isDriver={isDriver} />
+              <Home />
             </Route>
+            
             <Route exact path='/'>
               <Redirect to='/home' />
+            </Route>
+
+            <Route exact path = '/userMap'>
+            <UserMap isDriver={isDriver} />
             </Route>
 
         </Switch>

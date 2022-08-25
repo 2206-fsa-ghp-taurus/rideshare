@@ -1,35 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
-import { collection, query, where, serverTimestamp } from 'firebase/firestore';
+import { onSnapshot, collection, query, where, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import DriverDetails from './DriverDetails'
 
 function RiderDetails() {
   const user = useAuth()
-  const ridesRef = collection(db, 'Rides');
+  const [Rides, getRides] = useState(["Rides"])
 
-  const findDrivers = () => {
-    const currentTime = serverTimestamp()
-    const drivers = query(ridesRef);
-    console.log(drivers)
-
-  }
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "Rides"), (snapshot) =>
+        getRides(snapshot.docs.map((doc) => doc.data()))
+    ),
+    []
+  )
 
   return (
-    <div className="request-ride">
-      <div className="request-ride__content">
-        <div className="request-ride__container">
-          <div className="request-ride__title">Ride Request</div>
-          <div className="request-ride__close">
-          </div>
-        </div>
-        <div className="request-ride__subtitle"></div>
-        <div className="request-ride__form">
-          <button className="request-ride__btn" onClick={findDrivers}>
-            Find nearby Drivers
-          </button>
+    <div className='row col-8 justify-content-center'>
+      {Rides.map((driver) => (
+      <div className='card product-card shadow-lg'>
+        <div className='card-body'>
+          {/* <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p> */}
+          <DriverDetails userId={driver.driverId} />
+      <button className="btn rounded-full">Request Ride</button>
         </div>
       </div>
+      ))}
     </div>
   );
 }
