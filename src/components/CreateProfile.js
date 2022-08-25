@@ -55,15 +55,15 @@ const CreateProfile= () => {
   return (
     <div>
       <h2> Create Profile </h2>
-      <form onSubmit = {handleSaveUser}>
-        <label htmlFor='firstName'>First Name</label>
-        <input name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
+      <form class = 'form-control' onSubmit = {handleSaveUser}>
+        <label class = 'input-group' htmlFor='firstName'>First Name</label>
+        <input class="input input-bordered" name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
 
-        <label htmlFor='lastName'>Last Name</label>
-        <input name='lastName' type='text' value = {lastName} onChange = {(event) => setLastName(event.target.value)} required/>
+        <label class = 'input-group' htmlFor='lastName'>Last Name</label>
+        <input class="input input-bordered" name='lastName' type='text' value = {lastName} onChange = {(event) => setLastName(event.target.value)} required/>
 
-        <label htmlFor='phone'>Phone</label>
-        <input name='phone' type='text' value = {phone} onChange = {(event) => setPhone(event.target.value)} required/>
+        <label class = 'input-group' htmlFor='phone'>Phone</label>
+        <input class="input input-bordered" name='phone' type='text' value = {phone} onChange = {(event) => setPhone(event.target.value)} required/>
 
         <div>
           <label htmlFor='image'>Upload your picture</label>
@@ -73,7 +73,7 @@ const CreateProfile= () => {
               />
         </div>
 
-        <button > Save </button>
+        <button className="btn rounded-full" > Save </button>
       </form>
     </div>
   );
