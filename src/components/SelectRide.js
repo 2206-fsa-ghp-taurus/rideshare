@@ -2,10 +2,15 @@ import React, { useState } from 'react';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { Link, Redirect } from 'react-router-dom';
+
 
 function SelectRide() {
   const user = useAuth()
 
+  if (!user.loggedIn){
+    return <Redirect to ='/Home' />
+  }
   const selectToDrive = () => {
     addDoc(collection(db, "Rides"), {
       driverId: user.userId,
