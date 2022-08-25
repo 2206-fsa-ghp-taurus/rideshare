@@ -57,19 +57,19 @@ const CreateProfile= () => {
       <h2> Create Profile </h2>
       <form onSubmit = {handleSaveUser}>
         <label htmlFor='firstName'>First Name</label>
-        <input name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)}/>
+        <input name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
 
         <label htmlFor='lastName'>Last Name</label>
-        <input name='lastName' type='text' value = {lastName} onChange = {(event) => setLastName(event.target.value)}/>
+        <input name='lastName' type='text' value = {lastName} onChange = {(event) => setLastName(event.target.value)} required/>
 
         <label htmlFor='phone'>Phone</label>
-        <input name='phone' type='text' value = {phone} onChange = {(event) => setPhone(event.target.value)}/>
+        <input name='phone' type='text' value = {phone} onChange = {(event) => setPhone(event.target.value)} required/>
 
         <div>
           <label htmlFor='image'>Upload your picture</label>
-          <input name='image' type='file' accept='image/*' hidden ref={fileInputRef} onChange={handlePictureChange} />
+          <input name='image' type='file' accept='image/*'  ref={fileInputRef} onChange={handlePictureChange} />
           <img src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
-                onClick={()=>fileInputRef.current.click()}
+                // onClick={()=>fileInputRef.current.click()}
               />
         </div>
 
