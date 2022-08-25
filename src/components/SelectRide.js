@@ -3,10 +3,17 @@ import { useHistory } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { Redirect } from 'react-router-dom';
 
+    
 function SelectRide() {
   const user = useAuth()
   const history = useHistory(); // sending users to other places
+  const { loggedIn } = useAuth();
+
+  if (!user){
+    return <Redirect to ='/home' />
+  }
 
   const selectToRide = async () => {
     history.replace('/riderdetails');
