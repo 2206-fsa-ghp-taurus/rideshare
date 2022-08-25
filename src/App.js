@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
 import SelectRide from './components/SelectRide';
-import RiderDetails from './components/RiderDetails';
+import DriverList from './components/DriverList';
 import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
@@ -30,11 +30,11 @@ const App = () => {
 
             <Route exact path = '/selectride'>
             <SelectRide isDriver={isDriver} setIsDriver={setIsDriver} />
-            </Route> 
+            </Route>
 
             <Route exact path = '/riderdetails'>
-              <RiderDetails/>
-            </Route>       
+              <DriverList />
+            </Route>
 
            <Route exact path = '/signup'>
               <Signup/>
@@ -47,7 +47,7 @@ const App = () => {
             <Route exact path='/home'>
               <Home />
             </Route>
-            
+
             <Route exact path='/'>
               <Redirect to='/home' />
             </Route>
