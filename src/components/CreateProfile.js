@@ -49,7 +49,7 @@ const CreateProfile= () => {
     console.log('this user data', userData)
     await setDoc(doc(db, 'Users', userId), userData)
     // history.goBack(); 
-    history.push('/hello');
+    history.push('/selectride');
   };
 
   return (
