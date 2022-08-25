@@ -8,7 +8,7 @@ import SelectRide from './components/SelectRide';
 import RiderDetails from './components/RiderDetails';
 import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
-import Hello from './components/Hello';
+import Navbar from './components/Navbar';
 
 const App = () => {
   const {loading, authObj} = useAuthInit();
@@ -19,12 +19,8 @@ const App = () => {
   return (
     <div>
       <AuthContext.Provider value = {authObj}>
+        <Navbar/>
         <Switch>
-          {/* Hello route; placeholder; for user signing up and create a new profile*/}
-          <Route exact path = '/hello'>
-              <Hello/>
-          </Route>
-
             {/* login route */}
             <Route exact path = '/login'>
               <Login/>
