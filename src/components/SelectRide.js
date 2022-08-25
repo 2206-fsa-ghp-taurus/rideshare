@@ -1,39 +1,31 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Route } from 'react-router-dom';
+import UserMap from "./UserMap"
 import { useAuth } from '../auth';
-import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { Redirect } from 'react-router-dom';
+// import { db } from "../firebase";
+// import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { Link, Redirect } from 'react-router-dom';
 
-    
-function SelectRide() {
+function SelectRide(props) {
   const user = useAuth()
-  const history = useHistory(); // sending users to other places
-  const { loggedIn } = useAuth();
-
   if (!user){
     return <Redirect to ='/home' />
   }
+  const {isDriver, setIsDriver} = props
 
-  const selectToRide = async () => {
-    history.replace('/riderdetails');
-  }
-
-  const selectToDrive = async () => {
-    await addDoc(collection(db, "Rides"), {
-      driverId: user.userId,
-      timestamp: serverTimestamp()
-    })
-    history.replace('/riderdetails'); // Update to send to driver input component
+  const selectToDrive = () => {
+    setIsDriver(true)
   }
 
   return (
     <div className="flex flex-col w-full border-opacity-50">
       <div className="grid h-20 card place-items-center">
-        <button className="btn rounded-full" onClick={selectToRide}>I need a ride</button></div>
+      <Link to="/userMap"><button className="btn rounded-full">I need a ride</button></Link>
+      </div>
           <div className="divider">OR</div>
       <div className="grid h-20 card place-items-center">
-        <button className="btn rounded-full" onClick={selectToDrive}>I want to drive</button></div>
+       <Link to="/userMap"> <button className="btn rounded-full" onClick={selectToDrive}>I want to drive</button></Link>
+        </div>
       </div>
   );
 }
