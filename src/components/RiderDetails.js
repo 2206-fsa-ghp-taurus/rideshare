@@ -11,8 +11,8 @@ function RiderDetails() {
 
   useEffect(
     () =>
-      onSnapshot(collection(db, "Rides"), (snapshot) =>
-        getRides(snapshot.docs.map((doc) => doc.data()))
+      onSnapshot(collection(db, "Rides"), async (snapshot) =>
+        await getRides(snapshot.docs.map((doc) => doc.data()))
     ),
     []
   )
@@ -22,7 +22,7 @@ function RiderDetails() {
       {Rides.map((driver) => (
       <div className='card product-card shadow-lg'>
         <div className='card-body'>
-          {/* <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p> */}
+          <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
           <DriverDetails userId={driver.driverId} />
       <button className="btn rounded-full">Request Ride</button>
         </div>
