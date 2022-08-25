@@ -17,6 +17,10 @@ function RiderDetails() {
     []
   )
 
+  const requestRide = () => {
+
+  };
+
   return (
     <div className='row col-8 justify-content-center'>
       {Rides.map((driver) => (

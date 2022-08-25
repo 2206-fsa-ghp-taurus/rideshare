@@ -16,7 +16,7 @@ const UserMap = (props) => {
     lat: 39.015979960290395,
     lng: -94.56373267199132,
   });
-  
+
   const [pickUpCoords, setPickUpCoords] = useState({});
   const [dropOffCoords, setDropOffCoords] = useState({});
   const {isDriver} = props
@@ -46,7 +46,7 @@ const UserMap = (props) => {
         <LocationPickUp pickUpCoords={pickUpCoords} setPickUpCoords={setPickUpCoords}/>
         <LocationDropOff dropOffCoords={dropOffCoords} setDropOffCoords={setDropOffCoords}/>
       </div>
-      {isDriver? (<button className="btn rounded-full" onClick={beDriver}>Confirm to Be Driver</button>) : 
+      {isDriver? (<button className="btn rounded-full" onClick={beDriver}>Confirm to Be Driver</button>) :
        (<Link to="/drivers"><button className="btn rounded-full">Find Drivers</button></Link>)}
 
     </div>
