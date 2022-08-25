@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './App.css';
 import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -10,8 +10,10 @@ import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
 
+
 const App = () => {
   const {loading, authObj} = useAuthInit();
+  const [isDriver, setIsDriver] = useState(false)
   console.log('app is rendering with auth:', authObj)
   if (loading) {
     return <p> Loading Now </p>
@@ -26,11 +28,12 @@ const App = () => {
               <Login/>
             </Route>
             <Route exact path = '/selectride'>
-              <SelectRide />
-            </Route>
+            <SelectRide isDriver={isDriver} setIsDriver={setIsDriver} />
+            </Route> 
+
             <Route exact path = '/riderdetails'>
               <RiderDetails/>
-</Route>
+            </Route>
            {/* signup rote */}
            <Route exact path = '/signup'>
               <Signup/>
@@ -43,7 +46,7 @@ const App = () => {
 
            {/* home route, now rendering UerMap component */}
             <Route exact path='/home'>
-              <UserMap />
+              <UserMap isDriver={isDriver} />
             </Route>
             <Route exact path='/'>
               <Redirect to='/home' />
