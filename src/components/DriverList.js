@@ -87,7 +87,11 @@ const DriverList = ()=> {
   const requestRide = () => {
 
   };
-
+  if (matchingDriver.length === 0){
+    return (
+      <p> No Driver Found</p>
+    )
+  }
   return (
     <div className='row col-8 justify-content-center'>
       {matchingDriver.map((driver) => (
