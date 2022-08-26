@@ -7,6 +7,7 @@ import { getStorage } from "firebase/storage";
 const firebaseConfig = {
   apiKey: "AIzaSyA-ytfChvhv8nKAkh0CrPZPV5AqbKEKCF8",
   authDomain: "capstone-a9136.firebaseapp.com",
+  databaseURL: "https://capstone-a9136-default-rtdb.firebaseio.com",
   projectId: "capstone-a9136",
   storageBucket: "capstone-a9136.appspot.com",
   messagingSenderId: "149550968258",
