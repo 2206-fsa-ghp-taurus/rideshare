@@ -26,7 +26,7 @@ const Navbar = () => {
                     </label>
                     <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                       <li><a>  <Link to='/home'>Home</Link></a></li>
-                      <li><a>  <Link to='/myAccount'>My Account</Link></a></li>
+                      <li><a>  <Link to='/userAccount'>My Account</Link></a></li>
                       <li><a>  <button onClick = {handleLogOut} > Logout</button></a></li>
                     </ul>
                   </div>

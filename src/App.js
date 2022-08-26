@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import UserAccount from './components/UserAccount.js';
 
 const App = () => {
   const {loading, authObj} = useAuthInit();
@@ -54,6 +55,10 @@ const App = () => {
 
             <Route exact path = '/userMap'>
             <UserMap isDriver={isDriver} />
+            </Route>
+
+            <Route exact path='/userAccount'>
+              <UserAccount />
             </Route>
 
         </Switch>
