@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom'; 
 import { useAuth } from '../auth';
 import { auth, db, storage } from '../firebase';
-import { doc, setDoc} from "firebase/firestore"
+import { doc, updateDoc, onSnapshot} from "firebase/firestore"
 import { ref, getStorage, uploadBytes,getDownloadURL } from "firebase/storage";
 
 const DEFAULTimg = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR7TEM9d91DuHZgbmbtlx4tlSl-FJQKvREDA&usqp=CAU'
@@ -47,7 +47,7 @@ const CreateProfile= () => {
       userData.pictureUrl = await savePicture(pictureUrl, userId); 
     }
     console.log('this user data', userData)
-    await setDoc(doc(db, 'Users', userId), userData)
+    await updateDoc(doc(db, 'Users', userId), userData) // change from setDoc to updateDoc otherwise original fields are overwritten
     // history.goBack(); 
     history.push('/selectride');
   };
@@ -55,20 +55,20 @@ const CreateProfile= () => {
   return (
     <div>
       <h2> Create Profile </h2>
-      <form class = 'form-control' onSubmit = {handleSaveUser}>
-        <label class = 'input-group' htmlFor='firstName'>First Name</label>
-        <input class="input input-bordered" name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
+      <form className = 'form-control' onSubmit = {handleSaveUser}>
+        <label className = 'input-group' htmlFor='firstName'>First Name</label>
+        <input className="input input-bordered" name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
 
-        <label class = 'input-group' htmlFor='lastName'>Last Name</label>
-        <input class="input input-bordered" name='lastName' type='text' value = {lastName} onChange = {(event) => setLastName(event.target.value)} required/>
+        <label className = 'input-group' htmlFor='lastName'>Last Name</label>
+        <input className="input input-bordered" name='lastName' type='text' value = {lastName} onChange = {(event) => setLastName(event.target.value)} required/>
 
-        <label class = 'input-group' htmlFor='phone'>Phone</label>
-        <input class="input input-bordered" name='phone' type='text' value = {phone} onChange = {(event) => setPhone(event.target.value)} required/>
+        <label className = 'input-group' htmlFor='phone'>Phone</label>
+        <input className="input input-bordered" name='phone' type='text' value = {phone} onChange = {(event) => setPhone(event.target.value)} required/>
 
         <div>
           <label htmlFor='image'>Upload your picture</label>
           <input name='image' type='file' accept='image/*'  ref={fileInputRef} onChange={handlePictureChange} />
-          <img src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
+          <img id = 'profile-image' src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
                 // onClick={()=>fileInputRef.current.click()}
               />
         </div>

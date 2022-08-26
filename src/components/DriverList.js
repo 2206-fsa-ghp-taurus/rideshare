@@ -7,10 +7,17 @@ import UserDetails from './UserDetails'
 
 const DriverList = ()=> {
   const {userId} = useAuth();
+<<<<<<< HEAD
+  const [rides, setRides] = useState([]) // rides have all the drivers 
+  const  matchingDriver = []
+  const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider 
+  const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider 
+=======
   const [rides, setRides] = useState([]) // rides have all the drivers
   const matchingDriver = []
   const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
   const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
+>>>>>>> 0d11979ef33d56b96162042d1550e0bf87ea1667
 
   // first get all drivers from database
   const getRides = async () => {
@@ -25,8 +32,8 @@ const DriverList = ()=> {
 
   const getCurrentUser = () =>{
     onSnapshot(doc(db, 'Users', userId), (doc)=> {
-      setPickUpCoords(doc.data().riderPickUp);
-      setDropOffCoords (doc.data().riderDropOff);
+      setPickUpCoords(doc.data().pickUp);
+      setDropOffCoords (doc.data().dropOff);
     })
   }
 
@@ -50,8 +57,8 @@ const DriverList = ()=> {
   console.log('all Drivers', rides)
 
   for (let idx = 0; idx< rides.length; idx++){
-    if (Math.abs(pickUpCoords.lat - rides[idx].pickUp.lat)<0.1 && Math.abs(pickUpCoords.lng - rides[idx].pickUp.lng)<0.1&&
-      Math.abs(dropOffCoords.lat - rides[idx].dropOff.lat)<0.1 && Math.abs(dropOffCoords.lng - rides[idx].dropOff.lng)<0.1){
+    if (Math.abs(pickUpCoords.lat - rides[idx].driverPickUp.lat)<0.05 && Math.abs(pickUpCoords.lng - rides[idx].driverPickUp.lng)<0.05&&
+      Math.abs(dropOffCoords.lat - rides[idx].driverDropOff.lat)<0.05 && Math.abs(dropOffCoords.lng - rides[idx].driverDropOff.lng)<0.05 && !rides[idx].status){
       matchingDriver.push(rides[idx])
     }
     console.log('matching drivers', matchingDriver)

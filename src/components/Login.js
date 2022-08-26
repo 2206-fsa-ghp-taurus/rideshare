@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
-import { auth} from '../firebase'; // import the auth service
+import { auth, db} from '../firebase'; // import the auth service
 import {signInWithEmailAndPassword} from "firebase/auth" // for firebase 9, signinwithemailandpwd is not on auth
-console.log('auth from firebase', auth)
+import { doc, setDoc, getDoc} from "firebase/firestore"
 
 const Login = () => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, userId } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState({ loading: false, error: false });
@@ -32,30 +32,43 @@ const Login = () => {
 
   }
   return (
-    <div>
+    <div className= 'form-control'>
           <div>
-            <label >Email</label>
-            <input type="email" value={email}
+            <label className="input-group input-group-lg" >
+                 <span> Email</span>
+            </label>
+            <input className="input input-bordered input-lg" type="email" value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div>
-            <label>Password</label>
-            <input type="password" value={password}
+            <label className="input-group input-group-lg" >
+                 <span> Password</span>
+            </label>
+            <input className="input input-bordered input-lg" type="password" value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
+        
 {/* if error , show the error message */}
         {status.error &&
           <p> Invalid email / password</p>
         }
 
 {/* login button */}
-        <button onClick={handleLogin}>Login</button>
-        <Link to="/signup" className="btn btn-primary"> Don't have an account yet? Sign Up </Link>
+        <div className="btn-group">
+          <button onClick={handleLogin} className="btn btn-active">Login</button>
+          <Link to="/signup" className="btn"> Don't have an account yet? Sign Up </Link>
+        </div> 
 
   {/* loading message */}
-        {status.loading ? <p> Loading Now </p> : ''}
+        {status.loading ? 
+        <div className="flex justify-center items-center">
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+       </div> 
+    : ''}
 
     </div>
   );

@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import UserAccount from './components/UserAccount.js';
 import RideRequests from './components/RideRequests';
 
 const App = () => {
@@ -59,6 +60,10 @@ const App = () => {
 
             <Route exact path = '/userMap'>
             <UserMap isDriver={isDriver} />
+            </Route>
+
+            <Route exact path='/userAccount'>
+              <UserAccount />
             </Route>
 
         </Switch>
