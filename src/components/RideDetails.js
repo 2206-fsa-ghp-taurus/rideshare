@@ -16,7 +16,6 @@ function RideDetails() {
       querySnapshot.forEach((doc) => {
       setRideRequests({id: doc.id, ...doc.data()});
       });
-      []
     }
   )
 

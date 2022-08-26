@@ -24,7 +24,7 @@ function DriverDetails(props) {
       {Driver.map((driver) => (
         <div>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.firstName} </p>
-          <img className='my-4 card-title product-name text-center font-weight-bold' src={driver.image} alt="driver pic"></img>
+          <img className='my-4 card-title product-name text-center font-weight-bold' src={driver.pictureUrl} alt="driver pic"></img>
         </div>
       ))}
     </div>
