@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom'; 
 import { useAuth } from '../auth';
 import { auth, db, storage } from '../firebase';
-import { doc, setDoc} from "firebase/firestore"
+import { doc, updateDoc} from "firebase/firestore"
 import { ref, getStorage, uploadBytes,getDownloadURL } from "firebase/storage";
 
 const DEFAULTimg = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR7TEM9d91DuHZgbmbtlx4tlSl-FJQKvREDA&usqp=CAU'
@@ -47,7 +47,7 @@ const CreateProfile= () => {
       userData.pictureUrl = await savePicture(pictureUrl, userId); 
     }
     console.log('this user data', userData)
-    await setDoc(doc(db, 'Users', userId), userData)
+    await updateDoc(doc(db, 'Users', userId), userData) // change from setDoc to updateDoc otherwise original fields are overwritten
     // history.goBack(); 
     history.push('/selectride');
   };
