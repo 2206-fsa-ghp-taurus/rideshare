@@ -10,6 +10,7 @@ import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
+import RideRequests from './components/RideRequests';
 
 const App = () => {
   const {loading, authObj} = useAuthInit();
@@ -34,6 +35,10 @@ const App = () => {
 
             <Route exact path = '/driverlist'>
               <DriverList />
+            </Route>
+
+            <Route exact path = '/riderequestlist'>
+              <RideRequests />
             </Route>
 
            <Route exact path = '/signup'>
