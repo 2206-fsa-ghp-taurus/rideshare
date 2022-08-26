@@ -4,18 +4,22 @@ import { db } from "../firebase";
 import { collection, doc, updateDoc, query, where, getDocs } from 'firebase/firestore';
 // import DriverDetails from './DriverDetails'
 
-function RideDetails() {
+function RideRequests() {
   const user = useAuth()
   const [RideRequests, setRideRequests] = useState(["Rides"])
 
+  const getRideRequests = async () => {
+    const q = query(collection(db, "Rides"), where("status", "==", 0), where("driverId", "==", `${user.userId}`));
+
+    const querySnapshot =   await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setRideRequests({id: doc.id, ...doc.data()});
+    });
+  }
+
   useEffect(
     () => {
-      const q = query(collection(db, "Rides"), where("status", "==", 0), where("driverId", "==", `${user.userId}`));
-
-      const querySnapshot = getDocs(q);
-      querySnapshot.forEach((doc) => {
-      setRideRequests({id: doc.id, ...doc.data()});
-      });
+      getRideRequests()
     }
   )
 
@@ -34,7 +38,7 @@ function RideDetails() {
       {RideRequests.map((requests) => (
       <div className='card product-card shadow-lg'>
         <div className='card-body'>
-          <p className='my-4 card-title product-name text-center font-weight-bold'>{requests.id} </p>
+          <p className='my-4 card-title product-name text-center font-weight-bold'>{requests.riderId} </p>
           {/* <DriverDetails userId={driver.driverId} /> */}
           <button className="btn rounded-full" onClick={acceptRide}>Request Ride</button>
         </div>
@@ -45,4 +49,4 @@ function RideDetails() {
 }
 
 
-export default RideDetails;
+export default RideRequests;

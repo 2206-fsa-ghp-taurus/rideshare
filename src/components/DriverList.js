@@ -18,17 +18,17 @@ function DriverList() {
       getRides()
     }, [])
 
-  // const requestRide = async (evt) => {
-  //   const rideRef = doc(db, "Rides", `${evt.target.id}`);
-  //   if (user) {
-  //     await updateDoc(rideRef, {
-  //       "riderId": user.userId,
-  //       "status": 0,
-  //       // "pickup": "",
-  //       // "dropoff": "",
-  //     });
-  //   }
-  // };
+  const requestRide = async (evt) => {
+    const rideRef = doc(db, "Rides", `${evt.target.id}`);
+    if (user) {
+      await updateDoc(rideRef, {
+        "riderId": user.userId,
+        "status": 0,
+        // "pickup": "",
+        // "dropoff": "",
+      });
+    }
+  };
 
   return (
     <div className='row col-8 justify-content-center'>
@@ -38,7 +38,7 @@ function DriverList() {
         <div className='card-body'>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.id} </p>
           <DriverDetails userId={driver.driverId} />
-          <button className="btn rounded-full" id={driver.id} >Request Ride</button>
+          <button className="btn rounded-full" id={driver.id} onClick={requestRide}>Request Ride</button>
         </div>
       </div>
       ))}
