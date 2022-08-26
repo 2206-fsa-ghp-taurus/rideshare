@@ -26,7 +26,7 @@ return (
       <div>
   <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.firstName} </p>
   <div>
-  <img className='my-4 card-title product-name text-center font-weight-bold' src={driver.image} alt="No image found"></img>
+  <img className='my-4 card-title product-name text-center font-weight-bold' src={driver.pictureUrl} alt="No image found"></img>
   </div>
   </div>
     ))}
