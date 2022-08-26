@@ -23,12 +23,12 @@ const Login = () => {
   };
 
   if (loggedIn) {
-    //  return <Redirect to = '/hello'/>
-    return (
-        <div> 
-            <p> Success - Placeholder Message</p>
-        </div>
-    )
+    return <Redirect to ='/selectRide' />
+    // return (
+    //     <div> 
+    //         <p> Success - Placeholder Message</p>
+    //     </div>
+    // )
 
   }
   return (

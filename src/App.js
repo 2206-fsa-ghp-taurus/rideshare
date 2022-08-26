@@ -1,61 +1,67 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
-import Messaging from './components/Messaging';
 import SelectRide from './components/SelectRide';
-import RiderDetails from './components/RiderDetails';
+import DriverList from './components/DriverList';
 import Signup from './components/Signup';
 import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
+import Home from './components/Home';
+import Messaging from './components/Messaging';
 
 const App = () => {
   const { loading, authObj } = useAuthInit();
+  const [isDriver, setIsDriver] = useState(false);
+  const [cometChat, setCometChat] = useState(null);
+
+  console.log(cometChat);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
     return <p> Loading Now </p>;
   }
+
   return (
     <div>
       <AuthContext.Provider value={authObj}>
         <Navbar />
         <Switch>
-          {/* login route */}
           <Route exact path='/login'>
             <Login />
           </Route>
+
           <Route exact path='/selectride'>
-            <SelectRide />
+            <SelectRide isDriver={isDriver} setIsDriver={setIsDriver} />
           </Route>
+
           <Route exact path='/riderdetails'>
-            <RiderDetails />
+            <DriverList />
           </Route>
-          {/* signup route */}
+
           <Route exact path='/signup'>
             <Signup />
           </Route>
 
-          {/* signup route */}
-          <Route exact path='/signup'>
-            <Signup />
-          </Route>
-
-          {/* createProfile route */}
           <Route exact path='/createProfile'>
             <CreateProfile />
           </Route>
 
-          {/* home route, now rendering UserMap component */}
-          <Route exact path='/home'>
-            <UserMap />
+          <Route exact path='/chat'>
+            <Messaging />
           </Route>
+
+          <Route exact path='/home'>
+            <Home />
+          </Route>
+
           <Route exact path='/'>
             <Redirect to='/home' />
           </Route>
-          <Route path='/chat'>
-            <Messaging />
+
+          <Route exact path='/userMap'>
+            <UserMap isDriver={isDriver} />
           </Route>
         </Switch>
       </AuthContext.Provider>
