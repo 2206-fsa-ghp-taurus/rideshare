@@ -26,10 +26,10 @@ const UserMap = (props) => {
   const {userId} = useAuth()
 
   const beDriver = () => {
-    addDoc(collection(db, "Rides"), {
+    addDoc(collection(db, "Rides"), { // on the Rides table 
       driverId: userId,
       timestamp: serverTimestamp(),
-      pickUp: pickUpCoords,
+      pickUp: pickUpCoords, // may be overwriitten by rides detail later 
       dropOff: dropOffCoords
     })
   }

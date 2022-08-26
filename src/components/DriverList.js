@@ -113,18 +113,4 @@ export default DriverList;
 
 
 
-  //   onSnapshot(collection(db, 'Rides'),  (snapshot) => {
-  //     snapshot.docs.forEach((doc)=> {
-  //      drivers.push({...doc.data(), id: doc.id})
-  //    })
-  //    console.log('all drivers', drivers)
-  //  })
-  //   getDocs(collection(db,'Rides')).then((snapshot)=>{
-  //   snapshot.docs.forEach((doc)=>{
-  //     drivers.push({...doc.data()});
-  //   })
-  //   console.log(drivers)
-  // })
-   // loop over each driver and find matching driver 
-
   
