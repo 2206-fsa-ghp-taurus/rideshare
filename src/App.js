@@ -32,7 +32,7 @@ const App = () => {
             <SelectRide isDriver={isDriver} setIsDriver={setIsDriver} />
             </Route>
 
-            <Route exact path = '/driverList'>
+            <Route exact path = '/driverlist'>
               <DriverList />
             </Route>
 

@@ -1,92 +1,63 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
-import { onSnapshot, collection, query, where, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, collection, doc, updateDoc } from 'firebase/firestore';
 import DriverDetails from './DriverDetails'
-import L from "leaflet";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
-import "leaflet-routing-machine";
-import { useMap } from "react-leaflet";
+
 
 const DriverList = ()=> {
-  const {userId} = useAuth()
-  const [drivers, setDrivers] = useState([])
+  const {userId} = useAuth();
+  const [rides, setRides] = useState([]) // rides have all the drivers 
   const matchingDriver = []
-  const  [pickUpCoords, setPickUpCoords] = useState({});
-  const  [dropOffCoords, setDropOffCoords] = useState({});
+  const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider 
+  const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider 
 
   // first get all drivers from database 
+  const getRides = async () => {
+    onSnapshot(collection(db, "Rides"), async (snapshot) =>
+         await setRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+         ))
+   }
 
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "Rides"),  (snapshot) =>
-         setDrivers(snapshot.docs.map((doc) => doc.data()))
-    ),
-    []
-  )
+   useEffect(() => {
+    getRides()
+  }, [])
 
-  useEffect(
-    () =>
-    onSnapshot(doc(db, 'Users', userId), (doc)=>{
-       console.log('doc', doc.data())
-       setPickUpCoords(doc.data().riderPickUp);
-       setDropOffCoords (doc.data().riderDropOff);
-    }
-    ),
-    []
-  )
-  // const getAllDriversAndSelfLoc =()=>{
-  //   onSnapshot(collection(db, 'Rides'),  (snapshot) => {
-  //         snapshot.docs.forEach((doc)=> {
-  //          drivers.push({...doc.data(), id: doc.id})
-  //        })
+  const getCurrentUser = () =>{
+    onSnapshot(doc(db, 'Users', userId), (doc)=> {
+      setPickUpCoords(doc.data().riderPickUp);
+      setDropOffCoords (doc.data().riderDropOff);
+    })
+  }
+
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
+
+
+  // const requestRide = async (evt) => {
+  //   const rideRef = doc(db, "Rides", `${evt.target.id}`);
+  //   if (user) {
+  //     await updateDoc(rideRef, {
+  //       "riderId": userId,
+  //       "status": 0,
+  //       // "pickup": "",
+  //       // "dropoff": "",
   //     });
-  //   getDoc(doc(db, 'Users', userId)).then((doc)=>{
-  //       console.log('doc', doc.data())
-  //        setPickUpCoords(doc.data().riderPickUp);
-  //        setDropOffCoords (doc.data().riderDropOff);
-  //     })
-  // }
-  // useEffect( getAllDriversAndSelfLoc(),[])
-  // loop over each driver to find matching driver 
-
- 
-  
+  //   }
+  // };
 
   console.log('for this requester, pick up and drop off', pickUpCoords, dropOffCoords)
-  console.log('all Drivers', drivers)
+  console.log('all Drivers', rides)
 
-  for (let idx = 0; idx< drivers.length; idx++){
-    // const routing = L.Routing.control({
-    // waypoints: [L.latLng(drivers[idx].pickUp.lat, drivers[idx].pickUp.lng ), L.latLng( drivers[idx].dropOff.lat, drivers[idx].dropOff.lng)],
-    // router: L.Routing.mapbox('sk.eyJ1Ijoia2xldmluZTg4IiwiYSI6ImNsNzUxeDVoeTFuazUzcG1xb3ZuOGd3aXcifQ.gTCOe2GB8DcStiCKcoowJw'),
-    // show: false,
-    //   })
-    // console.log('routing', routing)
-//      routing.on('routeselected', function(e) {
-//       const coord = e.route.coordinates;
-//       console.log('this driver coord', coord);                 
-//       for (let i = 0; i< coord.length; i++){
-//         if (Math.abs(pickUpCoords.lat - coord[i].lat) < 0.1 && Math.abs(pickUpCoords.lng - coord[i].lng)< 0.1){
-//           for (let j = i; j< coord.length; j++){
-//             if (Math.abs(dropOffCoords.lat - coord[j].lat) < 0.1 && Math.abs(dropOffCoords.lng - coord[j].lng)< 0.1){
-//               matchingDriver.push(drivers[idx].driverId);
-//             }
-//           }
-//         }
-//       }
-//  })
-    if (Math.abs(pickUpCoords.lat - drivers[idx].pickUp.lat)<0.1 && Math.abs(pickUpCoords.lng - drivers[idx].pickUp.lng)<0.1&&
-    Math.abs(dropOffCoords.lat - drivers[idx].dropOff.lat)<0.1 && Math.abs(dropOffCoords.lng - drivers[idx].dropOff.lng)<0.1){
-      matchingDriver.push(drivers[idx])
+  for (let idx = 0; idx< rides.length; idx++){
+    if (Math.abs(pickUpCoords.lat - rides[idx].pickUp.lat)<0.1 && Math.abs(pickUpCoords.lng - rides[idx].pickUp.lng)<0.1&&
+      Math.abs(dropOffCoords.lat - rides[idx].dropOff.lat)<0.1 && Math.abs(dropOffCoords.lng - rides[idx].dropOff.lng)<0.1){
+      matchingDriver.push(rides[idx])
     }
     console.log('matching drivers', matchingDriver)
-}
+  }
 
-  const requestRide = () => {
-
-  };
   if (matchingDriver.length === 0){
     return (
       <p> No Driver Found</p>
@@ -109,8 +80,3 @@ const DriverList = ()=> {
 
 
 export default DriverList;
-
-
-
-
-  
