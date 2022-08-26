@@ -21,7 +21,8 @@
         // before firebase 9: db.collection().doc().set
         await setDoc(doc(db, 'Users', credential.user.uid),{
             email: credential.user.email,
-            totalFootPrint: 0
+            totalFootPrint: 0,
+            wallet: 100, // virtual wallet, give an initial value of 100 
         })
       } catch (error) {
         setStatus({ loading: false, error: true });
@@ -33,26 +34,33 @@
         return <Redirect to ='/createProfile' />
     }
     return (
-        <div className="ion-padding">
-          <div>
-            <label >Email</label>
-            <input type="email" value={email}
+      <div class= 'form-control'>
+           <div>
+            <label class="input-group input-group-lg" >
+                 <span> Email</span>
+            </label>
+            <input class="input input-bordered input-lg" type="email" value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div>
-            <label>Password: 6 digits or longer</label>
-            <input type="password" value={password}
+            <label class="input-group input-group-lg" >
+                 <span> Password </span>
+            </label>
+            <input class="input input-bordered input-lg" type="password" value={password} placeholder = '6 digits or longer'
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
+
   {/* error message  */}
           {status.error &&
             <p>Registration failed</p>
           }
   {/* handle register */}
-          <button onClick={handleSignUp}> Create Account </button>
-          <Link to="/login" className="btn btn-primary"> Already have an account? Click to Log In </Link>
+          <div class="btn-group"> 
+            <button onClick={handleSignUp} class="btn btn-active"> Create Account </button>
+            <Link to="/login" class="btn"> Already have an account? Click to Log In </Link>
+          </div>
 
 
     {/* loading message */}

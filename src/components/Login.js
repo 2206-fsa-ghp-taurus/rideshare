@@ -32,27 +32,34 @@ const Login = () => {
 
   }
   return (
-    <div>
+    <div class= 'form-control'>
           <div>
-            <label >Email</label>
-            <input type="email" value={email}
+            <label class="input-group input-group-lg" >
+                 <span> Email</span>
+            </label>
+            <input class="input input-bordered input-lg" type="email" value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div>
-            <label>Password</label>
-            <input type="password" value={password}
+            <label class="input-group input-group-lg" >
+                 <span> Password</span>
+            </label>
+            <input class="input input-bordered input-lg" type="password" value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
+        
 {/* if error , show the error message */}
         {status.error &&
           <p> Invalid email / password</p>
         }
 
 {/* login button */}
-        <button onClick={handleLogin}>Login</button>
-        <Link to="/signup" className="btn btn-primary"> Don't have an account yet? Sign Up </Link>
+        <div class="btn-group">
+          <button onClick={handleLogin} class="btn btn-active">Login</button>
+          <Link to="/signup" class="btn"> Don't have an account yet? Sign Up </Link>
+        </div> 
 
   {/* loading message */}
         {status.loading ? 
