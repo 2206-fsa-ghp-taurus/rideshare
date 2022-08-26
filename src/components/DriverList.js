@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
 import { onSnapshot, collection, doc, updateDoc } from 'firebase/firestore';
-import DriverDetails from './DriverDetails'
+import UserDetails from './UserDetails'
 
 
 const DriverList = ()=> {
@@ -15,9 +15,9 @@ const DriverList = ()=> {
   // first get all drivers from database
   const getRides = async () => {
     onSnapshot(collection(db, "Rides"), async (snapshot) =>
-         await setRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-         ))
-   }
+      await setRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+    ))
+  }
 
    useEffect(() => {
     getRides()
@@ -34,18 +34,17 @@ const DriverList = ()=> {
     getCurrentUser()
   }, [])
 
-
-  // const requestRide = async (evt) => {
-  //   const rideRef = doc(db, "Rides", `${evt.target.id}`);
-  //   if (user) {
-  //     await updateDoc(rideRef, {
-  //       "riderId": userId,
-  //       "status": 0,
-  //       // "pickup": "",
-  //       // "dropoff": "",
-  //     });
-  //   }
-  // };
+  const requestRide = async (evt) => {
+    const rideRef = doc(db, "Rides", `${evt.target.id}`);
+    if (userId) {
+      await updateDoc(rideRef, {
+        "riderId": userId,
+        "status": 0,
+        "riderPickUp": pickUpCoords,
+        "riderDropOff": dropOffCoords,
+      });
+    }
+  };
 
   console.log('for this requester, pick up and drop off', pickUpCoords, dropOffCoords)
   console.log('all Drivers', rides)
@@ -66,11 +65,11 @@ const DriverList = ()=> {
   return (
     <div className='row col-8 justify-content-center'>
       {matchingDriver.map((driver) => (
-      <div className='card product-card shadow-lg'>
+      <div key={driver.driverId} className='card product-card shadow-lg'>
         <div className='card-body'>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
-           <DriverDetails userId={driver.driverId} />
-      <button className="btn rounded-full">Request Ride</button>
+          <UserDetails userId={driver.driverId} />
+          <button className="btn rounded-full" onClick={requestRide}>Request Ride</button>
         </div>
       </div>
       ))}
