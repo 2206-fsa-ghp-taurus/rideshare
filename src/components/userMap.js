@@ -29,15 +29,16 @@ const UserMap = (props) => {
     addDoc(collection(db, "Rides"), { // on the Rides table 
       driverId: userId,
       timestamp: serverTimestamp(),
-      pickUp: pickUpCoords, // may be overwriitten by rides detail later 
-      dropOff: dropOffCoords
+      driverPickUp: pickUpCoords, // may be overwriitten by rides detail later 
+      driverDropOff: dropOffCoords,
+      // no status information yet. 
     })
   }
   
   const findDriver = ()=>{ // temporarly put on user table, can delete after ride is complete 
     updateDoc(doc(db, "Users",userId), {
-      riderPickUp: pickUpCoords,
-      riderDropOff: dropOffCoords,
+      pickUp: pickUpCoords,
+      dropOff: dropOffCoords,
     }) 
   }
 

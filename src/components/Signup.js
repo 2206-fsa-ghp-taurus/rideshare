@@ -21,7 +21,8 @@
         // before firebase 9: db.collection().doc().set
         await setDoc(doc(db, 'Users', credential.user.uid),{
             email: credential.user.email,
-            totalFootPrint: 0
+            totalFootPrint: 0,
+            wallet: 100, // virtual wallet, give an initial value of 100 
         })
       } catch (error) {
         setStatus({ loading: false, error: true });
@@ -33,30 +34,43 @@
         return <Redirect to ='/createProfile' />
     }
     return (
-        <div className="ion-padding">
-          <div>
-            <label >Email</label>
-            <input type="email" value={email}
+      <div className= 'form-control'>
+           <div>
+            <label className="input-group input-group-lg" >
+                 <span> Email</span>
+            </label>
+            <input className="input input-bordered input-lg" type="email" value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div>
-            <label>Password: 6 digits or longer</label>
-            <input type="password" value={password}
+            <label className="input-group input-group-lg" >
+                 <span> Password </span>
+            </label>
+            <input className="input input-bordered input-lg" type="password" value={password} placeholder = '6 digits or longer'
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
+
   {/* error message  */}
           {status.error &&
             <p>Registration failed</p>
           }
   {/* handle register */}
-          <button onClick={handleSignUp}> Create Account </button>
-          <Link to="/login" className="btn btn-primary"> Already have an account? Click to Log In </Link>
+          <div className="btn-group"> 
+            <button onClick={handleSignUp} className="btn btn-active"> Create Account </button>
+            <Link to="/login" className="btn"> Already have an account? Click to Log In </Link>
+          </div>
 
 
     {/* loading message */}
-          {status.loading ? <p> Loading Now </p> : ''} 
+    {status.loading ? 
+        <div className="flex justify-center items-center">
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+       </div> 
+    : ''}
         </div>
     );
   };
