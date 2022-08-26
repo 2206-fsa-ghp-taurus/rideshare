@@ -54,7 +54,7 @@ const CreateProfile= () => {
 
   return (
     <div>
-      <h2> Create Profile </h2>
+      <h2> My Profile </h2>
       <form class = 'form-control' onSubmit = {handleSaveUser}>
         <label class = 'input-group' htmlFor='firstName'>First Name</label>
         <input class="input input-bordered" name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
@@ -73,7 +73,7 @@ const CreateProfile= () => {
               />
         </div>
 
-        <button className="btn rounded-full" > Save </button>
+        <button class="btn rounded-full" > Save </button>
       </form>
     </div>
   );
