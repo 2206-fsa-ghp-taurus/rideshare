@@ -68,7 +68,7 @@ const CreateProfile= () => {
         <div>
           <label htmlFor='image'>Upload your picture</label>
           <input name='image' type='file' accept='image/*'  ref={fileInputRef} onChange={handlePictureChange} />
-          <img src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
+          <img id = 'profile-image' src={pictureUrl} alt="" style={{ cursor: 'pointer' }}
                 // onClick={()=>fileInputRef.current.click()}
               />
         </div>

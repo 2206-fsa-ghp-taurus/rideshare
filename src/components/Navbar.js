@@ -2,11 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { auth } from '../firebase';
+import { useHistory } from 'react-router-dom'; 
 
 
 const Navbar = () => {
     const { loggedIn } = useAuth();
-    // console.log('navbar', loggedIn)
+    const history = useHistory();
+
+    const handleLogOut = () =>{
+      auth.signOut();
+      history.replace('/home') // whenever user clicks on logout, always take them to the home apge 
+    }
+
     return (
         <>
             <nav role='navigation' style = {{marginBottom : '100px'}}>
@@ -19,7 +26,8 @@ const Navbar = () => {
                     </label>
                     <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
                       <li><a>  <Link to='/home'>Home</Link></a></li>
-                      <li><a>  <button onClick = {()=> auth.signOut()} > Logout</button></a></li>
+                      <li><a>  <Link to='/myAccount'>My Account</Link></a></li>
+                      <li><a>  <button onClick = {handleLogOut} > Logout</button></a></li>
                     </ul>
                   </div>
                 </div>
