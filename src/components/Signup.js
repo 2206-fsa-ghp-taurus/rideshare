@@ -34,20 +34,20 @@
         return <Redirect to ='/createProfile' />
     }
     return (
-      <div class= 'form-control'>
+      <div className= 'form-control'>
            <div>
-            <label class="input-group input-group-lg" >
+            <label className="input-group input-group-lg" >
                  <span> Email</span>
             </label>
-            <input class="input input-bordered input-lg" type="email" value={email}
+            <input className="input input-bordered input-lg" type="email" value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div>
-            <label class="input-group input-group-lg" >
+            <label className="input-group input-group-lg" >
                  <span> Password </span>
             </label>
-            <input class="input input-bordered input-lg" type="password" value={password} placeholder = '6 digits or longer'
+            <input className="input input-bordered input-lg" type="password" value={password} placeholder = '6 digits or longer'
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
@@ -57,17 +57,17 @@
             <p>Registration failed</p>
           }
   {/* handle register */}
-          <div class="btn-group"> 
-            <button onClick={handleSignUp} class="btn btn-active"> Create Account </button>
-            <Link to="/login" class="btn"> Already have an account? Click to Log In </Link>
+          <div className="btn-group"> 
+            <button onClick={handleSignUp} className="btn btn-active"> Create Account </button>
+            <Link to="/login" className="btn"> Already have an account? Click to Log In </Link>
           </div>
 
 
     {/* loading message */}
     {status.loading ? 
-        <div class="flex justify-center items-center">
-        <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-          <span class="visually-hidden">Loading...</span>
+        <div className="flex justify-center items-center">
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
        </div> 
     : ''}

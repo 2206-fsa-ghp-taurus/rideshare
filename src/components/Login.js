@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
-import { auth} from '../firebase'; // import the auth service
+import { auth, db} from '../firebase'; // import the auth service
 import {signInWithEmailAndPassword} from "firebase/auth" // for firebase 9, signinwithemailandpwd is not on auth
-console.log('auth from firebase', auth)
+import { doc, setDoc, getDoc} from "firebase/firestore"
 
 const Login = () => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, userId } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState({ loading: false, error: false });
@@ -32,20 +32,20 @@ const Login = () => {
 
   }
   return (
-    <div class= 'form-control'>
+    <div className= 'form-control'>
           <div>
-            <label class="input-group input-group-lg" >
+            <label className="input-group input-group-lg" >
                  <span> Email</span>
             </label>
-            <input class="input input-bordered input-lg" type="email" value={email}
+            <input className="input input-bordered input-lg" type="email" value={email}
               onChange={(event) => setEmail(event.target.value)}
             />
           </div>
           <div>
-            <label class="input-group input-group-lg" >
+            <label className="input-group input-group-lg" >
                  <span> Password</span>
             </label>
-            <input class="input input-bordered input-lg" type="password" value={password}
+            <input className="input input-bordered input-lg" type="password" value={password}
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
@@ -56,16 +56,16 @@ const Login = () => {
         }
 
 {/* login button */}
-        <div class="btn-group">
-          <button onClick={handleLogin} class="btn btn-active">Login</button>
-          <Link to="/signup" class="btn"> Don't have an account yet? Sign Up </Link>
+        <div className="btn-group">
+          <button onClick={handleLogin} className="btn btn-active">Login</button>
+          <Link to="/signup" className="btn"> Don't have an account yet? Sign Up </Link>
         </div> 
 
   {/* loading message */}
         {status.loading ? 
-        <div class="flex justify-center items-center">
-        <div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-          <span class="visually-hidden">Loading...</span>
+        <div className="flex justify-center items-center">
+        <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+          <span className="visually-hidden">Loading...</span>
         </div>
        </div> 
     : ''}
