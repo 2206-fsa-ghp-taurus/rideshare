@@ -1,6 +1,6 @@
 import './UserMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { UserMarker } from './UserMarker';
 import 'leaflet/dist/leaflet.css';
 import Routing from './Routing';
@@ -9,7 +9,9 @@ import LocationDropOff from "./LocationDropOff"
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, doc, updateDoc} from 'firebase/firestore';
+
+
 
 const UserMap = (props) => {
   const [position, setPosition] = useState({
@@ -21,13 +23,22 @@ const UserMap = (props) => {
   const [dropOffCoords, setDropOffCoords] = useState({});
   const {isDriver} = props
 
-  const user = useAuth()
+  const {userId} = useAuth()
 
   const beDriver = () => {
-    addDoc(collection(db, "Rides"), {
-      driverId: user.userId,
-      timestamp: serverTimestamp()
+    addDoc(collection(db, "Rides"), { // on the Rides table 
+      driverId: userId,
+      timestamp: serverTimestamp(),
+      pickUp: pickUpCoords, // may be overwriitten by rides detail later 
+      dropOff: dropOffCoords
     })
+  }
+  
+  const findDriver = ()=>{ // temporarly put on user table, can delete after ride is complete 
+    updateDoc(doc(db, "Users",userId), {
+      riderPickUp: pickUpCoords,
+      riderDropOff: dropOffCoords,
+    }) 
   }
 
   return (
@@ -39,7 +50,7 @@ const UserMap = (props) => {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
           <UserMarker />
-          <Routing pickUpCoords={pickUpCoords} dropOffCoords = {dropOffCoords}/>
+          <Routing pickUpCoords={pickUpCoords} dropOffCoords = {dropOffCoords} />
         </MapContainer>
       </div>
       <div>
@@ -47,7 +58,9 @@ const UserMap = (props) => {
         <LocationDropOff dropOffCoords={dropOffCoords} setDropOffCoords={setDropOffCoords}/>
       </div>
       {isDriver? (<button className="btn rounded-full" onClick={beDriver}>Confirm to Be Driver</button>) :
-       (<Link to="/drivers"><button className="btn rounded-full">Find Drivers</button></Link>)}
+       (<Link to= '/driverList'> <button className="btn rounded-full" onClick = {findDriver}>Find Drivers</button></Link>)
+       }
+       
 
     </div>
   );
