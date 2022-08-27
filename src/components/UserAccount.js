@@ -38,7 +38,7 @@ const UserAccount= () => {
             <p> PHONE: {user?.phone} </p>
             <p> TOTAL CARBON FOOTPRINT: {user?.totalFootPrint} </p>
             <p> WALLET($): {user?.wallet} </p>
-            <Link to= '/createProfile'> <button className="btn rounded-full"> Edit Profile</button></Link>
+            <Link to= '/editProfile'> <button className="btn rounded-full"> Edit Profile</button></Link>
             <button className="btn rounded-full" onClick = {handleDelete}> Delete Account
              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">
                 <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
