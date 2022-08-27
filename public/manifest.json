@@ -3,12 +3,12 @@
   "name": "Rideshare",
   "icons": [
     {
-      "src": "icon.png",
+      "src": "maskable_icon.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "icon.png",
+      "src": "maskable_icon.png",
       "type": "image/png",
       "sizes": "512x512"
     }

@@ -50,7 +50,7 @@ const App = () => {
               <CreateProfile/>
             </Route>
 
-            <Route exact path='/home'>
+            <Route exact path='/'>
               <Home />
             </Route>
 
