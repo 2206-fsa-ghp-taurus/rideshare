@@ -7,17 +7,10 @@ import UserDetails from './UserDetails'
 
 const DriverList = ()=> {
   const {userId} = useAuth();
-<<<<<<< HEAD
   const [rides, setRides] = useState([]) // rides have all the drivers 
   const  matchingDriver = []
   const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider 
   const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider 
-=======
-  const [rides, setRides] = useState([]) // rides have all the drivers
-  const matchingDriver = []
-  const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
-  const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
->>>>>>> 0d11979ef33d56b96162042d1550e0bf87ea1667
 
   // first get all drivers from database
   const getRides = async () => {

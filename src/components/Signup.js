@@ -6,7 +6,7 @@
   import {createUserWithEmailAndPassword} from "firebase/auth"
   import { doc, setDoc} from "firebase/firestore"
 
-  
+  const DEFAULTimg = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR7TEM9d91DuHZgbmbtlx4tlSl-FJQKvREDA&usqp=CAU'
   const Signup = () => {
     const { loggedIn } = useAuth();
     const [email, setEmail] = useState('');
@@ -23,6 +23,7 @@
             email: credential.user.email,
             totalFootPrint: 0,
             wallet: 100, // virtual wallet, give an initial value of 100 
+            pictureUrl: DEFAULTimg
         })
       } catch (error) {
         setStatus({ loading: false, error: true });
