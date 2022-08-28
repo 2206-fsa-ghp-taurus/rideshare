@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, {useEffect, useState, createRef} from "react";
 import { Marker, Popup, useMap} from 'react-leaflet';
 import {useAuth} from "../auth";
@@ -24,6 +25,17 @@ function RideRequests() {
     lat: 39.015979960290395,
     lng: -94.56373267199132,
   });
+=======
+import React, { useEffect, useState } from 'react';
+import { useAuth } from '../auth';
+import { db } from "../firebase";
+import { collection, doc, updateDoc, query, where, onSnapshot, getDoc } from 'firebase/firestore';
+import UserDetails from './UserDetails'
+
+function RideRequests() {
+  const user = useAuth()
+  const [requests, setRideRequests] = useState([])
+>>>>>>> origin
 
   const getRideRequests = async () => {
     onSnapshot(
@@ -88,8 +100,8 @@ function RideRequests() {
       rideAccepted()
       setRideInProgress(true)
     }
-   
   };
+
 
   const riderIcon = L.icon({
     iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
@@ -114,29 +126,24 @@ function RideRequests() {
       }
         </MapContainer>
       </div>
-      {rides && rides.length !== 0 ? (
-        <div className="row col-8 justify-content-center">
-          {rides.map((requests) => (
-            <div key={requests.id} className="card product-card shadow-lg">
-              <div className="card-body">
-                <p className="my-4 card-title product-name text-center font-weight-bold">
-                  Requested Ride:
-                </p>
-                <UserDetails userId={requests.riderId} />
-                <button
-                  className="btn rounded-full"
-                  id={requests.id}
-                  onClick={() => acceptRide(requests)}
-                >
-                  Accept Ride
-                </button>
-              </div>
+      <div>
+      {requests && requests.length !== 0 ?
+        (<div className='row col-8 justify-content-center'>
+          {requests.map((request) => (
+          <div key={request.id} className='card product-card shadow-lg'>
+            <div className='card-body'>
+              <p className='my-4 card-title product-name text-center font-weight-bold'>Requested Ride:</p>
+              <UserDetails userId={request.riderId} />
+              <button className="btn rounded-full" id={request.id} onClick={() => acceptRide(request)}>Accept Ride</button>
+            </div>
             </div>
           ))}
         </div>
       ) : (
         <div>No rides requested</div>
-      )}
+      )
+      }
+    </div>
     </div>
   );
 }

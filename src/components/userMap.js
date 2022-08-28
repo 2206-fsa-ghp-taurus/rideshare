@@ -41,6 +41,7 @@ const UserMap = (props) => {
 
   useEffect(() => setDriverButtonText("Confirmed"), []);
 
+
   const beDriver = (e) => {
     addDoc(collection(db, "Rides"), {
       // on the Rides table

@@ -12,7 +12,7 @@ const DriverList = ()=> {
   const matchingDriver = []
   const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
   const [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
- 
+
   // first get all drivers from database
   const getRides = async () => {
     onSnapshot(collection(db, "Rides"), async (snapshot) =>
