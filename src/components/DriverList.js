@@ -7,18 +7,12 @@ import UserDetails from './UserDetails'
 
 const DriverList = ()=> {
   const {userId} = useAuth();
-<<<<<<< HEAD
-  const [rides, setRides] = useState([]) // rides have all the drivers 
-  const  matchingDriver = []
-  const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider 
-  const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider 
-=======
+
   const [rides, setRides] = useState([]) // rides have all the drivers
   const matchingDriver = []
-  const  [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
-  const  [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
->>>>>>> 0d11979ef33d56b96162042d1550e0bf87ea1667
-
+  const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
+  const [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
+ 
   // first get all drivers from database
   const getRides = async () => {
     onSnapshot(collection(db, "Rides"), async (snapshot) =>
@@ -41,8 +35,8 @@ const DriverList = ()=> {
     getCurrentUser()
   }, [])
 
-  const requestRide = async (evt) => {
-    const rideRef = doc(db, "Rides", `${evt.target.id}`);
+  const requestRide = async (rideId)=> {
+    const rideRef = doc(db, "Rides", rideId);
     if (userId) {
       await updateDoc(rideRef, {
         "riderId": userId,
@@ -55,6 +49,7 @@ const DriverList = ()=> {
 
   console.log('for this requester, pick up and drop off', pickUpCoords, dropOffCoords)
   console.log('all Drivers', rides)
+ 
 
   for (let idx = 0; idx< rides.length; idx++){
     if (Math.abs(pickUpCoords.lat - rides[idx].driverPickUp.lat)<0.05 && Math.abs(pickUpCoords.lng - rides[idx].driverPickUp.lng)<0.05&&
@@ -76,7 +71,7 @@ const DriverList = ()=> {
         <div className='card-body'>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
           <UserDetails userId={driver.driverId} />
-          <button className="btn rounded-full" onClick={requestRide}>Request Ride</button>
+          <button className="btn rounded-full" onClick={()=>requestRide(driver.id)}>Request Ride</button>
         </div>
       </div>
       ))}
