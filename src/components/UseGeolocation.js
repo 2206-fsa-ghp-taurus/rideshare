@@ -1,11 +1,7 @@
-import React, {useEffect, useState, useRef} from "react";
-import {useMap} from "react-leaflet";
-import L from "leaflet"
+import React, {useEffect, useState} from "react";
 
 export const UseGeolocation = () => {
 
-  const map = useMap();
-  
   const [location, setLocation] = useState({
     loaded: false,
     coordinates: {lat: "", lng: ""},

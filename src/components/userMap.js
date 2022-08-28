@@ -15,10 +15,6 @@ import {
   serverTimestamp,
   doc,
   updateDoc,
-  onSnapshot,
-  query,
-  where,
-  getDocs,
 } from "firebase/firestore";
 import {useHistory} from "react-router-dom";
 
@@ -64,10 +60,11 @@ const UserMap = (props) => {
     });
   };
 
-  const rideComplete = () => {
-    setDisable(false);
-    setDriverButtonText("Confirm to Be Driver");
-  };
+
+  // const rideComplete = () => {
+  //   setDisable(false);
+  //   setDriverButtonText("Confirm to Be Driver");
+  // };
 
   return (
     <div>
@@ -100,7 +97,7 @@ const UserMap = (props) => {
           >
             {driverButtonText}
           </button>
-          <button onClick={rideComplete}>Ride Complete</button>
+          {/* <button onClick={rideComplete}>Ride Complete</button> */}
           <Link to="/riderequestlist">
             <button>See Requested Rides</button>
           </Link>
