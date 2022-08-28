@@ -21,17 +21,12 @@ function RideRequests() {
   }, [])
 
   const acceptRide = async (evt) => {
-    // if (requests.length > 1) {
-    //   requests
-    //   .filter((request) => request.id !== evt.target.id)
-    //   .map((request) => )
-    // }
     const rideRef = doc(db, "Rides", `${evt.target.id}`);
     await updateDoc(rideRef, {
       "status": 1,
     });
 
-    // history.replace('/editProfile'); update to send to current ride component
+    history.replace('/currentRide');
   }
 
   const inputCarDetails = async () => {

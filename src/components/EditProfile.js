@@ -13,20 +13,20 @@ const EditProfile= () => {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [pictureUrl, setPictureUrl] = useState("");
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
-  const [color, setColor] = useState('');
-  const [license, setLicense] = useState('');
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [color, setColor] = useState();
+  const [license, setLicense] = useState("");
   const fileInputRef = useRef();
   const getUserInfo = () => {onSnapshot(doc(db, 'Users', userId), (doc) =>{
         setFirstName(doc.data().firstName);
         setLastName(doc.data().lastName)
         setPhone(doc.data().phone)
         setPictureUrl(doc.data().pictureUrl)
-        setMake(doc.data().make);
-        setModel(doc.data().model)
-        setColor(doc.data().color)
-        setLicense(doc.data().license)
+        if(doc.data().make) setMake(doc.data().make);
+        if(doc.data().model) setModel(doc.data().model)
+        if(doc.data().color) setColor(doc.data().color)
+        if(doc.data().license) setLicense(doc.data().license)
   })}
   useEffect(()=>{getUserInfo()}, []) // so only sending request once
   console.log('before edit user profile', firstName, lastName)
