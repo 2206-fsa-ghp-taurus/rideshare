@@ -1,9 +1,9 @@
-<<<<<<< HEAD
-import React, {useEffect, useState, createRef} from "react";
-import { Marker, Popup, useMap} from 'react-leaflet';
+
+import React, {useEffect, useState} from "react";
+import {useMap} from 'react-leaflet';
 import {useAuth} from "../auth";
 import {db} from "../firebase";
-import L, {latLngBounds, marker} from 'leaflet';
+import L from 'leaflet';
 import {
   collection,
   doc,
@@ -11,6 +11,7 @@ import {
   query,
   where,
   onSnapshot,
+  getDoc
 } from "firebase/firestore";
 import UserDetails from "./UserDetails";
 import {MapContainer, TileLayer} from "react-leaflet";
@@ -18,24 +19,13 @@ import "./UserMap.css";
 
 function RideRequests() {
   const user = useAuth();
-  const [rides, setRideRequests] = useState([]);
+  const [requests, setRideRequests] = useState([])
   const [rideInProgress, setRideInProgress] = useState(false)
   const [markers, setMarkers] = useState([])
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
     lng: -94.56373267199132,
   });
-=======
-import React, { useEffect, useState } from 'react';
-import { useAuth } from '../auth';
-import { db } from "../firebase";
-import { collection, doc, updateDoc, query, where, onSnapshot, getDoc } from 'firebase/firestore';
-import UserDetails from './UserDetails'
-
-function RideRequests() {
-  const user = useAuth()
-  const [requests, setRideRequests] = useState([])
->>>>>>> origin
 
   const getRideRequests = async () => {
     onSnapshot(
