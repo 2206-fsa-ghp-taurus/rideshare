@@ -26,20 +26,20 @@ const UserMap = (props) => {
   const {userId} = useAuth()
 
   const beDriver = () => {
-    addDoc(collection(db, "Rides"), { // on the Rides table 
+    addDoc(collection(db, "Rides"), { // on the Rides table
       driverId: userId,
       timestamp: serverTimestamp(),
-      driverPickUp: pickUpCoords, // may be overwriitten by rides detail later 
+      driverPickUp: pickUpCoords, // may be overwriitten by rides detail later
       driverDropOff: dropOffCoords,
-      // no status information yet. 
+      // no status information yet.
     })
   }
-  
-  const findDriver = ()=>{ // temporarly put on user table, can delete after ride is complete 
+
+  const findDriver = ()=>{ // temporarly put on user table, can delete after ride is complete
     updateDoc(doc(db, "Users",userId), {
       pickUp: pickUpCoords,
       dropOff: dropOffCoords,
-    }) 
+    })
   }
 
   return (
@@ -61,7 +61,7 @@ const UserMap = (props) => {
       {isDriver? (<button className="btn rounded-full" onClick={beDriver}>Confirm to Be Driver</button>) :
        (<Link to= '/driverList'> <button className="btn rounded-full" onClick = {findDriver}>Find Drivers</button></Link>)
        }
-       
+
 
     </div>
   );
