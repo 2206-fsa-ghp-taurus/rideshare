@@ -1,4 +1,4 @@
-import './userMap.css';
+import './UserMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import React, { useState, useEffect, useRef } from 'react';
 import { UserMarker } from './UserMarker';

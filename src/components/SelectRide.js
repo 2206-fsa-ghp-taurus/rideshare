@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Route } from 'react-router-dom';
-import UserMap from './userMap';
+import UserMap from './UserMap';
 import { useAuth } from '../auth';
 // import { db } from "../firebase";
 // import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
