@@ -4,7 +4,7 @@ import { auth, db } from '../firebase';
 import { doc, onSnapshot, deleteDoc} from "firebase/firestore"
 import { deleteUser } from 'firebase/auth'
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom'; 
+import { useHistory } from 'react-router-dom';
 
 const UserAccount= () => {
     const {userId} = useAuth();
@@ -12,7 +12,7 @@ const UserAccount= () => {
     const getUserInfo = () => {onSnapshot(doc(db, 'Users', userId), (doc) =>{
           setUser(doc.data())
     })}
-    useEffect(()=>{getUserInfo()}, []) // so only sending request once 
+    useEffect(()=>{getUserInfo()}, []) // so only sending request once
 
     const history = useHistory();
     const handleDelete = async() => { // delete entry in user table, also delete authentication
@@ -23,7 +23,7 @@ const UserAccount= () => {
     }
 
     // if (!user) return (
-    //     <p> It is one of our test users that we grants authentication but did not create entry in user table</p> 
+    //     <p> It is one of our test users that we grants authentication but did not create entry in user table</p>
     // )
     return (
         <>
@@ -31,9 +31,9 @@ const UserAccount= () => {
             <div className="mb-8 rounded-full w-14 h-14">
                 <img src= {user?.pictureUrl}/>
             </div>
-            </div> 
+            </div>
             {/* all users will have email, footprint and wallet except for the ones we manually added to auth*/}
-            <p> NAME: {user?.firstName} {user?.lastName}</p>  
+            <p> NAME: {user?.firstName} {user?.lastName}</p>
             <p> EMAIL: {user?.email }  </p>
             <p> PHONE: {user?.phone} </p>
             <p> TOTAL CARBON FOOTPRINT (gram): {user?.totalFootPrint} </p>
