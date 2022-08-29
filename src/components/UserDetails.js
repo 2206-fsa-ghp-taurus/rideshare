@@ -22,7 +22,7 @@ function UserDetails(props) {
     <div>
       {user.map((user) => (
         <div key={user.userId}>
-           <img className='my-4 card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
+           <img className='card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{user.firstName} </p>
         </div>
       ))}

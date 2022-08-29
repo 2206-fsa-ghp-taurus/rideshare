@@ -13,6 +13,7 @@ import Home from './components/Home';
 import UserAccount from './components/UserAccount.js';
 import RideRequests from './components/RideRequests';
 import EditProfile from './components/EditProfile';
+import CurrentRide from './components/CurrentRide';
 
 
 const App = () => {
@@ -71,6 +72,10 @@ const App = () => {
 
             <Route exact path='/editProfile'>
               <EditProfile />
+            </Route>
+
+            <Route exact path='/currentRide'>
+              <CurrentRide />
             </Route>
 
         </Switch>
