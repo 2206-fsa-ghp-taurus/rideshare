@@ -23,6 +23,7 @@ CometChat.init(CONSTANTS.APP_ID, appSetting).then(
 
 const Messaging = (props) => {
   const { userId } = useAuth();
+  console.log(props);
 
   const userInfo = async () => {
     const userName = await getDoc(doc(db, 'Users', userId));
