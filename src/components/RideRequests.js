@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from "react";
+import { useHistory} from 'react-router-dom';
 import {useMap} from "react-leaflet";
 import {useAuth} from "../auth";
 import {db} from "../firebase";
@@ -10,7 +11,6 @@ import {
   query,
   where,
   onSnapshot,
-  getDoc,
 } from "firebase/firestore";
 import UserDetails from "./UserDetails";
 import {MapContainer, TileLayer} from "react-leaflet";
@@ -46,7 +46,7 @@ function RideRequests() {
       query(
         collection(db, "Rides"),
         where("status", "==", 1),
-        where("driverId", "==", `${user.userId}`)
+        where("driverId", "==", `${userId}`)
       ),
       async (snapshot) =>
         await setMarkers(
@@ -81,13 +81,12 @@ function RideRequests() {
 
   const acceptRide = async (riderRequest) => {
     const rideRef = doc(db, "Rides", riderRequest.id);
-    if (user) {
       await updateDoc(rideRef, {
         status: 1,
       });
       rideAccepted();
       setRideInProgress(true);
-    }
+      history.replace('/currentRide');
   };
 
   const riderIcon = L.icon({
@@ -99,6 +98,10 @@ function RideRequests() {
     shadowSize: null,
     shadowAnchor: null,
   });
+
+  const inputCarDetails = async () => {
+    history.replace('/editProfile');
+  }
 
   return (
     <div>
@@ -123,7 +126,6 @@ function RideRequests() {
                   <UserDetails userId={request.riderId} />
                   <button
                     className="btn rounded-full"
-                    id={request.id}
                     onClick={() => acceptRide(request)}
                   >
                     Accept Ride
@@ -135,6 +137,11 @@ function RideRequests() {
         ) : (
           <div>No rides requested</div>
         )}
+      </div>
+      <div className="divider"></div>
+      <div>
+      <h4>Would you like to update your car details?</h4>
+      <button className="btn rounded-full" onClick = {inputCarDetails}>Edit Car Details</button>
       </div>
     </div>
   );
