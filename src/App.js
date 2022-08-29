@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import UserMap from './components/userMap';
+import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
@@ -16,6 +16,8 @@ import UserAccount from './components/UserAccount.js';
 import RideRequests from './components/RideRequests';
 import EditProfile from './components/EditProfile';
 import CurrentRide from './components/CurrentRide';
+import RideComplete from './components/RideComplete';
+import RidesHistory from './components/RidesHistory';
 
 const App = () => {
   const { loading, authObj } = useAuthInit();
@@ -23,7 +25,11 @@ const App = () => {
   const [userDistance, setUserDistance] = useState(0);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
-    return <p> Loading Now </p>;
+    return (<div className="flex justify-center items-center">
+    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
+   </div> )
   }
 
   return (
@@ -87,6 +93,16 @@ const App = () => {
           <Route exact path='/currentRide'>
             <CurrentRide isDriver={isDriver} />
           </Route>
+
+          <Route exact path='/rideComplete'>
+            <RideComplete />
+          </Route>
+
+          <Route exact path='/ridesHistory'>
+            <RidesHistory />
+          </Route>
+          
+
         </Switch>
       </AuthContext.Provider>
     </div>
