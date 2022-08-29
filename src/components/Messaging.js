@@ -30,22 +30,22 @@ const Messaging = (props) => {
     return firstName;
   };
 
-  // const setUserInfo = async () => {
-  //   let user = new CometChat.User(userId);
-  //   let firstName = await userInfo();
-  //   user.setName(firstName);
+  const setUserInfo = async () => {
+    let user = new CometChat.User(userId);
+    let firstName = await userInfo();
+    user.setName(firstName);
 
-  //   CometChat.createUser(user, CONSTANTS.AUTH_KEY).then(
-  //     (user) => {
-  //       console.log('user created', user);
-  //     },
-  //     (error) => {
-  //       console.log('error', error);
-  //     }
-  //   );
-  // };
+    CometChat.createUser(user, CONSTANTS.AUTH_KEY).then(
+      (user) => {
+        console.log('user created', user);
+      },
+      (error) => {
+        console.log('error', error);
+      }
+    );
+  };
 
-  // setUserInfo();
+  setUserInfo();
 
   const findRider = async () => {
     //going to pass ride id through props, once component is hooked up
@@ -63,14 +63,11 @@ const Messaging = (props) => {
     }
   };
 
-  const rider = async () => {
-    return await findRider();
-  };
   //query rides db for status (), pull current ride
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <CometChatMessages chatWithUser={rider()} />
+      <CometChatMessages chatWithUser={findRider()} />
     </div>
   );
 };

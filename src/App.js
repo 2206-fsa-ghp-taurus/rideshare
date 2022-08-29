@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import UserMap from './components/UserMap';
+import UserMap from './components/userMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
 import Login from './components/Login';
