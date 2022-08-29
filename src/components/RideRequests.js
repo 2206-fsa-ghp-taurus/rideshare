@@ -14,7 +14,7 @@ import {
 } from 'firebase/firestore';
 import UserDetails from './UserDetails';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import './UserMap.css';
+import './userMap.css';
 
 function RideRequests() {
   const { userId } = useAuth();
