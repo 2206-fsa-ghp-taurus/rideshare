@@ -11,13 +11,12 @@ import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Messaging from './components/Messaging';
+import PrivateRoute from './components/PrivateRoute';
 
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(false);
-  const [cometChat, setCometChat] = useState(null);
 
-  console.log(cometChat);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
     return <p> Loading Now </p>;
@@ -36,7 +35,7 @@ const App = () => {
             <SelectRide isDriver={isDriver} setIsDriver={setIsDriver} />
           </Route>
 
-          <Route exact path='/riderdetails'>
+          <Route exact path='/driverlist'>
             <DriverList />
           </Route>
 
@@ -48,6 +47,7 @@ const App = () => {
             <CreateProfile />
           </Route>
 
+          {/* <PrivateRoute exact path='/chat' component={Messaging} /> */}
           <Route exact path='/chat'>
             <Messaging />
           </Route>

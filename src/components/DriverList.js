@@ -1,34 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
-import { onSnapshot, collection, query, where, serverTimestamp, doc, getDoc } from 'firebase/firestore';
+import { onSnapshot, collection, doc, updateDoc } from 'firebase/firestore';
 import DriverDetails from './DriverDetails'
 
-function RiderDetails() {
+function DriverList() {
   const user = useAuth()
-  const [Rides, getRides] = useState(["Rides"])
+  const [Rides, setRides] = useState(["Rides"])
 
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "Rides"), async (snapshot) =>
-        await getRides(snapshot.docs.map((doc) => doc.data()))
-    ),
-    []
-  )
+  const getRides = async () => {
+     onSnapshot(collection(db, "Rides"), async (snapshot) =>
+          await setRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+          ))
+    }
 
-  const requestRide = () => {
+    useEffect(() => {
+      getRides()
+    }, [])
 
-  };
+  // const requestRide = async (evt) => {
+  //   const rideRef = doc(db, "Rides", `${evt.target.id}`);
+  //   if (user) {
+  //     await updateDoc(rideRef, {
+  //       "riderId": user.userId,
+  //       "status": 0,
+  //       // "pickup": "",
+  //       // "dropoff": "",
+  //     });
+  //   }
+  // };
 
   return (
     <div className='row col-8 justify-content-center'>
+      <p>Hi</p>
       {Rides.map((driver) => (
       <div className='card product-card shadow-lg'>
         <div className='card-body'>
-          <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
+          <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.id} </p>
           <DriverDetails userId={driver.driverId} />
-      <button className="btn rounded-full">Request Ride</button>
+          <button className="btn rounded-full" id={driver.id} >Request Ride</button>
         </div>
       </div>
       ))}
@@ -37,4 +47,4 @@ function RiderDetails() {
 }
 
 
-export default RiderDetails;
+export default DriverList;

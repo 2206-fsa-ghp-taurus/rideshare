@@ -1,40 +1,76 @@
-import React, { useState, useEffect, useContext } from 'react';
-// import { onSnapshot, collection } from '../firebase/firestore';
+import React from 'react';
 import { db } from '../firebase';
-import Context from './Context';
+import { getDoc, doc } from 'firebase/firestore';
+import { CometChat } from '@cometchat-pro/chat';
 import { CometChatMessages } from '../cometchat-pro-react-ui-kit/CometChatWorkspace/src';
+import { useAuth } from '../auth';
+import * as CONSTANTS from '../constants/constants';
 
-const Messaging = () => {
-  const [authObj] = useContext(Context);
+const appSetting = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(CONSTANTS.REGION)
+  .build();
+CometChat.init(CONSTANTS.APP_ID, appSetting).then(
+  () => {
+    console.log('Initialization completed successfully');
+    // You can now call login function.
+  },
+  (error) => {
+    console.log('Initialization failed with error:', error);
+    // Check the reason for error and take appropriate action.
+  }
+);
 
-  const user = db.collection('Rides').get();
-  console.log(user);
-  // useEffect(() =>
-  //   onSnapshot(
-  //     collection(db, 'Rides'),
-  //     async (snapshot) => await getRides(snapshot.docs.map)
-  //   )
-  // );
+const Messaging = (props) => {
+  const { userId } = useAuth();
 
-  // const findUser = () => {
-  //   if (driverId === authObj.userId) {
-  //     if (user.role === 'user' && currentRide.driver && currentRide.driver.id) {
-  //       return currentRide.driver.id;
-  //     } else if (
-  //       user.role === 'driver' &&
-  //       currentRide.requestor &&
-  //       currentRide.requestor.id
-  //     ) {
-  //       return currentRide.requestor.id;
+  const userInfo = async () => {
+    const userName = await getDoc(doc(db, 'Users', userId));
+    const firstName = userName.data().firstName;
+    return firstName;
+  };
+
+  // const setUserInfo = async () => {
+  //   let user = new CometChat.User(userId);
+  //   let firstName = await userInfo();
+  //   user.setName(firstName);
+
+  //   CometChat.createUser(user, CONSTANTS.AUTH_KEY).then(
+  //     (user) => {
+  //       console.log('user created', user);
+  //     },
+  //     (error) => {
+  //       console.log('error', error);
   //     }
-  //   }
+  //   );
   // };
 
+  // setUserInfo();
+
+  const findRider = async () => {
+    //going to pass ride id through props, once component is hooked up
+    //might pass all ride info. Can clean up thiscode and pull directly from props
+    let rideId = 'xo4NYD3evPjSfwpClGXq'; //change to value on props
+    let rideInfo = await getDoc(doc(db, 'Rides', rideId));
+    const riderId = rideInfo.data().riderId;
+    const status = rideInfo.data().status;
+    const driverId = rideInfo.data().driverId;
+
+    if (driverId === userId && status > 0) {
+      return await riderId;
+    } else {
+      return 'Error loading messaging';
+    }
+  };
+
+  const rider = async () => {
+    return await findRider();
+  };
   //query rides db for status (), pull current ride
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      {/* <CometChatMessages chatWithUser={} /> */}
+      <CometChatMessages chatWithUser={rider()} />
     </div>
   );
 };
