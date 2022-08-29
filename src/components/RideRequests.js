@@ -29,17 +29,13 @@ function RideRequests() {
 
   const getRideRequests = async () => {
     onSnapshot(
-      query(
-        collection(db, "Rides"),
-        where("status", "==", 0),
-        where("driverId", "==", `${userId}`)
-      ),
+      query(collection(db, "Rides"),
+      where("status", "==", 0),
+      where("driverId", "==", `${userId}`)),
       async (snapshot) =>
-        await setRideRequests(
-          snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-        )
-    );
-  };
+        await  setRideRequests(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+    ))
+  }
 
   const rideAccepted = async () => {
     onSnapshot(
@@ -56,9 +52,9 @@ function RideRequests() {
   };
 
   useEffect(() => {
-    getRideRequests();
-    rideAccepted();
-    setRideInProgress(true);
+    getRideRequests()
+    rideAccepted()
+    setRideInProgress(true)
   }, []);
 
   //setting group of markers in case we allow more than 1 rider.
@@ -103,6 +99,7 @@ function RideRequests() {
     history.replace('/editProfile');
   }
 
+console.log(userId)
   return (
     <div>
       <div className="container">
