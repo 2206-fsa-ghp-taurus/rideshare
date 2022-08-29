@@ -2,19 +2,26 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
-import { collection, doc, getDoc, updateDoc, query, where, onSnapshot, deleteField } from 'firebase/firestore';
+import { collection, doc, getDoc, updateDoc, query, where, onSnapshot, deleteField, getDocs } from 'firebase/firestore';
 import UserDetails from './UserDetails'
 
-function CurrentRide() {
+function CurrentRide(props) {
   const {userId} = useAuth()
   const history = useHistory()
+  const { isDriver } = props;
   const [currentRides, setCurrentRides] = useState([])
   const [user, setCurrentUser] = useState([])
 
   const getCurrentRide= async () => {
-    onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("riderId", "==", `${userId}`|| "riderId", "==", `${userId}`)), async (snapshot) =>
-    await setCurrentRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-    ))
+    if(isDriver) {
+      onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("driverId", "==", `${userId}`)), async (snapshot) =>
+        await setCurrentRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+      ))
+    } else {
+      onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("riderId", "==", `${userId}`)), async (snapshot) =>
+        await setCurrentRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+      ))
+    }
   }
 
   const getCurrentUser = async () => {
@@ -40,11 +47,14 @@ function CurrentRide() {
     history.replace('/home');;
   }
 
+  console.log(currentRides)
+
 if (currentRides.length === 0){
   return (
     <p> Not currently on ride</p>
   )
 }
+
   return (
     currentRides.map((ride) => (
       <div>
@@ -54,7 +64,7 @@ if (currentRides.length === 0){
           </div>
         :
           <div>
-            <UserDetails userId={ride.driverId} currentRide={ride.id} isDriver={true}/>
+            <UserDetails userId={ride.driverId} currentRide={ride.id}/>
             <button id={ride.id} className="btn rounded-full" onClick = {cancelRide}>Cancel Ride</button>
           </div>
         }

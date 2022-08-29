@@ -44,7 +44,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/riderequestlist'>
-            <RideRequests />
+            <RideRequests isDriver={isDriver} />
           </Route>
 
           <Route exact path='/signup'>
@@ -77,15 +77,15 @@ const App = () => {
           </Route>
 
           <Route exact path='/userAccount'>
-            <UserAccount />
+            <UserAccount isDriver={isDriver} />
           </Route>
 
           <Route exact path='/editProfile'>
-            <EditProfile />
+            <EditProfile isDriver={isDriver} />
           </Route>
 
           <Route exact path='/currentRide'>
-            <CurrentRide />
+            <CurrentRide isDriver={isDriver} />
           </Route>
         </Switch>
       </AuthContext.Provider>

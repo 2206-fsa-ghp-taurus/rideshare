@@ -63,6 +63,7 @@ const UserMap = (props) => {
   //   setDisable(false);
   //   setDriverButtonText("Confirm to Be Driver");
   // };
+  console.log(props)
 
   return (
     <div>
