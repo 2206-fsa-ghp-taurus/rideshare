@@ -11,6 +11,7 @@
     "dateformat": "^4.0.0",
     "firebase": "^9.9.3",
     "firebase-admin": "^11.0.1",
+    "firebase-tools": "^11.8.0",
     "html-react-parser": "^1.4.5",
     "leaflet": "^1.8.0",
     "leaflet-routing-machine": "^3.2.12",
@@ -71,8 +72,8 @@
     "jest-canvas-mock": "^2.4.0"
   },
   "jest": {
-		"moduleNameMapper": {
-			"\\.(css|scss|png|svg|pdf|jpg|jpeg|wav)$": "<rootDir>/src/resources/__mocks__/fileMock.js"
-		}
-	}
+    "moduleNameMapper": {
+      "\\.(css|scss|png|svg|pdf|jpg|jpeg|wav)$": "<rootDir>/src/resources/__mocks__/fileMock.js"
+    }
+  }
 }
