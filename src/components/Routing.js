@@ -3,6 +3,7 @@ import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
 import { useMap } from 'react-leaflet';
 import { useState } from 'react';
+import './userMap.css';
 
 //
 
@@ -44,6 +45,8 @@ const Routing = (props) => {
         .openPopup();
     },
   }).addTo(map);
+
+  routing.hide();
 
   routing.on('routeselected', function (e) {
     const wayPoint1 = L.latLng(pickUpLat, pickUpLng);

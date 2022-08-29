@@ -21,9 +21,9 @@
 //   }
 // );
 
-const Messaging = (props) => {
-  const { userId } = useAuth();
-  console.log(props);
+// const Messaging = (props) => {
+//   const { userId } = useAuth();
+//   console.log(props);
 
 //   const userInfo = async () => {
 //     const userName = await getDoc(doc(db, 'Users', userId));
