@@ -44,7 +44,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/riderequestlist'>
-            <RideRequests isDriver={isDriver} />
+            <RideRequests isDriver={isDriver} setIsDriver={setIsDriver} />
           </Route>
 
           <Route exact path='/signup'>

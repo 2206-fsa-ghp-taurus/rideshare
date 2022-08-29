@@ -1,39 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
-import { collection, doc, getDoc, updateDoc, query, where, onSnapshot, deleteField, getDocs } from 'firebase/firestore';
+import { collection, doc, updateDoc, query, where, onSnapshot, deleteField, } from 'firebase/firestore';
 import UserDetails from './UserDetails'
 
 function CurrentRide(props) {
   const {userId} = useAuth()
-  const history = useHistory()
-  const { isDriver } = props;
+  const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([])
-  const [user, setCurrentUser] = useState([])
 
   const getCurrentRide= async () => {
-    if(isDriver) {
-      onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("driverId", "==", `${userId}`)), async (snapshot) =>
-        await setCurrentRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-      ))
+    if (isDriver) {
+      onSnapshot(
+        query(
+          collection(db, "Rides"),
+          where("status", "==", 1),
+          where("driverId", "==", `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+        )
     } else {
-      onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("riderId", "==", `${userId}`)), async (snapshot) =>
-        await setCurrentRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-      ))
+        onSnapshot(
+          query(
+            collection(db, "Rides"),
+            where("status", "==", 1),
+            where("riderId", "==", `${userId}`)
+          ),
+          async (snapshot) =>
+            await setCurrentRides(
+              snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+            )
+        )
     }
   }
 
-  const getCurrentUser = async () => {
-    const userName = []
-    const docSnap = await getDoc(doc(db, "Users",
-      userId));
-      userName.push(docSnap.data());
-      setCurrentUser(userName)
-    }
-
   useEffect(() => {
-    getCurrentUser()
     getCurrentRide()
   }, [])
 
@@ -41,19 +46,26 @@ function CurrentRide(props) {
     const rideRef = doc(db, "Rides", `${evt.target.id}`);
     await updateDoc(rideRef, {
       "status": deleteField(),
-      "riderId": deleteField()
-      //remove  pick-up / drop-off details -- confirm key names
+      "riderId": deleteField(),
+      "riderPickUp": deleteField(),
+      "riderDropOff": deleteField()
     })
-    history.replace('/home');;
   }
 
-  console.log(currentRides)
+  const completeRide = async (evt) => {
+    const rideRef = doc(db, "Rides", `${evt.target.id}`);
+    await updateDoc(rideRef, {
+      "status": 2,
+      // add total cost / carbon footprint updates
+    })
+    // setIsDriver(false);
+  }
 
-if (currentRides.length === 0){
-  return (
-    <p> Not currently on ride</p>
-  )
-}
+  if (currentRides.length === 0){
+    return (
+      <p> Not currently on ride</p>
+    )
+  }
 
   return (
     currentRides.map((ride) => (
@@ -61,11 +73,18 @@ if (currentRides.length === 0){
         {ride.driverId === userId ?
           <div>
             <UserDetails userId={ride.riderId} />
+
+            <Link to='/home'>
+              <button id={ride.id} className="btn rounded-full" onClick = {completeRide}>Ride Complete</button>
+            </Link>
+
           </div>
         :
           <div>
-            <UserDetails userId={ride.driverId} currentRide={ride.id}/>
+            <UserDetails userId={ride.driverId} currentRide={ride.id} isDriver={isDriver}/>
+            <Link to='/home'>
             <button id={ride.id} className="btn rounded-full" onClick = {cancelRide}>Cancel Ride</button>
+            </Link>
           </div>
         }
       </div>
