@@ -12,7 +12,7 @@ function CurrentRide() {
   const [user, setCurrentUser] = useState([])
 
   const getCurrentRide= async () => {
-    onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("driverId", "==", `${userId}`|| "riderId", "==", `${userId}`)), async (snapshot) =>
+    onSnapshot(query(collection(db, "Rides"), where("status", "==", 1), where("riderId", "==", `${userId}`|| "riderId", "==", `${userId}`)), async (snapshot) =>
     await setCurrentRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
     ))
   }
