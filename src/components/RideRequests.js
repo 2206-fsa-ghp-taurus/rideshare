@@ -1,8 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {useMap} from "react-leaflet";
-import {useAuth} from "../auth";
-import {db} from "../firebase";
-import L from "leaflet";
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useMap } from 'react-leaflet';
+import { useAuth } from '../auth';
+import { db } from '../firebase';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import './userMap.css';
 import {
   collection,
   doc,
@@ -10,17 +13,15 @@ import {
   query,
   where,
   onSnapshot,
-  getDoc,
-} from "firebase/firestore";
-import UserDetails from "./UserDetails";
-import {MapContainer, TileLayer} from "react-leaflet";
-import "./UserMap.css";
+} from 'firebase/firestore';
+import UserDetails from './UserDetails';
+import { MapContainer, TileLayer } from 'react-leaflet';
+
 
 function RideRequests() {
-  const user = useAuth();
+  const { userId } = useAuth();
+  const history = useHistory();
   const [requests, setRideRequests] = useState([]);
-  const [rideInProgress, setRideInProgress] = useState(false);
-  const [markers, setMarkers] = useState([]);
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
     lng: -94.56373267199132,
@@ -29,46 +30,31 @@ function RideRequests() {
   const getRideRequests = async () => {
     onSnapshot(
       query(
-        collection(db, "Rides"),
-        where("status", "==", 0),
-        where("driverId", "==", `${user.userId}`)
+        collection(db, 'Rides'),
+        where('status', '==', 0),
+        where('driverId', '==', `${userId}`)
       ),
       async (snapshot) =>
         await setRideRequests(
-          snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-        )
-    );
-  };
-
-  const rideAccepted = async () => {
-    onSnapshot(
-      query(
-        collection(db, "Rides"),
-        where("status", "==", 1),
-        where("driverId", "==", `${user.userId}`)
-      ),
-      async (snapshot) =>
-        await setMarkers(
-          snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         )
     );
   };
 
   useEffect(() => {
     getRideRequests();
-    rideAccepted();
-    setRideInProgress(true);
+   
   }, []);
 
   //setting group of markers in case we allow more than 1 rider.
-  const ShowMarker = () => {
+  const ShowMarkerBeforeRideAccepted = () => {
     const map = useMap();
     let markerBounds = L.latLngBounds();
-    if (markers.length && markers.length > 0) {
-      markers.forEach((marker) => {
+    if (requests.length && requests.length > 0) {
+      requests.forEach((marker) => {
         let markerIcon = L.marker(
           [marker.riderPickUp.lat, marker.riderPickUp.lng],
-          {icon: riderIcon}
+          { icon: riderIcon }
         ).addTo(map);
         markerIcon.bindPopup(`${marker.riderId}`);
         markerBounds.extend([marker.riderPickUp.lat, marker.riderPickUp.lng]);
@@ -79,18 +65,16 @@ function RideRequests() {
   };
 
   const acceptRide = async (riderRequest) => {
-    const rideRef = doc(db, "Rides", riderRequest.id);
-    if (user) {
-      await updateDoc(rideRef, {
-        status: 1,
-      });
-      rideAccepted();
-      setRideInProgress(true);
-    }
+    const rideRef = doc(db, 'Rides', riderRequest.id);
+    await updateDoc(rideRef, {
+      status: 1,
+    });
+  
+    history.replace('/currentRide');
   };
 
   const riderIcon = L.icon({
-    iconUrl: "http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png",
+    iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
     iconSize: [28, 45],
     iconAnchor: [20, 41],
     popupAnchor: [2, -40],
@@ -99,32 +83,37 @@ function RideRequests() {
     shadowAnchor: null,
   });
 
+  const inputCarDetails = async () => {
+    history.replace('/editProfile');
+  };
+
+  console.log(userId);
   return (
     <div>
-      <div className="container">
+      <div className='container'>
         <MapContainer center={position} zoom={8} scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
-          {rideInProgress ? <ShowMarker /> : ""}
+          {requests && requests.length !== 0 ?
+        <ShowMarkerBeforeRideAccepted /> : ""}
+
         </MapContainer>
       </div>
       <div>
         {requests && requests.length !== 0 ? (
-          <div className="row col-8 justify-content-center">
+          <div className='row col-8 justify-content-center'>
             {requests.map((request) => (
-              <div key={request.id} className="card product-card shadow-lg">
-                <div className="card-body">
-                  <p className="my-4 card-title product-name text-center font-weight-bold">
+              <div key={request.id} className='card product-card shadow-lg'>
+                <div className='card-body'>
+                  <p className='my-4 card-title product-name text-center font-weight-bold'>
                     Requested Ride:
                   </p>
                   <UserDetails userId={request.riderId} />
                   <button
-                    className="btn rounded-full"
-                    id={request.id}
-                    onClick={() => acceptRide(request)}
-                  >
+                    className='btn rounded-full'
+                    onClick={() => acceptRide(request)}>
                     Accept Ride
                   </button>
                 </div>
@@ -134,6 +123,13 @@ function RideRequests() {
         ) : (
           <div>No rides requested</div>
         )}
+      </div>
+      <div className='divider'></div>
+      <div>
+        <h4>Would you like to update your car details?</h4>
+        <button className='btn rounded-full' onClick={inputCarDetails}>
+          Edit Car Details
+        </button>
       </div>
     </div>
   );
