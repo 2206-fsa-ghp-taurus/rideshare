@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from "react";
-import { useHistory} from 'react-router-dom';
-import {useMap} from "react-leaflet";
-import {useAuth} from "../auth";
-import {db} from "../firebase";
-import L from "leaflet";
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useMap } from 'react-leaflet';
+import { useAuth } from '../auth';
+import { db } from '../firebase';
+import L from 'leaflet';
 import {
   collection,
   doc,
@@ -11,14 +11,14 @@ import {
   query,
   where,
   onSnapshot,
-} from "firebase/firestore";
-import UserDetails from "./UserDetails";
-import {MapContainer, TileLayer} from "react-leaflet";
-import "./UserMap.css";
+} from 'firebase/firestore';
+import UserDetails from './UserDetails';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import './userMap.css';
 
 function RideRequests() {
-  const {userId} = useAuth();
-  const history = useHistory()
+  const { userId } = useAuth();
+  const history = useHistory();
   const [requests, setRideRequests] = useState([]);
   const [rideInProgress, setRideInProgress] = useState(false);
   const [markers, setMarkers] = useState([]);
@@ -29,32 +29,36 @@ function RideRequests() {
 
   const getRideRequests = async () => {
     onSnapshot(
-      query(collection(db, "Rides"),
-      where("status", "==", 0),
-      where("driverId", "==", `${userId}`)),
+      query(
+        collection(db, 'Rides'),
+        where('status', '==', 0),
+        where('driverId', '==', `${userId}`)
+      ),
       async (snapshot) =>
-        await  setRideRequests(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-    ))
-  }
+        await setRideRequests(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        )
+    );
+  };
 
   const rideAccepted = async () => {
     onSnapshot(
       query(
-        collection(db, "Rides"),
-        where("status", "==", 1),
-        where("driverId", "==", `${userId}`)
+        collection(db, 'Rides'),
+        where('status', '==', 1),
+        where('driverId', '==', `${userId}`)
       ),
       async (snapshot) =>
         await setMarkers(
-          snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         )
     );
   };
 
   useEffect(() => {
-    getRideRequests()
-    rideAccepted()
-    setRideInProgress(true)
+    getRideRequests();
+    rideAccepted();
+    setRideInProgress(true);
   }, []);
 
   //setting group of markers in case we allow more than 1 rider.
@@ -65,7 +69,7 @@ function RideRequests() {
       markers.forEach((marker) => {
         let markerIcon = L.marker(
           [marker.riderPickUp.lat, marker.riderPickUp.lng],
-          {icon: riderIcon}
+          { icon: riderIcon }
         ).addTo(map);
         markerIcon.bindPopup(`${marker.riderId}`);
         markerBounds.extend([marker.riderPickUp.lat, marker.riderPickUp.lng]);
@@ -76,17 +80,17 @@ function RideRequests() {
   };
 
   const acceptRide = async (riderRequest) => {
-    const rideRef = doc(db, "Rides", riderRequest.id);
-      await updateDoc(rideRef, {
-        status: 1,
-      });
-      rideAccepted();
-      setRideInProgress(true);
-      history.replace('/currentRide');
+    const rideRef = doc(db, 'Rides', riderRequest.id);
+    await updateDoc(rideRef, {
+      status: 1,
+    });
+    rideAccepted();
+    setRideInProgress(true);
+    history.replace('/currentRide');
   };
 
   const riderIcon = L.icon({
-    iconUrl: "http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png",
+    iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
     iconSize: [28, 45],
     iconAnchor: [20, 41],
     popupAnchor: [2, -40],
@@ -97,34 +101,33 @@ function RideRequests() {
 
   const inputCarDetails = async () => {
     history.replace('/editProfile');
-  }
+  };
 
-console.log(userId)
+  console.log(userId);
   return (
     <div>
-      <div className="container">
+      <div className='container'>
         <MapContainer center={position} zoom={8} scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
-          {rideInProgress ? <ShowMarker /> : ""}
+          {rideInProgress ? <ShowMarker /> : ''}
         </MapContainer>
       </div>
       <div>
         {requests && requests.length !== 0 ? (
-          <div className="row col-8 justify-content-center">
+          <div className='row col-8 justify-content-center'>
             {requests.map((request) => (
-              <div key={request.id} className="card product-card shadow-lg">
-                <div className="card-body">
-                  <p className="my-4 card-title product-name text-center font-weight-bold">
+              <div key={request.id} className='card product-card shadow-lg'>
+                <div className='card-body'>
+                  <p className='my-4 card-title product-name text-center font-weight-bold'>
                     Requested Ride:
                   </p>
                   <UserDetails userId={request.riderId} />
                   <button
-                    className="btn rounded-full"
-                    onClick={() => acceptRide(request)}
-                  >
+                    className='btn rounded-full'
+                    onClick={() => acceptRide(request)}>
                     Accept Ride
                   </button>
                 </div>
@@ -135,10 +138,12 @@ console.log(userId)
           <div>No rides requested</div>
         )}
       </div>
-      <div className="divider"></div>
+      <div className='divider'></div>
       <div>
-      <h4>Would you like to update your car details?</h4>
-      <button className="btn rounded-full" onClick = {inputCarDetails}>Edit Car Details</button>
+        <h4>Would you like to update your car details?</h4>
+        <button className='btn rounded-full' onClick={inputCarDetails}>
+          Edit Car Details
+        </button>
       </div>
     </div>
   );
