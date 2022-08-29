@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from '../firebase';
 import {
@@ -15,24 +15,39 @@ import {
 import UserDetails from './UserDetails';
 import Messaging from './Messaging';
 
-function CurrentRide() {
+function CurrentRide(props) {
   const { userId } = useAuth();
-  const history = useHistory();
+  const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
 
-  const getCurrentRide = async () => {
-    onSnapshot(
-      query(
-        collection(db, 'Rides'),
-        where('status', '==', 1),
-        where('driverId', '==', `${userId}` || 'riderId', '==', `${userId}`)
-      ),
-      async (snapshot) =>
-        await setCurrentRides(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+  const getCurrentRide= async () => {
+    if (isDriver) {
+      onSnapshot(
+        query(
+          collection(db, "Rides"),
+          where("status", "==", 1),
+          where("driverId", "==", `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
         )
-    );
-  };
+    } else {
+        onSnapshot(
+          query(
+            collection(db, "Rides"),
+            where("status", "==", 1),
+            where("riderId", "==", `${userId}`)
+          ),
+          async (snapshot) =>
+            await setCurrentRides(
+              snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+            )
+        )
+    }
+  }
+
 
   useEffect(() => {
     getCurrentRide();
@@ -97,12 +112,14 @@ function CurrentRide() {
             onClick={Messaging}>
             Chat with Driver
           </button>
+          <Link to='/home'>
           <button
             id={ride.id}
             className='btn rounded-full'
             onClick={cancelRide}>
             Cancel Ride
           </button>
+          </Link>
         </div>
       )}
     </div>
