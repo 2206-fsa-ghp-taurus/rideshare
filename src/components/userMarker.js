@@ -22,7 +22,7 @@ export const UserMarker = () => {
 
   useEffect(() => {
     map.flyTo([location.coordinates.lat, location.coordinates.lng], 15, {
-      animate: true,
+      animate: false,
     });
   }, [location.coordinates.lat, location.coordinates.lng, map]);
 

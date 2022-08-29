@@ -7,7 +7,6 @@ import UserDetails from './UserDetails'
 
 const DriverList = ()=> {
   const {userId} = useAuth();
-
   const [rides, setRides] = useState([]) // rides have all the drivers
   const matchingDriver = []
   const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider

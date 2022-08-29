@@ -1,6 +1,7 @@
 import L from "leaflet";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
+
 import {useMap} from "react-leaflet";
 import {useState} from "react";
 
@@ -21,6 +22,7 @@ const Routing = (props) => {
   const dropOffLng = props.dropOffCoords ? props.dropOffCoords.lng : null;
 
   const map = useMap();
+
   var greenIcon = new L.Icon({
     iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png',
@@ -44,6 +46,8 @@ const Routing = (props) => {
     
    
   }).addTo(map);
+
+  // map.layerscontrol.removeFrom(map)
   
   routing.on('routeselected', function(e) {
   const wayPoint1 = L.latLng(pickUpLat, pickUpLng);

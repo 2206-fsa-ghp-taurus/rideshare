@@ -1,6 +1,7 @@
 import "./UserMap.css";
 import {MapContainer, TileLayer} from "react-leaflet";
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
+import L from "leaflet";
 import {UserMarker} from "./UserMarker";
 import "leaflet/dist/leaflet.css";
 import Routing from "./Routing";
@@ -17,6 +18,10 @@ import {
   updateDoc,
 } from "firebase/firestore";
 import {useHistory} from "react-router-dom";
+import { UseGeolocation } from './UseGeolocation';
+import {useMap} from "react-leaflet";
+import "leaflet.locatecontrol"
+import "leaflet.locatecontrol/dist/L.Control.Locate.css"
 
 const UserMap = (props) => {
   const [position, setPosition] = useState({
@@ -34,6 +39,9 @@ const UserMap = (props) => {
   const [disable, setDisable] = useState(false);
   const {userId} = useAuth();
   const history = useHistory();
+  const location = UseGeolocation();
+  const mapRef = useRef()
+  
 
   useEffect(() => setDriverButtonText("Confirmed"), []);
 
@@ -60,6 +68,15 @@ const UserMap = (props) => {
     });
   };
 
+  const locateMe = () => {
+  //   const map = useMap()
+   
+  //  L.control.locate().addTo(map);
+  //  map.layerscontrol.removeFrom(map)
+
+     mapRef.current.flyTo([location.coordinates.lat, location.coordinates.lng])
+  }
+
 
   // const rideComplete = () => {
   //   setDisable(false);
@@ -69,14 +86,20 @@ const UserMap = (props) => {
   return (
     <div>
       <div className="container">
-        <MapContainer center={position} zoom={13} scrollWheelZoom>
+        <MapContainer ref={mapRef} center={position} zoom={13} scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
           <UserMarker />
           <Routing pickUpCoords={pickUpCoords} dropOffCoords={dropOffCoords} setUserDistance={setUserDistance}/>
+          {/* <LocateMe /> */}
+          <div>
+      </div>
         </MapContainer>
+      </div>
+      <div>
+      (<button class="btn btn-xs" onClick={locateMe}>Locate Me</button>)
       </div>
       <div>
         <LocationPickUp
