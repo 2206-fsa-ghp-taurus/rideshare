@@ -2,43 +2,76 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../auth';
 import { db } from "../firebase";
 import { onSnapshot, collection, doc, updateDoc } from 'firebase/firestore';
-import DriverDetails from './DriverDetails'
+import UserDetails from './UserDetails'
 
-function DriverList() {
-  const user = useAuth()
-  const [Rides, setRides] = useState(["Rides"])
 
+const DriverList = ()=> {
+  const {userId} = useAuth();
+
+  const [rides, setRides] = useState([]) // rides have all the drivers
+  const matchingDriver = []
+  const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
+  const [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
+
+  // first get all drivers from database
   const getRides = async () => {
-     onSnapshot(collection(db, "Rides"), async (snapshot) =>
-          await setRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-          ))
+    onSnapshot(collection(db, "Rides"), async (snapshot) =>
+      await setRides(snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+    ))
+  }
+
+   useEffect(() => {
+    getRides()
+  }, [])
+
+  const getCurrentUser = () =>{
+    onSnapshot(doc(db, 'Users', userId), (doc)=> {
+      setPickUpCoords(doc.data().pickUp);
+      setDropOffCoords (doc.data().dropOff);
+    })
+  }
+
+  useEffect(() => {
+    getCurrentUser()
+  }, [])
+
+  const requestRide = async (rideId)=> {
+    const rideRef = doc(db, "Rides", rideId);
+    if (userId) {
+      await updateDoc(rideRef, {
+        "riderId": userId,
+        "status": 0,
+        "riderPickUp": pickUpCoords,
+        "riderDropOff": dropOffCoords,
+      });
     }
+  };
 
-    useEffect(() => {
-      getRides()
-    }, [])
+  console.log('for this requester, pick up and drop off', pickUpCoords, dropOffCoords)
+  console.log('all Drivers', rides)
+ 
 
-  // const requestRide = async (evt) => {
-  //   const rideRef = doc(db, "Rides", `${evt.target.id}`);
-  //   if (user) {
-  //     await updateDoc(rideRef, {
-  //       "riderId": user.userId,
-  //       "status": 0,
-  //       // "pickup": "",
-  //       // "dropoff": "",
-  //     });
-  //   }
-  // };
+  for (let idx = 0; idx< rides.length; idx++){
+    if (Math.abs(pickUpCoords.lat - rides[idx].driverPickUp.lat)<0.05 && Math.abs(pickUpCoords.lng - rides[idx].driverPickUp.lng)<0.05&&
+      Math.abs(dropOffCoords.lat - rides[idx].driverDropOff.lat)<0.05 && Math.abs(dropOffCoords.lng - rides[idx].driverDropOff.lng)<0.05 && !rides[idx].status){
+      matchingDriver.push(rides[idx])
+    }
+    console.log('matching drivers', matchingDriver)
+  }
 
+  if (matchingDriver.length === 0){
+    return (
+      <p> No Driver Found</p>
+    )
+  }
   return (
     <div className='row col-8 justify-content-center'>
-      <p>Hi</p>
-      {Rides.map((driver) => (
-      <div className='card product-card shadow-lg'>
+      {matchingDriver.map((driver) => (
+      <div key={driver.driverId} className='card product-card shadow-lg'>
         <div className='card-body'>
-          <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.id} </p>
-          <DriverDetails userId={driver.driverId} />
-          <button className="btn rounded-full" id={driver.id} >Request Ride</button>
+          <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
+          <UserDetails userId={driver.driverId} />
+          <button className="btn rounded-full" onClick={()=>requestRide(driver.id)}>Request Ride</button>
         </div>
       </div>
       ))}

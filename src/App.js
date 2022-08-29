@@ -12,11 +12,15 @@ import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Messaging from './components/Messaging';
 import PrivateRoute from './components/PrivateRoute';
+import UserAccount from './components/UserAccount.js';
+import RideRequests from './components/RideRequests';
+import EditProfile from './components/EditProfile';
+import CurrentRide from './components/CurrentRide';
 
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(false);
-
+  const [userDistance, setUserDistance] = useState(0);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
     return <p> Loading Now </p>;
@@ -37,6 +41,10 @@ const App = () => {
 
           <Route exact path='/driverlist'>
             <DriverList />
+          </Route>
+
+          <Route exact path='/riderequestlist'>
+            <RideRequests />
           </Route>
 
           <Route exact path='/signup'>
@@ -61,7 +69,23 @@ const App = () => {
           </Route>
 
           <Route exact path='/userMap'>
-            <UserMap isDriver={isDriver} />
+            <UserMap
+              isDriver={isDriver}
+              userDistance={userDistance}
+              setUserDistance={setUserDistance}
+            />
+          </Route>
+
+          <Route exact path='/userAccount'>
+            <UserAccount />
+          </Route>
+
+          <Route exact path='/editProfile'>
+            <EditProfile />
+          </Route>
+
+          <Route exact path='/currentRide'>
+            <CurrentRide />
           </Route>
         </Switch>
       </AuthContext.Provider>

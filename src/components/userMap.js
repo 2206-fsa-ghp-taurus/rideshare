@@ -1,15 +1,22 @@
-import './userMap.css';
+import './UserMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserMarker } from './UserMarker';
 import 'leaflet/dist/leaflet.css';
 import Routing from './Routing';
-import LocationPickUp from "./LocationPickUp"
-import LocationDropOff from "./LocationDropOff"
+import LocationPickUp from './LocationPickUp';
+import LocationDropOff from './LocationDropOff';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
-import { db } from "../firebase";
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  doc,
+  updateDoc,
+} from 'firebase/firestore';
+import { useHistory } from 'react-router-dom';
 
 const UserMap = (props) => {
   const [position, setPosition] = useState({
@@ -19,16 +26,43 @@ const UserMap = (props) => {
 
   const [pickUpCoords, setPickUpCoords] = useState({});
   const [dropOffCoords, setDropOffCoords] = useState({});
-  const {isDriver} = props
+  const [driverButtonText, setDriverButtonText] = useState(
+    'Confirm to Be Driver'
+  );
+  const { isDriver } = props;
+  const { userDistance, setUserDistance } = props;
+  const [disable, setDisable] = useState(false);
+  const { userId } = useAuth();
+  const history = useHistory();
 
-  const user = useAuth()
+  useEffect(() => setDriverButtonText('Confirmed'), []);
 
-  const beDriver = () => {
-    addDoc(collection(db, "Rides"), {
-      driverId: user.userId,
-      timestamp: serverTimestamp()
-    })
-  }
+  const beDriver = (e) => {
+    addDoc(collection(db, 'Rides'), {
+      // on the Rides table
+      driverId: userId,
+      timestamp: serverTimestamp(),
+      driverPickUp: pickUpCoords, // may be overwriitten by rides detail later
+      driverDropOff: dropOffCoords,
+      // no status information yet.
+    });
+    setDisable(true);
+  };
+
+  const findDriver = () => {
+    // temporarly put on user table, can delete after ride is complete
+    console.log('userDistance', userDistance);
+    updateDoc(doc(db, 'Users', userId), {
+      pickUp: pickUpCoords,
+      dropOff: dropOffCoords,
+      distanceTravelled: userDistance,
+    });
+  };
+
+  // const rideComplete = () => {
+  //   setDisable(false);
+  //   setDriverButtonText("Confirm to Be Driver");
+  // };
 
   return (
     <div>
@@ -39,16 +73,44 @@ const UserMap = (props) => {
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
           <UserMarker />
-          <Routing pickUpCoords={pickUpCoords} dropOffCoords = {dropOffCoords}/>
+          <Routing
+            pickUpCoords={pickUpCoords}
+            dropOffCoords={dropOffCoords}
+            setUserDistance={setUserDistance}
+          />
         </MapContainer>
       </div>
       <div>
-        <LocationPickUp pickUpCoords={pickUpCoords} setPickUpCoords={setPickUpCoords}/>
-        <LocationDropOff dropOffCoords={dropOffCoords} setDropOffCoords={setDropOffCoords}/>
+        <LocationPickUp
+          pickUpCoords={pickUpCoords}
+          setPickUpCoords={setPickUpCoords}
+        />
+        <LocationDropOff
+          dropOffCoords={dropOffCoords}
+          setDropOffCoords={setDropOffCoords}
+        />
       </div>
-      {isDriver? (<button className="btn rounded-full" onClick={beDriver}>Confirm to Be Driver</button>) :
-       (<Link to="/drivers"><button className="btn rounded-full">Find Drivers</button></Link>)}
-
+      {isDriver ? (
+        <div>
+          <button
+            className='btn rounded-full'
+            disabled={disable}
+            onClick={beDriver}>
+            {driverButtonText}
+          </button>
+          {/* <button onClick={rideComplete}>Ride Complete</button> */}
+          <Link to='/riderequestlist'>
+            <button>See Requested Rides</button>
+          </Link>
+        </div>
+      ) : (
+        <Link to='/driverlist'>
+          {' '}
+          <button className='btn rounded-full' onClick={findDriver}>
+            Find Drivers
+          </button>
+        </Link>
+      )}
     </div>
   );
 };

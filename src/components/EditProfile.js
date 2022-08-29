@@ -5,20 +5,31 @@ import { auth, db, storage } from '../firebase';
 import { doc, updateDoc, onSnapshot} from "firebase/firestore"
 import { ref, getStorage, uploadBytes,getDownloadURL } from "firebase/storage";
 
-const DEFAULTimg = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR7TEM9d91DuHZgbmbtlx4tlSl-FJQKvREDA&usqp=CAU'
 
-const CreateProfile= () => {
+const EditProfile= () => {
   const { userId } = useAuth();
   const history = useHistory(); // sending users to other places
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [pictureUrl, setPictureUrl] = useState(DEFAULTimg);
-  const [make, setMake] = useState('');
-  const [model, setModel] = useState('');
-  const [color, setColor] = useState('');
-  const [license, setLicense] = useState('');
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [pictureUrl, setPictureUrl] = useState("");
+  const [make, setMake] = useState("");
+  const [model, setModel] = useState("");
+  const [color, setColor] = useState();
+  const [license, setLicense] = useState("");
   const fileInputRef = useRef();
+  const getUserInfo = () => {onSnapshot(doc(db, 'Users', userId), (doc) =>{
+        setFirstName(doc.data().firstName);
+        setLastName(doc.data().lastName)
+        setPhone(doc.data().phone)
+        setPictureUrl(doc.data().pictureUrl)
+        if(doc.data().make) setMake(doc.data().make);
+        if(doc.data().model) setModel(doc.data().model)
+        if(doc.data().color) setColor(doc.data().color)
+        if(doc.data().license) setLicense(doc.data().license)
+  })}
+  useEffect(()=>{getUserInfo()}, []) // so only sending request once
+  console.log('before edit user profile', firstName, lastName)
 
   const savePicture = async (blobUrl, userId) => { // save picture to firebase storage
     const response = await fetch(blobUrl);
@@ -38,11 +49,6 @@ const CreateProfile= () => {
       setPictureUrl(pictureUrl);
     }
   };
-  useEffect(() => () => {
-    if (pictureUrl.startsWith('blob:')) { // for memory management
-      URL.revokeObjectURL(pictureUrl);
-    }
-  }, [pictureUrl]);
 
   const handleSaveUser = async (event) => {
     event.preventDefault();
@@ -52,13 +58,12 @@ const CreateProfile= () => {
     }
     console.log('this user data', userData)
     await updateDoc(doc(db, 'Users', userId), userData) // change from setDoc to updateDoc otherwise original fields are overwritten
-    // history.goBack();
-    history.push('/selectride');
+    history.goBack();
   };
 
   return (
     <div>
-      <h2> Create Profile </h2>
+      <h2> Edit Profile </h2>
       <form className = 'form-control' onSubmit = {handleSaveUser}>
         <label className = 'input-group' htmlFor='firstName'>First Name</label>
         <input className="input input-bordered" name='firstName' type='text' value = {firstName} onChange = {(event)=> setFirstName(event.target.value)} required/>
@@ -96,4 +101,4 @@ const CreateProfile= () => {
   );
 };
 
-export default CreateProfile;
+export default EditProfile;
