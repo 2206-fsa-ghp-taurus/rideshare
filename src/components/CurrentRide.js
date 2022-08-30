@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from '../firebase';
 import {
@@ -20,6 +20,7 @@ function CurrentRide() {
   const history = useHistory();
   const [currentRides, setCurrentRides] = useState([]);
   const [user, setCurrentUser] = useState([]);
+  const [showChat, setShowChat] = useState(true);
 
   const getCurrentRide = async () => {
     onSnapshot(
@@ -61,18 +62,23 @@ function CurrentRide() {
     return <p> Not currently on ride</p>;
   }
   return currentRides.map((ride) => (
-    <div>
+    <div key={ride.id}>
       {ride.driverId === userId ? (
         <div>
-          <UserDetails userId={ride.riderId} />
+          <UserDetails userId={ride.riderId} />{' '}
           <button
-            id={ride.id}
-            driverId={ride.driverId}
-            riderId={ride.riderId}
             className='btn rounded-full'
-            onClick={Messaging}>
-            Chat with Rider
+            onClick={() => setShowChat(!showChat)}>
+            {showChat ? 'Chat with Rider' : 'Hide Chat'}
           </button>
+          {!showChat && (
+            <Messaging
+              id={ride.id}
+              driverId={ride.driverId}
+              riderId={ride.riderId}
+              isDriver={true}
+            />
+          )}
         </div>
       ) : (
         <div>
@@ -82,13 +88,17 @@ function CurrentRide() {
             isDriver={true}
           />
           <button
-            id={ride.id}
-            driverId={ride.driverId}
-            riderId={ride.riderId}
             className='btn rounded-full'
-            onClick={Messaging}>
-            Chat with Driver
+            onClick={() => setShowChat(!showChat)}>
+            {showChat ? 'Chat with Driver' : 'Hide Chat'}
           </button>
+          {!showChat && (
+            <Messaging
+              id={ride.id}
+              driverId={ride.driverId}
+              riderId={ride.riderId}
+            />
+          )}
           <button
             id={ride.id}
             className='btn rounded-full'
