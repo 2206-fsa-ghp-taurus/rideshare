@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from '../firebase';
 import {
@@ -19,82 +19,84 @@ function CurrentRide(props) {
   const { userId } = useAuth();
   const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
+  const [user, setCurrentUser] = useState([]);
+  const [showChat, setShowChat] = useState(true);
 
-  const getCurrentRide= async () => {
-    if (isDriver) {
-      onSnapshot(
-        query(
-          collection(db, "Rides"),
-          where("status", "==", 1),
-          where("driverId", "==", `${userId}`)
-        ),
-        async (snapshot) =>
-          await setCurrentRides(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          )
+  const getCurrentRide = async () => {
+    // if (isDriver) {
+    onSnapshot(
+      query(
+        collection(db, 'Rides'),
+        where('status', '==', 1),
+        where('driverId', '==', `${userId}`)
+      ),
+      async (snapshot) =>
+        await setCurrentRides(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         )
-    } else {
-        onSnapshot(
-          query(
-            collection(db, "Rides"),
-            where("status", "==", 1),
-            where("riderId", "==", `${userId}`)
-          ),
-          async (snapshot) =>
-            await setCurrentRides(
-              snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-            )
+    );
+    // } else {
+    onSnapshot(
+      query(
+        collection(db, 'Rides'),
+        where('status', '==', 1),
+        where('riderId', '==', `${userId}`)
+      ),
+      async (snapshot) =>
+        await setCurrentRides(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         )
-    }
-  }
+    );
+    // }
+  };
 
   useEffect(() => {
     getCurrentRide();
   }, []);
 
   const cancelRide = async (evt) => {
-    const rideRef = doc(db, "Rides", `${evt.target.id}`);
+    const rideRef = doc(db, 'Rides', `${evt.target.id}`);
     await updateDoc(rideRef, {
-      "status": deleteField(),
-      "riderId": deleteField(),
-      "riderPickUp": deleteField(),
-      "riderDropOff": deleteField()
-    })
-  }
+      status: deleteField(),
+      riderId: deleteField(),
+      riderPickUp: deleteField(),
+      riderDropOff: deleteField(),
+    });
+  };
 
   const completeRide = async (evt) => {
-    const rideRef = doc(db, "Rides", `${evt.target.id}`);
+    const rideRef = doc(db, 'Rides', `${evt.target.id}`);
     await updateDoc(rideRef, {
-      "status": 2,
+      status: 2,
       // add total cost / carbon footprint updates
-    })
+    });
     // setIsDriver(false);
+  };
+
+  if (currentRides.length === 0) {
+    return <p> Not currently on ride</p>;
   }
 
-
-
-  if (currentRides.length === 0){
-    return (
-      <p> Not currently on ride</p>
-    )
-  }
+  console.log(isDriver);
 
   return currentRides.map((ride) => (
-    <div>
+    <div key={ride.id}>
       {ride.driverId === userId ? (
         <div>
-          <UserDetails userId={ride.riderId} />
+          <UserDetails userId={ride.riderId} />{' '}
           <button
-            id={ride.id}
-            driverId={ride.driverId}
-            riderId={ride.riderId}
             className='btn rounded-full'
-            onClick={Messaging}>
-            Chat with Rider
+            onClick={() => setShowChat(!showChat)}>
+            {showChat ? 'Chat with Rider' : 'Hide Chat'}
           </button>
-          <Link to='/home'>
-             <button id={ride.id} className="btn rounded-full" onClick = {completeRide}>Ride Complete</button>
-           </Link>
+          {!showChat && (
+            <Messaging
+              id={ride.id}
+              driverId={ride.driverId}
+              riderId={ride.riderId}
+              isDriver={true}
+            />
+          )}
         </div>
       ) : (
         <div>
@@ -104,21 +106,23 @@ function CurrentRide(props) {
             driverDetails={true}
           />
           <button
-            id={ride.id}
-            driverId={ride.driverId}
-            riderId={ride.riderId}
             className='btn rounded-full'
-            onClick={Messaging}>
-            Chat with Driver
+            onClick={() => setShowChat(!showChat)}>
+            {showChat ? 'Chat with Driver' : 'Hide Chat'}
           </button>
-          <Link to='/home'>
+          {!showChat && (
+            <Messaging
+              id={ride.id}
+              driverId={ride.driverId}
+              riderId={ride.riderId}
+            />
+          )}
           <button
             id={ride.id}
             className='btn rounded-full'
             onClick={cancelRide}>
             Cancel Ride
           </button>
-          </Link>
         </div>
       )}
     </div>
