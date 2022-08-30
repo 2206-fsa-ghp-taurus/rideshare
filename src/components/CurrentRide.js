@@ -48,7 +48,6 @@ function CurrentRide(props) {
     }
   }
 
-
   useEffect(() => {
     getCurrentRide();
   }, []);
