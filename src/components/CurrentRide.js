@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { useAuth } from '../auth';
@@ -11,11 +12,22 @@ import {
   where,
   onSnapshot,
   deleteField,
-} from 'firebase/firestore';
-import UserDetails from './UserDetails';
-import Messaging from './Messaging';
+} from "firebase/firestore";
+import UserDetails from "./UserDetails";
+import Messaging from "./Messaging";
+import {MapContainer, TileLayer} from "react-leaflet";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import "leaflet-routing-machine";
+import {useMap} from "react-leaflet";
+import L from "leaflet";
+import { greenIcon } from './MarkerIcon'
+import './UserMap.css';
 
 function CurrentRide(props) {
+  const [position, setPosition] = useState({
+    lat: 39.015979960290395,
+    lng: -94.56373267199132,
+  });
   const { userId } = useAuth();
   const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
@@ -77,10 +89,55 @@ console.log(isDriver)
     return <p> Not currently on ride</p>;
   }
 
-  console.log(isDriver);
+  if (currentRides.length === 0){
+    return (
+      <p> Not currently on ride</p>
+    )
+  }
 
-  return currentRides.map((ride) => (
-    <div key={ride.id}>
+
+  const RoutingAfterRideAccepted = () => {
+    const map = useMap();
+   
+    const pickUp = currentRides.length ? currentRides[0].riderPickUp : null;
+    const dropOff = currentRides.length ? currentRides[0].riderDropOff : null;
+    const wayPoint1 = L.latLng(pickUp.lat, pickUp.lng);
+    const wayPoint2 = L.latLng(dropOff.lat, dropOff.lng);
+
+    const routing = L.Routing.control({
+      waypoints: [
+        wayPoint1,
+        wayPoint2,
+      ],
+      createMarker: function (i, start, n) {
+        return L.marker(start.latLng, {icon: greenIcon})
+      },
+    }).addTo(map);
+
+    routing.on("routeselected", function (e) {
+      const bounds = L.latLngBounds(wayPoint1, wayPoint2);
+      map.fitBounds(bounds);
+    });
+    routing.hide();
+  };
+
+
+
+  return (
+    <div>
+      <div className="container">
+        <MapContainer center={position} zoom={8} scrollWheelZoom>
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {currentRides.length?
+          <RoutingAfterRideAccepted /> : null
+          }
+        </MapContainer>
+      </div>
+      {currentRides.map((ride) => (
+    <div>
       {ride.driverId === userId ? (
         <div>
           <UserDetails userId={ride.riderId} />{' '}
@@ -129,8 +186,10 @@ console.log(isDriver)
           </button>
         </div>
       )}
+      ;
     </div>
-  ));
+  ))};
+  </div>)
 }
 
 export default CurrentRide;

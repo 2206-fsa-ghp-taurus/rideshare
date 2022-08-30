@@ -78,4 +78,8 @@
 //   );
 // };
 
+<<<<<<< HEAD
 // export default Messaging;
+=======
+export default Messaging;
+>>>>>>> 35692089dd0377b1e2effc77b007088dad956489
