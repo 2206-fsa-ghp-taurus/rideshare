@@ -15,36 +15,42 @@ import {
 import UserDetails from './UserDetails';
 import Messaging from './Messaging';
 
-function CurrentRide() {
+function CurrentRide(props) {
   const { userId } = useAuth();
-  const history = useHistory();
+  const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
   const [user, setCurrentUser] = useState([]);
   const [showChat, setShowChat] = useState(true);
 
   const getCurrentRide = async () => {
-    onSnapshot(
-      query(
-        collection(db, 'Rides'),
-        where('status', '==', 1),
-        where('driverId', '==', `${userId}` || 'riderId', '==', `${userId}`)
-      ),
-      async (snapshot) =>
-        await setCurrentRides(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        )
-    );
-  };
-
-  const getCurrentUser = async () => {
-    const userName = [];
-    const docSnap = await getDoc(doc(db, 'Users', userId));
-    userName.push(docSnap.data());
-    setCurrentUser(userName);
+    if (isDriver) {
+      onSnapshot(
+        query(
+          collection(db, 'Rides'),
+          where('status', '==', 1),
+          where('driverId', '==', `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+      );
+    } else {
+      onSnapshot(
+        query(
+          collection(db, 'Rides'),
+          where('status', '==', 1),
+          where('riderId', '==', `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+      );
+    }
   };
 
   useEffect(() => {
-    getCurrentUser();
     getCurrentRide();
   }, []);
 
@@ -53,14 +59,24 @@ function CurrentRide() {
     await updateDoc(rideRef, {
       status: deleteField(),
       riderId: deleteField(),
-      //remove  pick-up / drop-off details -- confirm key names
+      riderPickUp: deleteField(),
+      riderDropOff: deleteField(),
     });
-    history.replace('/home');
+  };
+
+  const completeRide = async (evt) => {
+    const rideRef = doc(db, 'Rides', `${evt.target.id}`);
+    await updateDoc(rideRef, {
+      status: 2,
+      // add total cost / carbon footprint updates
+    });
+    // setIsDriver(false);
   };
 
   if (currentRides.length === 0) {
     return <p> Not currently on ride</p>;
   }
+
   return currentRides.map((ride) => (
     <div key={ride.id}>
       {ride.driverId === userId ? (
@@ -85,7 +101,7 @@ function CurrentRide() {
           <UserDetails
             userId={ride.driverId}
             currentRide={ride.id}
-            isDriver={true}
+            driverDetails={true}
           />
           <button
             className='btn rounded-full'

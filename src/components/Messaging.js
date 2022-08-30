@@ -68,7 +68,7 @@ const Messaging = (props) => {
   //   }
   // };
 
-  //query rides db for status (), pull current ride
+  //   //query rides db for status (), pull current ride
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
@@ -79,5 +79,3 @@ const Messaging = (props) => {
 };
 
 export default Messaging;
-
-//chatWithUser={findRider()

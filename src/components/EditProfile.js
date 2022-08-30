@@ -23,10 +23,10 @@ const EditProfile= () => {
         setLastName(doc.data().lastName)
         setPhone(doc.data().phone)
         setPictureUrl(doc.data().pictureUrl)
-        if(doc.data().make) setMake(doc.data().make);
-        if(doc.data().model) setModel(doc.data().model)
-        if(doc.data().color) setColor(doc.data().color)
-        if(doc.data().license) setLicense(doc.data().license)
+        setMake(doc.data().make);
+        setModel(doc.data().model)
+        setColor(doc.data().color)
+        setLicense(doc.data().license)
   })}
   useEffect(()=>{getUserInfo()}, []) // so only sending request once
   console.log('before edit user profile', firstName, lastName)
@@ -95,7 +95,7 @@ const EditProfile= () => {
         <label class = 'input-group' htmlFor='license'>License Plate</label>
         <input class="input input-bordered" name='license' type='text' value = {license} onChange = {(event) => setLicense(event.target.value)}/>
 
-        <button className="btn rounded-full" > Save </button>
+        <button className="btn rounded-full" onClick = {handleSaveUser} > Save </button>
       </form>
     </div>
   );
