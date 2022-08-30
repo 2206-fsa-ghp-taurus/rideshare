@@ -4,25 +4,15 @@ import 'leaflet/dist/leaflet.css';
 import { UseGeolocation } from './UseGeolocation';
 import { useMap } from 'react-leaflet/hooks';
 import L from 'leaflet';
+import { myIcon } from './MarkerIcon'
 
 export const UserMarker = () => {
   const map = useMap();
-
-  const myIcon = L.icon({
-    iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
-    iconSize: [25, 41],
-    iconAnchor: [20, 41],
-    popupAnchor: [2, -40],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-  });
-
   const location = UseGeolocation();
 
   useEffect(() => {
     map.flyTo([location.coordinates.lat, location.coordinates.lng], 15, {
-      animate: true,
+      animate: false,
     });
   }, [location.coordinates.lat, location.coordinates.lng, map]);
 

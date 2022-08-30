@@ -3,26 +3,16 @@ import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
 import PlacesAutocomplete from "react-places-autocomplete";
 
 const LocationDropOff = (props) => {
-  const [address, setAddress] = useState("");
+  const {dropOffAddress, setDropOffAddress} = props
   const {dropOffCoords, setDropOffCoords} = props
 
-  const handleChange = (address) => {
-    setAddress(address);
-    setCoords(address);
+  const handleChange = (dropOffAddress) => {
+    setDropOffAddress(dropOffAddress);
   };
 
-  // function handleSelect(address) {
-  //       geocodeByAddress(address)
-  //           .then((results) => getLatLng(results[0]))
-  //           .then(({ lat, lng }) => {
-  //               console.log("latitude and longitude");
-  //               setDropOffCoords({ lat, lng });
-  //           });
-  //   }
-
-  const handleSelect = (address) =>{
-    setAddress(address);
-    setCoords(address);
+  const handleSelect = (dropOffAddress) =>{
+    setDropOffAddress(dropOffAddress);
+    setCoords(dropOffAddress);
   }
 
   const setCoords = (address) =>{
@@ -36,7 +26,7 @@ const LocationDropOff = (props) => {
 
   return (
     <PlacesAutocomplete
-      value={address}
+      value={dropOffAddress}
       onChange={handleChange}
       onSelect={handleSelect}
     >
