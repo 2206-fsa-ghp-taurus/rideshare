@@ -3,25 +3,17 @@ import {geocodeByAddress, getLatLng} from "react-google-places-autocomplete";
 import PlacesAutocomplete from "react-places-autocomplete";
 
 const LocationPickUp = (props) => {
-  const [address, setAddress] = useState("");
+  const [pickUpAddress, setPickUpAddress] = useState("");
   const {pickUpCoords, setPickUpCoords} = props
 
-  const handleChange = (address) => {
-    setAddress(address);
-    setCoords(address);
+  const handleChange = (pickUpAddress) => {
+    setPickUpAddress(pickUpAddress);
+    
   };
 
-  // const handleSelect = (address) => {
-  //   geocodeByAddress(address)
-  //     .then((results) => getLatLng(results[0]))
-  //     .then(({lat, lng}) => {
-  //     console.log("latitude and longitude")
-  //     setPickUpCoords({lat, lng})
-  //    });
-  // };
-  const handleSelect = (address) =>{
-    setAddress(address);
-    setCoords(address);
+  const handleSelect = (pickUpAddress) =>{
+    setPickUpAddress(pickUpAddress);
+    setCoords(pickUpAddress);
   }
 
   const setCoords = (address) =>{
@@ -35,7 +27,7 @@ const LocationPickUp = (props) => {
   
   return (
     <PlacesAutocomplete
-      value={address}
+      value={pickUpAddress}
       onChange={handleChange}
       onSelect={handleSelect}
     >
