@@ -6,6 +6,7 @@ import { db } from '../firebase';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './UserMap.css';
+import { myIcon } from './MarkerIcon'
 import {
   collection,
   doc,
@@ -54,7 +55,7 @@ function RideRequests() {
       requests.forEach((marker) => {
         let markerIcon = L.marker(
           [marker.riderPickUp.lat, marker.riderPickUp.lng],
-          { icon: riderIcon }
+          { icon: myIcon }
         ).addTo(map);
         markerIcon.bindPopup(`${marker.riderId}`);
         markerBounds.extend([marker.riderPickUp.lat, marker.riderPickUp.lng]);
@@ -73,15 +74,6 @@ function RideRequests() {
     history.replace('/currentRide');
   };
 
-  const riderIcon = L.icon({
-    iconUrl: 'http://cdn.leafletjs.com/leaflet-0.6.4/images/marker-icon.png',
-    iconSize: [28, 45],
-    iconAnchor: [20, 41],
-    popupAnchor: [2, -40],
-    shadowUrl: null,
-    shadowSize: null,
-    shadowAnchor: null,
-  });
 
   const inputCarDetails = async () => {
     history.replace('/editProfile');

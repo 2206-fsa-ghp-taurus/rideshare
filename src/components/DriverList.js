@@ -3,10 +3,12 @@ import { useAuth } from '../auth';
 import { db } from "../firebase";
 import { onSnapshot, collection, doc, updateDoc } from 'firebase/firestore';
 import UserDetails from './UserDetails'
+import { useHistory } from 'react-router-dom';
 
 
-const DriverList = ()=> {
+const DriverList = (props)=> {
   const {userId} = useAuth();
+  const history = useHistory();
   const [rides, setRides] = useState([]) // rides have all the drivers
   const matchingDriver = []
   const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
@@ -44,6 +46,7 @@ const DriverList = ()=> {
         "riderDropOff": dropOffCoords,
       });
     }
+    history.replace('/currentRide');
   };
 
   console.log('for this requester, pick up and drop off', pickUpCoords, dropOffCoords)

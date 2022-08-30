@@ -19,12 +19,14 @@ import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 import "leaflet-routing-machine";
 import {useMap} from "react-leaflet";
 import L from "leaflet";
+import { greenIcon } from './MarkerIcon'
 
-function CurrentRide() {
+function CurrentRide(props) {
   const {userId} = useAuth();
   const history = useHistory();
   const [currentRides, setCurrentRides] = useState([]);
   const [user, setCurrentUser] = useState([]);
+  const {isDriver, setIsDriver} = props
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
     lng: -94.56373267199132,
@@ -70,38 +72,35 @@ function CurrentRide() {
     return <p> Not currently on ride</p>;
   }
 
+  const completeRide = async (ride) => {
+    const rideRef = doc(db, 'Rides', ride.id);
+    await updateDoc(rideRef, {
+      status: 2,
+    });
+     
+  }
+
+
+
   const RoutingAfterRideAccepted = () => {
     const map = useMap();
-    const greenIcon = new L.Icon({
-      iconUrl:
-        "https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png",
-      shadowUrl:
-        "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.3.4/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41],
-    });
+   
     const pickUp = currentRides.length ? currentRides[0].riderPickUp : null;
     const dropOff = currentRides.length ? currentRides[0].riderDropOff : null;
+    const wayPoint1 = L.latLng(pickUp.lat, pickUp.lng);
+    const wayPoint2 = L.latLng(dropOff.lat, dropOff.lng);
 
     const routing = L.Routing.control({
       waypoints: [
-        L.latLng(pickUp.lat, pickUp.lng),
-        L.latLng(dropOff.lat, dropOff.lng),
+        wayPoint1,
+        wayPoint2,
       ],
-      // router: L.Routing.mapbox(`${process.env.REACT_APP_MAP_BOX_API_KEY}`),
       createMarker: function (i, start, n) {
-        //for (i = 0; waypoint.length; i++){
         return L.marker(start.latLng, {icon: greenIcon})
-          .bindPopup("start")
-          .openPopup();
       },
     }).addTo(map);
 
     routing.on("routeselected", function (e) {
-      const wayPoint1 = L.latLng(pickUp.lat, pickUp.lng);
-      const wayPoint2 = L.latLng(dropOff.lat, dropOff.lng);
       const bounds = L.latLngBounds(wayPoint1, wayPoint2);
       map.fitBounds(bounds);
     });
@@ -115,7 +114,9 @@ function CurrentRide() {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
-          <RoutingAfterRideAccepted />
+          {currentRides.length?
+          <RoutingAfterRideAccepted /> : null
+          }
         </MapContainer>
       </div>
       {currentRides.map((ride) => (
@@ -123,6 +124,7 @@ function CurrentRide() {
           {ride.driverId === userId ? (
             <div>
               <UserDetails userId={ride.riderId} />
+              <button onClick={() => completeRide(ride)}>Ride Complete</button>
               <button
                 id={ride.id}
                 driverId={ride.driverId}

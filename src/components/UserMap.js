@@ -33,14 +33,15 @@ const UserMap = (props) => {
   );
   const { isDriver } = props;
   const { userDistance, setUserDistance } = props;
-  const [disable, setDisable] = useState(false);
+  const [disableConfirm, setDisableConfirm] = useState(false);
+  const [disableSeeRequests, setSeeRequests] = useState(true);
   const { userId } = useAuth();
   const history = useHistory();
   const location = UseGeolocation();
   const mapRef = useRef()
   
 
-  useEffect(() => setDriverButtonText('Confirmed'), []);
+
 
   const beDriver = (e) => {
     addDoc(collection(db, 'Rides'), {
@@ -51,7 +52,8 @@ const UserMap = (props) => {
       driverDropOff: dropOffCoords,
       // no status information yet.
     });
-    setDisable(true);
+    setDisableConfirm(true);
+    setSeeRequests(false)
   };
 
   const findDriver = () => {
@@ -107,13 +109,13 @@ const UserMap = (props) => {
         <div>
           <button
             className='btn rounded-full'
-            disabled={disable}
+            disabled={disableConfirm}
             onClick={beDriver}>
             {driverButtonText}
           </button>
           {/* <button onClick={rideComplete}>Ride Complete</button> */}
           <Link to='/riderequestlist'>
-            <button>See Requested Rides</button>
+            <button disabled={disableSeeRequests}>See Requested Rides</button>
           </Link>
         </div>
       ) : (

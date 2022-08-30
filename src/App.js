@@ -46,11 +46,11 @@ const App = () => {
           </Route>
 
           <Route exact path='/driverlist'>
-            <DriverList />
+            <DriverList isDriver={isDriver} setIsDriver={setIsDriver}/>
           </Route>
 
           <Route exact path='/riderequestlist'>
-            <RideRequests />
+            <RideRequests isDriver={isDriver} setIsDriver={setIsDriver}/>
           </Route>
 
           <Route exact path='/signup'>
@@ -91,7 +91,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/currentRide'>
-            <CurrentRide />
+            <CurrentRide  isDriver={isDriver} setIsDriver={setIsDriver} />
           </Route>
 
           <Route exact path='/rideComplete'>
