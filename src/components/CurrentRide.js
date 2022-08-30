@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
@@ -43,29 +42,29 @@ function CurrentRide(props) {
 
   const getCurrentRide = async () => {
     if (isDriver) {
-    onSnapshot(
-      query(
-        collection(db, 'Rides'),
-        where('status', '==', 1),
-        where('driverId', '==', `${userId}`)
-      ),
-      async (snapshot) =>
-        await setCurrentRides(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        )
-    );
+      onSnapshot(
+        query(
+          collection(db, 'Rides'),
+          where('status', '==', 1),
+          where('driverId', '==', `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+      );
     } else {
-    onSnapshot(
-      query(
-        collection(db, 'Rides'),
-        where('status', '==', 1),
-        where('riderId', '==', `${userId}`)
-      ),
-      async (snapshot) =>
-        await setCurrentRides(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        )
-    );
+      onSnapshot(
+        query(
+          collection(db, 'Rides'),
+          where('status', '==', 1),
+          where('riderId', '==', `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+      );
     }
   };
 
@@ -129,42 +128,35 @@ console.log('am I a driver', isDriver)
 
   const RoutingAfterRideAccepted = () => {
     const map = useMap();
-   
+
     const pickUp = currentRides.length ? currentRides[0].riderPickUp : null;
     const dropOff = currentRides.length ? currentRides[0].riderDropOff : null;
     const wayPoint1 = L.latLng(pickUp.lat, pickUp.lng);
     const wayPoint2 = L.latLng(dropOff.lat, dropOff.lng);
 
     const routing = L.Routing.control({
-      waypoints: [
-        wayPoint1,
-        wayPoint2,
-      ],
+      waypoints: [wayPoint1, wayPoint2],
       createMarker: function (i, start, n) {
-        return L.marker(start.latLng, {icon: greenIcon})
+        return L.marker(start.latLng, { icon: greenIcon });
       },
     }).addTo(map);
 
-    routing.on("routeselected", function (e) {
+    routing.on('routeselected', function (e) {
       const bounds = L.latLngBounds(wayPoint1, wayPoint2);
       map.fitBounds(bounds);
     });
     routing.hide();
   };
 
-
-
   return (
     <div>
-      <div className="container">
+      <div className='container'>
         <MapContainer center={position} zoom={8} scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
-          {currentRides.length?
-          <RoutingAfterRideAccepted /> : null
-          }
+          {currentRides.length ? <RoutingAfterRideAccepted /> : null}
         </MapContainer>
       </div>
       {currentRides.map((ride) => (
@@ -190,9 +182,8 @@ console.log('am I a driver', isDriver)
              <button id={ride.id} className="btn rounded-full" onClick = {()=>completeRide(ride)}>Ride Complete</button>
            </Link>
         </div>
-      ) : (
+      ) :  (
         <div>
-          {/* {completed && <Redirect to = {{ pathname: '/rideComplete', state: {isDriver, ride }}} />} */}
           <UserDetails
             userId={ride.driverId}
             currentRide={ride.id}

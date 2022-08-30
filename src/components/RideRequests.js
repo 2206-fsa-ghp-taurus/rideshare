@@ -6,7 +6,7 @@ import { db } from '../firebase';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './userMap.css';
-import { myIcon } from './MarkerIcon'
+import { myIcon } from './MarkerIcon';
 import {
   collection,
   doc,
@@ -17,7 +17,6 @@ import {
 } from 'firebase/firestore';
 import UserDetails from './UserDetails';
 import { MapContainer, TileLayer } from 'react-leaflet';
-
 
 function RideRequests(props) {
   const { userId } = useAuth();
@@ -43,10 +42,8 @@ function RideRequests(props) {
     );
   };
 
-
   useEffect(() => {
     getRideRequests();
-   
   }, []);
 
   //setting group of markers in case we allow more than 1 rider.
@@ -67,7 +64,6 @@ function RideRequests(props) {
     return null;
   };
 
-
   const acceptRide = async (riderRequest) => {
     const rideRef = doc(db, 'Rides', riderRequest.id);
     await updateDoc(rideRef, {
@@ -75,8 +71,6 @@ function RideRequests(props) {
     });
     history.replace('/currentRide');
   };
-
-
 
   const inputCarDetails = async () => {
     history.replace('/editProfile');
@@ -91,9 +85,11 @@ function RideRequests(props) {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
           />
-          {requests && requests.length !== 0 ?
-        <ShowMarkerBeforeRideAccepted /> : ""}
-
+          {requests && requests.length !== 0 ? (
+            <ShowMarkerBeforeRideAccepted />
+          ) : (
+            ''
+          )}
         </MapContainer>
       </div>
       <div>

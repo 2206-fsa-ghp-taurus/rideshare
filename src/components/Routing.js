@@ -3,11 +3,10 @@ import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import 'leaflet-routing-machine';
 import { useMap } from 'react-leaflet';
 import { useState } from 'react';
-import { greenIcon } from './MarkerIcon'
+import { greenIcon } from './MarkerIcon';
 import './userMap.css';
 
 const Routing = (props) => {
-
   const { pickUpCoords } = props;
   const { dropOffCoords } = props;
   const { userDistance, setUserDistance } = props;
@@ -18,7 +17,6 @@ const Routing = (props) => {
   const pickUpLng = props.pickUpCoords ? props.pickUpCoords.lng : null;
   const dropOffLat = props.dropOffCoords ? props.dropOffCoords.lat : null;
   const dropOffLng = props.dropOffCoords ? props.dropOffCoords.lng : null;
- 
 
   const wayPoint1 = L.latLng(pickUpLat, pickUpLng);
   const wayPoint2 = L.latLng(dropOffLat, dropOffLng);
@@ -26,15 +24,12 @@ const Routing = (props) => {
   const map = useMap();
 
   const routing = L.Routing.control({
-    waypoints: [
-      wayPoint1 ,
-      wayPoint2 ,
-    ],
+    waypoints: [wayPoint1, wayPoint2],
     // router: L.Routing.mapbox(`${process.env.REACT_APP_MAP_BOX_API_KEY}`),
-    createMarker: function (i,start, n) {
-      return L.marker(start.latLng, { icon: greenIcon })
-  }}).addTo(map);
-
+    createMarker: function (i, start, n) {
+      return L.marker(start.latLng, { icon: greenIcon });
+    },
+  }).addTo(map);
 
   routing.hide();
 
@@ -49,7 +44,7 @@ const Routing = (props) => {
     console.log('summary', summary);
     setUserDistance(summary.totalDistance);
   });
-  
+
   routing.hide();
   // routing.on('routeselected', function(e) {
   //   const coord = e.route.coordinates;
