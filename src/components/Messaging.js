@@ -2,7 +2,7 @@ import React from 'react';
 import { db } from '../firebase';
 import { getDoc, doc } from 'firebase/firestore';
 import { CometChat } from '@cometchat-pro/chat';
-import { CometChatMessages } from './cometchat-pro-react-ui-kit/CometChatWorkspace/src';
+import { CometChatMessages } from './cometchat-pro-react-ui-kit/src/cometchat-pro-react-ui-kit/CometChatWorkspace/src';
 import { useAuth } from '../auth';
 import * as CONSTANTS from '../constants/constants';
 
