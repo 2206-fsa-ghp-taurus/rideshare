@@ -41,24 +41,24 @@ const UserMap = (props) => {
   const location = UseGeolocation();
   const mapRef = useRef();
 
-  const getRideInfo = async () => {
-    onSnapshot(
-      query(
-        collection(db, "Rides"),
-        where("status", "==", 0 || 1),
-        where("driverId", "==", `${userId}`)
-      ),
-      async (snapshot) =>
-        await setRideInfo(
-          snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-        )
-    );
-  };
+  // const getRideInfo = async () => {
+  //   onSnapshot(
+  //     query(
+  //       collection(db, "Rides"),
+  //       where("status", "==", 0 || 1),
+  //       where("driverId", "==", `${userId}`)
+  //     ),
+  //     async (snapshot) =>
+  //       await setRideInfo(
+  //         snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+  //       )
+  //   );
+  // };
 
-  useEffect(() => {
-    getRideInfo();
-    rideInfo.length ? setDisableConfirm(false) : setDisableConfirm(true);
-  }, []);
+  // useEffect(() => {
+  //   getRideInfo();
+  //   rideInfo.length ? setDisableConfirm(false) : setDisableConfirm(true);
+  // }, []);
 
   const beDriver = (e) => {
     addDoc(collection(db, "Rides"), {
@@ -140,7 +140,7 @@ const UserMap = (props) => {
           </button>
           {/* <button onClick={rideComplete}>Ride Complete</button> */}
           <Link to="/riderequestlist">
-            <button>See Requested Rides</button>
+            <button className="btn rounded-full">See Requested Rides</button>
           </Link>
         </div>
       ) : (
