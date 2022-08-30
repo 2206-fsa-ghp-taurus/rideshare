@@ -35,7 +35,7 @@ function CurrentRide(props) {
   const [showChat, setShowChat] = useState(true);
 
   const getCurrentRide = async () => {
-    // if (isDriver) {
+    if (isDriver) {
     onSnapshot(
       query(
         collection(db, 'Rides'),
@@ -47,7 +47,7 @@ function CurrentRide(props) {
           snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         )
     );
-    // } else {
+    } else {
     onSnapshot(
       query(
         collection(db, 'Rides'),
@@ -59,7 +59,7 @@ function CurrentRide(props) {
           snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
         )
     );
-    // }
+    }
   };
 
   useEffect(() => {
@@ -75,7 +75,7 @@ function CurrentRide(props) {
       riderDropOff: deleteField(),
     });
   };
-
+console.log(isDriver)
   const completeRide = async (evt) => {
     const rideRef = doc(db, 'Rides', `${evt.target.id}`);
     await updateDoc(rideRef, {
@@ -153,7 +153,11 @@ function CurrentRide(props) {
               riderId={ride.riderId}
               isDriver={true}
             />
+
           )}
+            <Link to='/home'>
+             <button id={ride.id} className="btn rounded-full" onClick = {completeRide}>Ride Complete</button>
+           </Link>
         </div>
       ) : (
         <div>
