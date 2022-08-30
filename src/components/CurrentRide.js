@@ -129,6 +129,9 @@ function CurrentRide(props) {
         <div>
           {ride.driverId === userId ? (
             <div>
+              <p>
+                Rider: {ride.riderId} Driver: {ride.driverId}
+              </p>
               <UserDetails userId={ride.riderId} />{' '}
               <button
                 className='btn rounded-full'
