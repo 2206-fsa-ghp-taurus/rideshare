@@ -31,6 +31,8 @@ const Routing = (props) => {
     },
   }).addTo(map);
 
+  routing.hide();
+
   routing.on('routeselected', function (e) {
     const bounds = L.latLngBounds(wayPoint1, wayPoint2);
     map.fitBounds(bounds);

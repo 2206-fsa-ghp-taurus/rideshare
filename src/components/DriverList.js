@@ -13,6 +13,7 @@ const DriverList = (props)=> {
   const matchingDriver = []
   const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
   const [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
+  const [distance, setDistance] = useState(0)
 
   // first get all drivers from database
   const getRides = async () => {
@@ -29,6 +30,7 @@ const DriverList = (props)=> {
     onSnapshot(doc(db, 'Users', userId), (doc)=> {
       setPickUpCoords(doc.data().pickUp);
       setDropOffCoords (doc.data().dropOff);
+      setDistance(doc.data().distanceTravelled) // need to save distanc einformation for each ride 
     })
   }
 
@@ -44,6 +46,7 @@ const DriverList = (props)=> {
         "status": 0,
         "riderPickUp": pickUpCoords,
         "riderDropOff": dropOffCoords,
+        "distance": distance
       });
     }
   };

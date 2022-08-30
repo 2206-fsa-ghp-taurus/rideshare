@@ -1,23 +1,60 @@
-// // will render different thing based on isDriver or not 
-// // adding money for driver, reducing money for rider (also updating footprint for rider)
-// import React, {useState, useEffect} from 'react';
-// import { useAuth } from '../auth';
-// import { db } from '../firebase';
-// import { doc, onSnapshot} from "firebase/firestore"
+import React, {useState, useEffect} from 'react';
+import { useAuth } from '../auth';
+import { useLocation } from "react-router-dom";
+import { db } from '../firebase';
+import { doc, getDoc, onSnapshot} from "firebase/firestore";
 
 
-// const RideComplete = () => {
-//   const { userId } = useAuth();
-//   const [firstName, setFirstName] = useState('')
-//   const getUserInfo = () => {onSnapshot(doc(db, 'Users', userId), (doc) =>{
-//     setFirstName(doc.data().firstName);
-// })}
-// useEffect(()=>{getUserInfo()}, []) // so only sending request once
-//   return (
-//     <div>
-//       <h1> {`Hi ${firstName}, Here is the summary of your ride` }</h1>
-//     </div>
-//   );
-// };
+const RideComplete = (props) => {
+    const {userId} = useAuth();
+    const location = useLocation(props.location);
+    const { isDriver, ride } = location.state;
+    const [firstName, setFirstName] = useState('')
+    const [distance, setDistance] = useState(0)
+    
+    const getUserInfo = async () => {
+        const userRef = doc(db, "Users", userId);
+        const userData = (await getDoc(userRef)).data();
+        setFirstName(userData.firstName);
+    }
 
-// export default RideComplete;
+
+    const getRideInfo = async () => {
+        const rideRef = doc(db, "Rides", ride.id);
+        const rideData = (await getDoc(rideRef)).data();
+        setDistance(rideData.distance);
+    }
+
+   
+    useEffect(() => {
+        getUserInfo();
+        getRideInfo();
+    }, []);
+
+
+    const FormatNumber = (num)=> {
+        return (Math.round(num * 100) / 100).toFixed(2);
+    }
+    return (
+        <div>
+        <h1> {`Hi ${firstName}, Here is the summary of your ride` }</h1>
+        {isDriver
+        ? ( <div> 
+            <p> You Earned: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
+            <p> You Drove the Rider for : {`${distance/1000} km`}</p>
+            <p> You Helped the Rider Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
+            </div> 
+        )
+        : (
+            <div> 
+            <p> You Spent: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
+            <p> You Travelled For : {`${distance/1000} km`}</p>
+            <p> You Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
+            </div> 
+        )
+        }
+        </div>
+    );
+};
+
+export default RideComplete;
