@@ -5,7 +5,7 @@ import { useAuth } from '../auth';
 import { db } from '../firebase';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import './UserMap.css';
+import './userMap.css';
 import { myIcon } from './MarkerIcon'
 import {
   collection,

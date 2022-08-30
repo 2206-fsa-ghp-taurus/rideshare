@@ -4,7 +4,7 @@ import 'leaflet-routing-machine';
 import { useMap } from 'react-leaflet';
 import { useState } from 'react';
 import { greenIcon } from './MarkerIcon'
-import './UserMap.css';
+import './userMap.css';
 
 const Routing = (props) => {
 

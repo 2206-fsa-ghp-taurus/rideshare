@@ -1,32 +1,55 @@
-// will render different thing based on isDriver or not 
-// adding money for driver, reducing money for rider (also updating footprint for rider)
 import React, {useState, useEffect} from 'react';
+import { useAuth } from '../auth';
 import { useLocation } from "react-router-dom";
+import { db } from '../firebase';
+import { doc, getDoc, onSnapshot} from "firebase/firestore";
 
 
 const RideComplete = (props) => {
-    // console.log(props)
+    const {userId} = useAuth();
     const location = useLocation(props.location);
-    const { isDriver, name, cost, carbon, distance } = location.state;
-    console.log('location', location )
-    console.log('isDriver on the ride complete page', isDriver)
+    const { isDriver, ride } = location.state;
+    const [firstName, setFirstName] = useState('')
+    const [distance, setDistance] = useState(0)
+    
+    const getUserInfo = async () => {
+        const userRef = doc(db, "Users", userId);
+        const userData = (await getDoc(userRef)).data();
+        setFirstName(userData.firstName);
+    }
 
 
+    const getRideInfo = async () => {
+        const rideRef = doc(db, "Rides", ride.id);
+        const rideData = (await getDoc(rideRef)).data();
+        setDistance(rideData.distance);
+    }
+
+   
+    useEffect(() => {
+        getUserInfo();
+        getRideInfo();
+    }, []);
+
+
+    const FormatNumber = (num)=> {
+        return (Math.round(num * 100) / 100).toFixed(2);
+    }
     return (
         <div>
-        <h1> {`Hi ${name}, Here is the summary of your ride` }</h1>
+        <h1> {`Hi ${firstName}, Here is the summary of your ride` }</h1>
         {isDriver
         ? ( <div> 
-            <p> You Earned: {`${cost} $`} </p>
-            <p> You Drove the Rider for : {`${distance} km`}</p>
-            <p> You Helped the Rider Saved : {`${carbon} grams of carbon`}</p>
+            <p> You Earned: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
+            <p> You Drove the Rider for : {`${distance/1000} km`}</p>
+            <p> You Helped the Rider Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
             </div> 
         )
         : (
             <div> 
-            <p> You Spent: {`${cost} $`} </p>
-            <p> You Travelled for : {`${distance} km`}</p>
-            <p> You Saved : {`${carbon} grams of carbon`}</p>
+            <p> You Spent: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
+            <p> You Travelled For : {`${distance/1000} km`}</p>
+            <p> You Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
             </div> 
         )
         }

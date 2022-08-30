@@ -21,7 +21,7 @@
 //   }
 // );
 
-// const Messaging = (props) => {
+const Messaging = (props) => {
 //   const { userId } = useAuth();
 //   console.log(props);
 //   const rideId = props.id;
@@ -76,6 +76,6 @@
 //       <CometChatMessages chatWithUser={isDriver ? riderId : driverId} />
 //     </div>
 //   );
-// };
+};
 
 export default Messaging;
