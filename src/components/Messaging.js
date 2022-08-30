@@ -1,33 +1,36 @@
-// import React from 'react';
-// import { db } from '../firebase';
-// import { getDoc, doc } from 'firebase/firestore';
-// import { CometChat } from '@cometchat-pro/chat';
-// import { CometChatMessages } from '../cometchat-pro-react-ui-kit/CometChatWorkspace/src';
-// import { useAuth } from '../auth';
-// import * as CONSTANTS from '../constants/constants';
+import React from 'react';
+import { db } from '../firebase';
+import { getDoc, doc } from 'firebase/firestore';
+import { CometChat } from '@cometchat-pro/chat';
+import { CometChatMessages } from '../cometchat-pro-react-ui-kit/CometChatWorkspace/src';
+import { useAuth } from '../auth';
+import * as CONSTANTS from '../constants/constants';
 
-// const appSetting = new CometChat.AppSettingsBuilder()
-//   .subscribePresenceForAllUsers()
-//   .setRegion(CONSTANTS.REGION)
-//   .build();
-// CometChat.init(CONSTANTS.APP_ID, appSetting).then(
-//   () => {
-//     console.log('Initialization completed successfully');
-//     // You can now call login function.
-//   },
-//   (error) => {
-//     console.log('Initialization failed with error:', error);
-//     // Check the reason for error and take appropriate action.
-//   }
-// );
-
-
+const appSetting = new CometChat.AppSettingsBuilder()
+  .subscribePresenceForAllUsers()
+  .setRegion(CONSTANTS.REGION)
+  .build();
+CometChat.init(CONSTANTS.APP_ID, appSetting).then(
+  () => {
+    console.log('Initialization completed successfully');
+    // You can now call login function.
+  },
+  (error) => {
+    console.log('Initialization failed with error:', error);
+    // Check the reason for error and take appropriate action.
+  }
+);
 
 
-// const Messaging = (props) => {
-//   const { userId } = useAuth();
-//   console.log(props);
-// }
+
+
+const Messaging = (props) => {
+  const { userId } = useAuth();
+  console.log(props);
+  const rideId = props.id;
+  const { driverId } = props;
+  const { riderId } = props;
+  const { isDriver } = props;
 
 //   const userInfo = async () => {
 //     const userName = await getDoc(doc(db, 'Users', userId));
@@ -62,12 +65,12 @@
 //     const status = rideInfo.data().status;
 //     const driverId = rideInfo.data().driverId;
 
-//     if (driverId === userId && status > 0) {
-//       return await riderId;
-//     } else {
-//       return 'Error loading messaging';
-//     }
-//   };
+  //   if (driverId === userId && status > 0) {
+  //     return await riderId;
+  //   } else {
+  //     return 'Error loading messaging';
+  //   }
+  // };
 
 //   //query rides db for status (), pull current ride
 
