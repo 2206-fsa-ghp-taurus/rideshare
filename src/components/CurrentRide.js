@@ -23,31 +23,31 @@ function CurrentRide(props) {
   const [showChat, setShowChat] = useState(true);
 
   const getCurrentRide = async () => {
-    if (isDriver) {
-      onSnapshot(
-        query(
-          collection(db, 'Rides'),
-          where('status', '==', 1),
-          where('driverId', '==', `${userId}`)
-        ),
-        async (snapshot) =>
-          await setCurrentRides(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          )
-      );
-    } else {
-      onSnapshot(
-        query(
-          collection(db, 'Rides'),
-          where('status', '==', 1),
-          where('riderId', '==', `${userId}`)
-        ),
-        async (snapshot) =>
-          await setCurrentRides(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          )
-      );
-    }
+    // if (isDriver) {
+    onSnapshot(
+      query(
+        collection(db, 'Rides'),
+        where('status', '==', 1),
+        where('driverId', '==', `${userId}`)
+      ),
+      async (snapshot) =>
+        await setCurrentRides(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        )
+    );
+    // } else {
+    onSnapshot(
+      query(
+        collection(db, 'Rides'),
+        where('status', '==', 1),
+        where('riderId', '==', `${userId}`)
+      ),
+      async (snapshot) =>
+        await setCurrentRides(
+          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+        )
+    );
+    // }
   };
 
   useEffect(() => {
@@ -76,6 +76,8 @@ function CurrentRide(props) {
   if (currentRides.length === 0) {
     return <p> Not currently on ride</p>;
   }
+
+  console.log(isDriver);
 
   return currentRides.map((ride) => (
     <div key={ride.id}>
