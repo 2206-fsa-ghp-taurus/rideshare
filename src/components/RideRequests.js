@@ -19,9 +19,10 @@ import UserDetails from './UserDetails';
 import { MapContainer, TileLayer } from 'react-leaflet';
 
 
-function RideRequests() {
+function RideRequests(props) {
   const { userId } = useAuth();
   const history = useHistory();
+  const { isDriver } = props;
   const [requests, setRideRequests] = useState([]);
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
@@ -41,6 +42,7 @@ function RideRequests() {
         )
     );
   };
+
 
   useEffect(() => {
     getRideRequests();
@@ -65,14 +67,15 @@ function RideRequests() {
     return null;
   };
 
+
   const acceptRide = async (riderRequest) => {
     const rideRef = doc(db, 'Rides', riderRequest.id);
     await updateDoc(rideRef, {
       status: 1,
     });
-  
     history.replace('/currentRide');
   };
+
 
 
   const inputCarDetails = async () => {

@@ -1,7 +1,8 @@
-import React, {useEffect, useState} from "react";
-import {useHistory} from "react-router-dom";
-import {useAuth} from "../auth";
-import {db} from "../firebase";
+
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../auth';
+import { db } from '../firebase';
 import {
   collection,
   doc,
@@ -20,66 +21,73 @@ import "leaflet-routing-machine";
 import {useMap} from "react-leaflet";
 import L from "leaflet";
 import { greenIcon } from './MarkerIcon'
+import './UserMap.css';
 
 function CurrentRide(props) {
-  const {userId} = useAuth();
-  const history = useHistory();
-  const [currentRides, setCurrentRides] = useState([]);
-  const [user, setCurrentUser] = useState([]);
-  const {isDriver, setIsDriver} = props
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
     lng: -94.56373267199132,
   });
+  const { userId } = useAuth();
+  const { isDriver, setIsDriver } = props;
+  const [currentRides, setCurrentRides] = useState([]);
 
-  const getCurrentRide = async () => {
-    onSnapshot(
-      query(
-        collection(db, "Rides"),
-        where("status", "==", 1),
-        where("driverId", "==", `${userId}` || "riderId", "==", `${userId}`)
-      ),
-      async (snapshot) =>
-        await setCurrentRides(
-          snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
+  const getCurrentRide= async () => {
+    if (isDriver) {
+      onSnapshot(
+        query(
+          collection(db, "Rides"),
+          where("status", "==", 1),
+          where("driverId", "==", `${userId}`)
+        ),
+        async (snapshot) =>
+          await setCurrentRides(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
         )
-    );
-  };
-
-  const getCurrentUser = async () => {
-    const userName = [];
-    const docSnap = await getDoc(doc(db, "Users", userId));
-    userName.push(docSnap.data());
-    setCurrentUser(userName);
-  };
+    } else {
+        onSnapshot(
+          query(
+            collection(db, "Rides"),
+            where("status", "==", 1),
+            where("riderId", "==", `${userId}`)
+          ),
+          async (snapshot) =>
+            await setCurrentRides(
+              snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+            )
+        )
+    }
+  }
 
   useEffect(() => {
-    getCurrentUser();
     getCurrentRide();
   }, []);
 
   const cancelRide = async (evt) => {
     const rideRef = doc(db, "Rides", `${evt.target.id}`);
     await updateDoc(rideRef, {
-      status: deleteField(),
-      riderId: deleteField(),
-      //remove  pick-up / drop-off details -- confirm key names
-    });
-    history.replace("/home");
-  };
-
-  if (currentRides.length === 0) {
-    return <p> Not currently on ride</p>;
+      "status": deleteField(),
+      "riderId": deleteField(),
+      "riderPickUp": deleteField(),
+      "riderDropOff": deleteField()
+    })
   }
 
-  const completeRide = async (ride) => {
-    const rideRef = doc(db, 'Rides', ride.id);
+  const completeRide = async (evt) => {
+    const rideRef = doc(db, "Rides", `${evt.target.id}`);
     await updateDoc(rideRef, {
-      status: 2,
-    });
-     
+      "status": 2,
+      // add total cost / carbon footprint updates
+    })
+    // setIsDriver(false);
   }
 
+  if (currentRides.length === 0){
+    return (
+      <p> Not currently on ride</p>
+    )
+  }
 
 
   const RoutingAfterRideAccepted = () => {
@@ -104,7 +112,10 @@ function CurrentRide(props) {
       const bounds = L.latLngBounds(wayPoint1, wayPoint2);
       map.fitBounds(bounds);
     });
+    routing.hide();
   };
+
+
 
   return (
     <div>
@@ -120,51 +131,51 @@ function CurrentRide(props) {
         </MapContainer>
       </div>
       {currentRides.map((ride) => (
+    <div>
+      {ride.driverId === userId ? (
         <div>
-          {ride.driverId === userId ? (
-            <div>
-              <UserDetails userId={ride.riderId} />
-              <button onClick={() => completeRide(ride)}>Ride Complete</button>
-              <button
-                id={ride.id}
-                driverId={ride.driverId}
-                riderId={ride.riderId}
-                className="btn rounded-full"
-                onClick={Messaging}
-              >
-                Chat with Rider
-              </button>
-            </div>
-          ) : (
-            <div>
-              <UserDetails
-                userId={ride.driverId}
-                currentRide={ride.id}
-                isDriver={true}
-              />
-              <button
-                id={ride.id}
-                driverId={ride.driverId}
-                riderId={ride.riderId}
-                className="btn rounded-full"
-                onClick={Messaging}
-              >
-                Chat with Driver
-              </button>
-              <button
-                id={ride.id}
-                className="btn rounded-full"
-                onClick={cancelRide}
-              >
-                Cancel Ride
-              </button>
-            </div>
-          )}
+          <UserDetails userId={ride.riderId} />
+          <button
+            id={ride.id}
+            driverId={ride.driverId}
+            riderId={ride.riderId}
+            className='btn rounded-full'
+            onClick={Messaging}>
+            Chat with Rider
+          </button>
+          <Link to='/home'>
+             <button id={ride.id} className="btn rounded-full" onClick = {completeRide}>Ride Complete</button>
+           </Link>
         </div>
-      ))}
+      ) : (
+        <div>
+          <UserDetails
+            userId={ride.driverId}
+            currentRide={ride.id}
+            isDriver={isDriver}
+          />
+          <button
+            id={ride.id}
+            driverId={ride.driverId}
+            riderId={ride.riderId}
+            className='btn rounded-full'
+            onClick={Messaging}>
+            Chat with Driver
+          </button>
+          <Link to='/home'>
+          <button
+            id={ride.id}
+            className='btn rounded-full'
+            onClick={cancelRide}>
+            Cancel Ride
+          </button>
+          </Link>
+        </div>
+      )}
       ;
     </div>
-  );
+  ))};
+  </div>)
 }
 
 export default CurrentRide;

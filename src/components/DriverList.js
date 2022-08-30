@@ -46,7 +46,6 @@ const DriverList = (props)=> {
         "riderDropOff": dropOffCoords,
       });
     }
-    history.replace('/currentRide');
   };
 
   console.log('for this requester, pick up and drop off', pickUpCoords, dropOffCoords)
