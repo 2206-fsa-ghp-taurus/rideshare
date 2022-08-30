@@ -48,7 +48,6 @@ function CurrentRide(props) {
     }
   }
 
-
   useEffect(() => {
     getCurrentRide();
   }, []);
@@ -102,7 +101,7 @@ function CurrentRide(props) {
           <UserDetails
             userId={ride.driverId}
             currentRide={ride.id}
-            isDriver={isDriver}
+            driverDetails={true}
           />
           <button
             id={ride.id}
