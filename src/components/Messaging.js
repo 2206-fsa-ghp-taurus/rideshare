@@ -12,23 +12,6 @@ const Messaging = (props) => {
   const { riderId } = props;
   const { isDriver } = props;
 
-  CometChat.getLoggedinUser().then(
-    (user) => {
-      if (!user) {
-        CometChat.login(userId, CONSTANTS.AUTH_KEY).then(
-          (user) => {
-            console.log('Login Successful:', { user });
-          },
-          (error) => {
-            console.log('Login failed with exception:', { error });
-          }
-        );
-      }
-    },
-    (error) => {
-      console.log('Some Error Occured', { error });
-    }
-  );
   //will need to be changed depending on what's able to be passed through props -- determining whether other user is a driver or rider
   // const findUser = async () => {
   //   //going to pass ride id through props, once component is hooked up
