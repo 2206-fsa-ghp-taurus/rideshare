@@ -36,7 +36,7 @@ const UserAccount= () => {
             <p> NAME: {user?.firstName} {user?.lastName}</p>
             <p> EMAIL: {user?.email }  </p>
             <p> PHONE: {user?.phone} </p>
-            <p> TOTAL CARBON SAVED (gram): {user?.totalFootPrint} </p>
+            <p> TOTAL CO2 SAVED (gram): {user?.totalFootPrint} </p>
             <p> WALLET($): {user?.wallet} </p>
             <Link to= '/ridesHistory'> <button className="btn rounded-full"> See My Carbon Footprint</button></Link>
             <p> ---------- </p>
