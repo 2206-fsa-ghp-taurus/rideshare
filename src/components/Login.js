@@ -16,6 +16,16 @@ const Login = () => {
       setStatus({ loading: true, error: false }); // start loading
       const credential = await signInWithEmailAndPassword(auth, email, password);
       console.log('user credential:', credential);
+
+      // const getUser = async () => {
+      //   const userName = []
+      //   const docSnap = await getDoc(doc(db, "Users",
+      //     userId));
+      //     userName.push(docSnap.data());
+      //     console.log(userName)
+      //   }
+      // console.log(getUser())
+
     } catch (error) {
       setStatus({ loading: false, error: true }); // error
       console.log('error:', error);
@@ -25,7 +35,7 @@ const Login = () => {
   if (loggedIn) {
     return <Redirect to ='/selectRide' />
     // return (
-    //     <div> 
+    //     <div>
     //         <p> Success - Placeholder Message</p>
     //     </div>
     // )
@@ -49,7 +59,7 @@ const Login = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-        
+
 {/* if error , show the error message */}
         {status.error &&
           <p> Invalid email / password</p>
@@ -59,15 +69,15 @@ const Login = () => {
         <div className="btn-group">
           <button onClick={handleLogin} className="btn btn-active">Login</button>
           <Link to="/signup" className="btn"> Don't have an account yet? Sign Up </Link>
-        </div> 
+        </div>
 
   {/* loading message */}
-        {status.loading ? 
+        {status.loading ?
         <div className="flex justify-center items-center">
         <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
-       </div> 
+       </div>
     : ''}
 
     </div>

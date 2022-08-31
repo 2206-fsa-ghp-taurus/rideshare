@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import './App.css';
 import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
+import { DriverContext} from './driverContext';
 import Login from './components/Login';
 import SelectRide from './components/SelectRide';
 import DriverList from './components/DriverList';
@@ -21,7 +22,8 @@ import RidesHistory from './components/RidesHistory';
 
 const App = () => {
   const { loading, authObj } = useAuthInit();
-  const [isDriver, setIsDriver] = useState(false);
+  const [isDriver, setIsDriver] = useState(null);
+  const providerDriver = useMemo(() => ({isDriver, setIsDriver}), [isDriver, setIsDriver])
   const [userDistance, setUserDistance] = useState(0);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
@@ -35,6 +37,7 @@ const App = () => {
   return (
     <div>
       <AuthContext.Provider value={authObj}>
+      <DriverContext.Provider value={{providerDriver}} >
         <Navbar />
         <Switch>
           <Route exact path='/login'>
@@ -107,9 +110,10 @@ const App = () => {
           <Route exact path='/ridesHistory'>
             <RidesHistory />
           </Route>
-          
+
 
         </Switch>
+        </DriverContext.Provider>
       </AuthContext.Provider>
     </div>
   );
