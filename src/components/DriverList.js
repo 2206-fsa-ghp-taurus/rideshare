@@ -4,6 +4,7 @@ import { db } from "../firebase";
 import { onSnapshot, collection, doc, updateDoc } from 'firebase/firestore';
 import UserDetails from './UserDetails'
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const DriverList = (props)=> {
@@ -75,7 +76,7 @@ const DriverList = (props)=> {
         <div className='card-body'>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
           <UserDetails userId={driver.driverId} />
-          <button className="btn rounded-full" onClick={()=>requestRide(driver.id)}>Request Ride</button>
+          <Link to="/currentRide"><button className="btn rounded-full" onClick={()=>requestRide(driver.id)}>Request Ride</button></Link>
         </div>
       </div>
       ))}

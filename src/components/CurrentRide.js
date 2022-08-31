@@ -31,6 +31,7 @@ function CurrentRide(props) {
   const { userId } = useAuth();
   const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
+  const [rideComplete, setRideComplete] = useState([]);
   const [user, setCurrentUser] = useState([]);
   const [showChat, setShowChat] = useState(true);
 
@@ -38,6 +39,21 @@ function CurrentRide(props) {
   const [completed, setCompleted] = useState(false); // this way no need to query to get rideID stuff on the rideComplete page
   const history = useHistory();
 
+  const getPendingRide = async () => {
+    if (!isDriver) {
+      onSnapshot(
+        query(
+          collection(db, 'Rides'),
+          where('status', '==', 2 ),
+          where('riderId', '==', `${userId}`)
+        ),
+        async (snapshot) =>
+          await setRideComplete(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+      );
+    }
+  }
 
 
   const getCurrentRide = async () => {
@@ -57,7 +73,7 @@ function CurrentRide(props) {
       onSnapshot(
         query(
           collection(db, 'Rides'),
-          where('status', '==', 1),
+          where('status', '==', 1 ),
           where('riderId', '==', `${userId}`)
         ),
         async (snapshot) =>
@@ -70,6 +86,7 @@ function CurrentRide(props) {
 
   useEffect(() => {
     getCurrentRide();
+    getPendingRide();
   }, []);
 
   const cancelRide = async (evt) => {
@@ -120,11 +137,20 @@ function CurrentRide(props) {
     // });
   }
 console.log('am I a driver', isDriver)
-
-  if (currentRides.length === 0) {
-    return <p> Not currently on ride</p>;
-  }
-
+ 
+//Ride not initiated (no status) && No completed ride - render different messages to rider and driver
+  if(currentRides.length === 0 && rideComplete.length === 0) {
+    if(isDriver) {
+      return <p> Not currently on ride</p>;
+    //Ride request sent to driver (status=0)
+    } else {
+      return <p> Waiting for driver to accept your ride request...</p>
+    }
+  } 
+  //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
+  if(currentRides.length === 0 && rideComplete.length > 0) {
+      return <Redirect to={{ pathname: '/rideComplete', state: rideComplete[0]}}/>
+  } 
 
   const RoutingAfterRideAccepted = () => {
     const map = useMap();
@@ -178,7 +204,7 @@ console.log('am I a driver', isDriver)
             />
 
           )}
-             <Link to = {{ pathname: '/rideComplete', state: {isDriver, ride }}}>
+             <Link to = {{ pathname: '/rideComplete', state: {isDriver, ride}}}>
              <button id={ride.id} className="btn rounded-full" onClick = {()=>completeRide(ride)}>Ride Complete</button>
            </Link>
         </div>
@@ -207,9 +233,8 @@ console.log('am I a driver', isDriver)
             onClick={cancelRide}>
             Cancel Ride
           </button>
-        </div>
+          </div>
       )}
-      ;
     </div>
   ))}
   ;
