@@ -22,6 +22,8 @@ import L from 'leaflet';
 import { greenIcon } from './MarkerIcon';
 import './userMap.css';
 import { useHistory } from 'react-router-dom';
+import { CometChat } from '@cometchat-pro/chat';
+import * as CONSTANTS from '../constants/constants';
 
 function CurrentRide(props) {
   const [position, setPosition] = useState({
@@ -173,6 +175,24 @@ function CurrentRide(props) {
     });
     routing.hide();
   };
+
+  CometChat.getLoggedinUser().then(
+    (user) => {
+      if (!user) {
+        CometChat.login(userId, CONSTANTS.AUTH_KEY).then(
+          (user) => {
+            console.log('Login Successful:', { user });
+          },
+          (error) => {
+            console.log('Login failed with exception:', { error });
+          }
+        );
+      }
+    },
+    (error) => {
+      console.log('Some Error Occured', { error });
+    }
+  );
 
   return (
     <div>
