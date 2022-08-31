@@ -7,7 +7,6 @@ import { useAuth } from '../auth';
 import * as CONSTANTS from '../constants/constants';
 
 const Messaging = (props) => {
-  const { userId } = useAuth();
   const { driverId } = props;
   const { riderId } = props;
   const { isDriver } = props;
