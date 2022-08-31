@@ -25,6 +25,7 @@ import { doc, getDoc } from 'firebase/firestore';
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(null);
+  const [selectedDrive, setSelectToDrive] = useState(false);
   const [userDistance, setUserDistance] = useState(0);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
@@ -51,6 +52,7 @@ const App = () => {
  if(authObj.loggedIn) {
   getUser()
  }
+ console.log(isDriver)
 
   return (
     <div>
@@ -63,7 +65,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/selectride'>
-            <SelectRide />
+            <SelectRide selectedDrive={selectedDrive} setSelectToDrive={setSelectToDrive}/>
           </Route>
 
           <Route exact path='/driverlist'>
@@ -99,6 +101,7 @@ const App = () => {
 
           <Route exact path='/userMap'>
             <UserMap
+              selectedDrive={selectedDrive}
               userDistance={userDistance}
               setUserDistance={setUserDistance}
             />

@@ -11,15 +11,15 @@ import {
   where,
   onSnapshot,
   deleteField,
-} from "firebase/firestore";
-import UserDetails from "./UserDetails";
-import Messaging from "./Messaging";
-import {MapContainer, TileLayer} from "react-leaflet";
-import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
-import "leaflet-routing-machine";
-import {useMap} from "react-leaflet";
-import L from "leaflet";
-import { greenIcon } from './MarkerIcon'
+} from 'firebase/firestore';
+import UserDetails from './UserDetails';
+import Messaging from './Messaging';
+import { MapContainer, TileLayer } from 'react-leaflet';
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+import 'leaflet-routing-machine';
+import { useMap } from 'react-leaflet';
+import L from 'leaflet';
+import { greenIcon } from './MarkerIcon';
 import './userMap.css';
 import { useHistory } from 'react-router-dom';
 import { DriverContext} from '../driverContext';
@@ -45,7 +45,7 @@ function CurrentRide(props) {
       onSnapshot(
         query(
           collection(db, 'Rides'),
-          where('status', '==', 2 ),
+          where('status', '==', 2),
           where('riderId', '==', `${userId}`)
         ),
         async (snapshot) =>
@@ -54,8 +54,9 @@ function CurrentRide(props) {
           )
       );
     }
-  }
+  };
 
+  console.log(currentRides[0].id)
 
   const getCurrentRide = async () => {
     if (isDriver) {
@@ -74,7 +75,7 @@ function CurrentRide(props) {
       onSnapshot(
         query(
           collection(db, 'Rides'),
-          where('status', '==', 1 ),
+          where('status', '==', 1),
           where('riderId', '==', `${userId}`)
         ),
         async (snapshot) =>
@@ -90,67 +91,74 @@ function CurrentRide(props) {
     getPendingRide();
   }, []);
 
-  const cancelRide = async (evt) => {
-    const rideRef = doc(db, 'Rides', `${evt.target.id}`);
+  const cancelRide = async (ride) => {
+    const rideRef = doc(db, 'Rides', ride.id);
+    const driverRef = doc(db, 'Users', ride.driverId)
     await updateDoc(rideRef, {
       status: deleteField(),
       riderId: deleteField(),
       riderPickUp: deleteField(),
       riderDropOff: deleteField(),
     });
+    await updateDoc(driverRef, {
+      driveStatus: deleteField()
+    })
   };
 
-
-  const FormatNumber = (num)=> {
+  const FormatNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
-  }
+  };
   const completeRide = async (ride) => {
     const rideRef = doc(db, 'Rides', ride.id);
     await updateDoc(rideRef, {
-      "status": 2,
-    })
+      status: 2,
+    });
     const distance = (await getDoc(rideRef)).data().distance;
-    const cost = FormatNumber(distance/1000 * 0.621371 * 0.585);
-    const carbon = FormatNumber(distance/1000 * 650)
+    const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
+    const carbon = FormatNumber((distance / 1000) * 650);
 
-    const driverRef = doc(db, "Users", userId); // whoever clicks on the button is driver
+    const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
     const driverData = (await getDoc(driverRef)).data();
     const driverWallet = driverData.wallet;
 
-    const riderRef = doc(db, "Users", ride.riderId); // whoever clicks on the button is driver
+    const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
     const riderData = (await getDoc(riderRef)).data();
     const riderWallet = riderData.wallet;
     const riderTotalFootPrint = riderData.totalFootPrint;
 
     // update for driver
     await updateDoc(driverRef, {
-      wallet:  Number(driverWallet)  + Number(cost), // parseInt doesn't work, but number works
-    })
+      wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+      driverStatus: deleteField()
+    });
     // update for rider
     await updateDoc(riderRef, {
-        wallet: Number(riderWallet) - Number(cost),
-        totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
-    })
+      wallet: Number(riderWallet) - Number(cost),
+      totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
+    });
     setCompleted(true);
+    setIsDriver(false)
     // history.replace({
     //   pathname: '/rideComplete',
     //   state: { isDriver,ride }
     // });
-  }
-console.log('am I a driver', isDriver)
+  };
+  console.log('am I a driver', isDriver);
 
-//Ride not initiated (no status) && No completed ride - render different messages to rider and driver
-  if(currentRides.length === 0 && rideComplete.length === 0) {
-    if(isDriver) {
+  //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
+  if (currentRides.length === 0 && rideComplete.length === 0) {
+    if (isDriver) {
       return <p> Not currently on ride</p>;
-    //Ride request sent to driver (status=0)
+      //Ride request sent to driver (status=0)
     } else {
-      return <p> Waiting for driver to accept your ride request...</p>
+      return <p> Waiting for driver to accept your ride request...</p>;
     }
   }
   //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
-  if(currentRides.length === 0 && rideComplete.length > 0) {
-      return <Redirect to={{ pathname: '/rideComplete', state: rideComplete[0]}}/>
+  if (currentRides.length === 0 && rideComplete.length > 0) {
+    return (
+      <Redirect to={{ pathname: '/rideComplete', state: rideComplete[0] }} />
+    );
   }
 
   const RoutingAfterRideAccepted = () => {
@@ -187,60 +195,65 @@ console.log('am I a driver', isDriver)
         </MapContainer>
       </div>
       {currentRides.map((ride) => (
-    <div>
-      {ride.driverId === userId ? (
         <div>
-          <UserDetails userId={ride.riderId} />{' '}
-          <button
-            className='btn rounded-full'
-            onClick={() => setShowChat(!showChat)}>
-            {showChat ? 'Chat with Rider' : 'Hide Chat'}
-          </button>
-          {!showChat && (
-            <Messaging
-              id={ride.id}
-              driverId={ride.driverId}
-              riderId={ride.riderId}
-              isDriver={true}
-            />
-
+          {ride.driverId === userId ? (
+            <div>
+              <UserDetails userId={ride.riderId} />{' '}
+              <button
+                className='btn rounded-full'
+                onClick={() => setShowChat(!showChat)}>
+                {showChat ? 'Chat with Rider' : 'Hide Chat'}
+              </button>
+              {!showChat && (
+                <Messaging
+                  id={ride.id}
+                  driverId={ride.driverId}
+                  riderId={ride.riderId}
+                  isDriver={isDriver}
+                />
+              )}
+              <Link
+                to={{ pathname: '/rideComplete', state: { isDriver, ride } }}>
+                <button
+                  id={ride.id}
+                  className='btn rounded-full'
+                  onClick={() => completeRide(ride)}>
+                  Ride Complete
+                </button>
+              </Link>
+            </div>
+          ) : (
+            <div>
+              <UserDetails
+                userId={ride.driverId}
+                currentRide={ride.id}
+                driverDetails={true}
+              />
+              <button
+                className='btn rounded-full'
+                onClick={() => setShowChat(!showChat)}>
+                {showChat ? 'Chat with Driver' : 'Hide Chat'}
+              </button>
+              {!showChat && (
+                <Messaging
+                  id={ride.id}
+                  driverId={ride.driverId}
+                  riderId={ride.riderId}
+                />
+              )}
+              <button
+                id={ride.id}
+                className='btn rounded-full'
+                onClick={() => cancelRide(ride.id)}>
+                Cancel Ride
+              </button>
+            </div>
           )}
-             <Link to = {{ pathname: '/rideComplete', state: {isDriver, ride}}}>
-             <button id={ride.id} className="btn rounded-full" onClick = {()=>completeRide(ride)}>Ride Complete</button>
-           </Link>
         </div>
-      ) :  (
-        <div>
-          <UserDetails
-            userId={ride.driverId}
-            currentRide={ride.id}
-            driverDetails={true}
-          />
-          <button
-            className='btn rounded-full'
-            onClick={() => setShowChat(!showChat)}>
-            {showChat ? 'Chat with Driver' : 'Hide Chat'}
-          </button>
-          {!showChat && (
-            <Messaging
-              id={ride.id}
-              driverId={ride.driverId}
-              riderId={ride.riderId}
-            />
-          )}
-          <button
-            id={ride.id}
-            className='btn rounded-full'
-            onClick={cancelRide}>
-            Cancel Ride
-          </button>
-          </div>
-      )}
+      ))}
+      ;
     </div>
-  ))}
-  ;
-</div>
-);
+  );
 }
 
 export default CurrentRide;
