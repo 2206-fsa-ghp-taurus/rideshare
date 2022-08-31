@@ -25,11 +25,15 @@ const App = () => {
   const [userDistance, setUserDistance] = useState(0);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
-    return (<div className="flex justify-center items-center">
-    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </div>
-   </div> )
+    return (
+      <div className='flex justify-center items-center'>
+        <div
+          className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
+          role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -46,13 +50,11 @@ const App = () => {
           </Route>
 
           <Route exact path='/driverlist'>
-            <DriverList isDriver={isDriver} setIsDriver={setIsDriver}/>
+            <DriverList isDriver={isDriver} setIsDriver={setIsDriver} />
           </Route>
 
           <Route exact path='/riderequestlist'>
-
             <RideRequests isDriver={isDriver} setIsDriver={setIsDriver} />
-
           </Route>
 
           <Route exact path='/signup'>
@@ -93,11 +95,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/currentRide'>
-
-
-
             <CurrentRide isDriver={isDriver} />
-
           </Route>
 
           <Route exact path='/rideComplete'>
@@ -107,8 +105,6 @@ const App = () => {
           <Route exact path='/ridesHistory'>
             <RidesHistory />
           </Route>
-          
-
         </Switch>
       </AuthContext.Provider>
     </div>
