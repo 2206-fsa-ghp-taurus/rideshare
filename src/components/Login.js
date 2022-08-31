@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { auth, db} from '../firebase'; // import the auth service
 import {signInWithEmailAndPassword} from "firebase/auth" // for firebase 9, signinwithemailandpwd is not on auth
-import { doc, setDoc, getDoc} from "firebase/firestore"
 
 const Login = () => {
   const { loggedIn, userId } = useAuth();
@@ -25,7 +24,7 @@ const Login = () => {
   if (loggedIn) {
     return <Redirect to ='/selectRide' />
     // return (
-    //     <div> 
+    //     <div>
     //         <p> Success - Placeholder Message</p>
     //     </div>
     // )
@@ -49,7 +48,7 @@ const Login = () => {
               onChange={(event) => setPassword(event.target.value)}
             />
           </div>
-        
+
 {/* if error , show the error message */}
         {status.error &&
           <p> Invalid email / password</p>
@@ -59,15 +58,15 @@ const Login = () => {
         <div className="btn-group">
           <button onClick={handleLogin} className="btn btn-active">Login</button>
           <Link to="/signup" className="btn"> Don't have an account yet? Sign Up </Link>
-        </div> 
+        </div>
 
   {/* loading message */}
-        {status.loading ? 
+        {status.loading ?
         <div className="flex justify-center items-center">
         <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
-       </div> 
+       </div>
     : ''}
 
     </div>

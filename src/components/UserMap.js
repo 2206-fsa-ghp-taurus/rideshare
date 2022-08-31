@@ -1,6 +1,6 @@
 import './userMap.css';
 import { MapContainer, TileLayer } from 'react-leaflet';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { UserMarker } from './UserMarker';
 import 'leaflet/dist/leaflet.css';
 import Routing from './Routing';
@@ -21,6 +21,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { useHistory } from 'react-router-dom';
+import { DriverContext} from '../driverContext';
 
 const UserMap = (props) => {
   const [position, setPosition] = useState({
@@ -32,7 +33,8 @@ const UserMap = (props) => {
   const [dropOffCoords, setDropOffCoords] = useState({});
   const [pickUpAddress, setPickUpAddress] = useState('');
   const [dropOffAddress, setDropOffAddress] = useState('');
-  const { isDriver } = props;
+  const { isDriver, setIsDriver } = useContext(DriverContext);
+  const { selectedDrive } = props;
   const { userDistance, setUserDistance } = props;
   const [rideInfo, setRideInfo] = useState([]);
   const [disableConfirm, setDisableConfirm] = useState(false);
@@ -41,6 +43,7 @@ const UserMap = (props) => {
   const location = UseGeolocation();
   const mapRef = useRef();
 
+  console.log(selectedDrive)
   // const getRideInfo = async () => {
   //   onSnapshot(
   //     query(
@@ -69,6 +72,10 @@ const UserMap = (props) => {
       driverDropOff: dropOffCoords,
       // no status information yet.
     });
+    updateDoc(doc(db, 'Users', userId), {
+      driverStatus: true,
+    });
+    setIsDriver(true)
     setDisableConfirm(true);
   };
 
@@ -88,7 +95,7 @@ const UserMap = (props) => {
     mapRef.current.flyTo([location.coordinates.lat, location.coordinates.lng]);
   };
 
-  console.log(props);
+  console.log(isDriver, selectedDrive);
 
   return (
     <div>
@@ -127,28 +134,38 @@ const UserMap = (props) => {
           setDropOffAddress={setDropOffAddress}
         />
       </div>
-      {isDriver ? (
-        <div>
-          <button
-            className='btn rounded-full'
-            disabled={disableConfirm}
-            onClick={beDriver}>
-            Confirm To Be Driver
-          </button>
-          {/* <button onClick={rideComplete}>Ride Complete</button> */}
-          <Link to='/riderequestlist'>
-            <button className='btn rounded-full'>See Requested Rides</button>
-          </Link>
-        </div>
-      ) : (
-        <Link to='/driverlist'>
-          {' '}
-          <button className='btn rounded-full' onClick={findDriver}>
-            Find Drivers
-          </button>
-        </Link>
-      )}
-    </div>
+
+      {selectedDrive && !isDriver ? (
+       <div>
+         <button
+           className='btn rounded-full'
+           disabled={disableConfirm}
+           onClick={beDriver}>
+           Confirm To Be Driver
+         </button>
+
+       </div>
+     ) : ( ''
+  )}
+
+     {isDriver ? (
+      <Link to='/riderequestlist'>
+      <button className='btn rounded-full'>See Requested Rides</button>
+    </Link>
+    ) : ( ''
+    )}
+
+    {!selectedDrive && !isDriver ? (
+       <Link to='/driverlist'>
+         {' '}
+         <button className='btn rounded-full' onClick={findDriver}>
+           Find Drivers
+         </button>
+       </Link>
+     ) : ( ''
+  )}
+
+   </div>
   );
 };
 

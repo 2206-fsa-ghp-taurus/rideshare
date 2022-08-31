@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from '../firebase';
@@ -22,6 +22,7 @@ import L from 'leaflet';
 import { greenIcon } from './MarkerIcon';
 import './userMap.css';
 import { useHistory } from 'react-router-dom';
+import { DriverContext} from '../driverContext';
 import { CometChat } from '@cometchat-pro/chat';
 import * as CONSTANTS from '../constants/constants';
 
@@ -31,7 +32,7 @@ function CurrentRide(props) {
     lng: -94.56373267199132,
   });
   const { userId } = useAuth();
-  const { isDriver, setIsDriver } = props;
+  const { isDriver, setIsDriver } = useContext(DriverContext);
   const [currentRides, setCurrentRides] = useState([]);
   const [rideComplete, setRideComplete] = useState([]);
   const [user, setCurrentUser] = useState([]);
@@ -56,6 +57,8 @@ function CurrentRide(props) {
       );
     }
   };
+
+  console.log(currentRides[0].id)
 
   const getCurrentRide = async () => {
     if (isDriver) {
@@ -90,14 +93,18 @@ function CurrentRide(props) {
     getPendingRide();
   }, []);
 
-  const cancelRide = async (evt) => {
-    const rideRef = doc(db, 'Rides', `${evt.target.id}`);
+  const cancelRide = async (ride) => {
+    const rideRef = doc(db, 'Rides', ride.id);
+    const driverRef = doc(db, 'Users', ride.driverId)
     await updateDoc(rideRef, {
       status: deleteField(),
       riderId: deleteField(),
       riderPickUp: deleteField(),
       riderDropOff: deleteField(),
     });
+    await updateDoc(driverRef, {
+      driveStatus: deleteField()
+    })
   };
 
   const FormatNumber = (num) => {
@@ -124,6 +131,7 @@ function CurrentRide(props) {
     // update for driver
     await updateDoc(driverRef, {
       wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+      driverStatus: deleteField()
     });
     // update for rider
     await updateDoc(riderRef, {
@@ -131,6 +139,7 @@ function CurrentRide(props) {
       totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
     });
     setCompleted(true);
+    setIsDriver(false)
     // history.replace({
     //   pathname: '/rideComplete',
     //   state: { isDriver,ride }
@@ -220,7 +229,7 @@ function CurrentRide(props) {
                   id={ride.id}
                   driverId={ride.driverId}
                   riderId={ride.riderId}
-                  isDriver={true}
+                  isDriver={isDriver}
                 />
               )}
               <Link
@@ -255,7 +264,7 @@ function CurrentRide(props) {
               <button
                 id={ride.id}
                 className='btn rounded-full'
-                onClick={cancelRide}>
+                onClick={() => cancelRide(ride.id)}>
                 Cancel Ride
               </button>
             </div>

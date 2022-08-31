@@ -8,16 +8,19 @@ import { Link, Redirect } from 'react-router-dom';
 
 function SelectRide(props) {
   const { loggedIn } = useAuth();
+  const { selectedDrive, setSelectToDrive }  = props;
+  console.log(selectedDrive)
+
   if (!loggedIn) {
     return <Redirect to='/home' />;
   }
-  const { isDriver, setIsDriver } = props;
 
   const selectToDrive = () => {
-    setIsDriver(true);
+    setSelectToDrive(true);
+    console.log(selectedDrive)
   };
   const selectToRide = () => {
-    setIsDriver(false);
+    setSelectToDrive(false);
   };
 
   return (
