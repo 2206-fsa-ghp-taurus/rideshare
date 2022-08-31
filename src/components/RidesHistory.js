@@ -37,10 +37,10 @@ const RidesHistory = () => {
               <p> From: {"placeholder for real location"}</p>
               <p> To: {"placeholder for real location"}</p>
               <div onMouseEnter={() => setIsShownHoverContent(true)} onMouseLeave={() => setIsShownHoverContent(false)}>
-                <p> Distance (km): {FormatNumber(ride.distanceTravelled/1000)}</p>
-                <p> Cost ($): {FormatNumber(ride.distanceTravelled/1000 * 0.621371 * 0.585)}</p>
+                <p> Distance (km): {FormatNumber(ride.distance/1000)}</p>
+                <p> Cost ($): {FormatNumber(ride.distance/1000 * 0.621371 * 0.585)}</p>
                 {/* m to km, to miles, 58.5 cents for IRS reimbursement rate */}
-                <p> Carbon Saved(gram) : {FormatNumber(ride.distanceTravelled/1000 * 650)}</p>
+                <p> Carbon Saved(gram) : {FormatNumber(ride.distance/1000 * 650)}</p>
                 {/* based on BBC article: https://www.bbc.com/future/article/20200317-climate-change-cut-carbon-emissions-from-your-commute */}
               </div>
             </div>
