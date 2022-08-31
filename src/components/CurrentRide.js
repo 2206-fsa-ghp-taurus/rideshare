@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from '../firebase';
 import {
@@ -21,6 +21,7 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { greenIcon } from './MarkerIcon';
 import './userMap.css';
+import { useHistory } from 'react-router-dom';
 
 function CurrentRide(props) {
   const [position, setPosition] = useState({
@@ -30,8 +31,29 @@ function CurrentRide(props) {
   const { userId } = useAuth();
   const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
+  const [rideComplete, setRideComplete] = useState([]);
   const [user, setCurrentUser] = useState([]);
   const [showChat, setShowChat] = useState(true);
+
+  // for complete ride component
+  const [completed, setCompleted] = useState(false); // this way no need to query to get rideID stuff on the rideComplete page
+  const history = useHistory();
+
+  const getPendingRide = async () => {
+    if (!isDriver) {
+      onSnapshot(
+        query(
+          collection(db, 'Rides'),
+          where('status', '==', 2),
+          where('riderId', '==', `${userId}`)
+        ),
+        async (snapshot) =>
+          await setRideComplete(
+            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+          )
+      );
+    }
+  };
 
   const getCurrentRide = async () => {
     if (isDriver) {
@@ -63,6 +85,7 @@ function CurrentRide(props) {
 
   useEffect(() => {
     getCurrentRide();
+    getPendingRide();
   }, []);
 
   const cancelRide = async (evt) => {
@@ -74,22 +97,59 @@ function CurrentRide(props) {
       riderDropOff: deleteField(),
     });
   };
-  console.log(isDriver);
-  const completeRide = async (evt) => {
-    const rideRef = doc(db, 'Rides', `${evt.target.id}`);
+
+  const FormatNumber = (num) => {
+    return (Math.round(num * 100) / 100).toFixed(2);
+  };
+  const completeRide = async (ride) => {
+    const rideRef = doc(db, 'Rides', ride.id);
     await updateDoc(rideRef, {
       status: 2,
-      // add total cost / carbon footprint updates
     });
-    // setIsDriver(false);
+    const distance = (await getDoc(rideRef)).data().distance;
+    const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
+    const carbon = FormatNumber((distance / 1000) * 650);
+
+    const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
+    const driverData = (await getDoc(driverRef)).data();
+    const driverWallet = driverData.wallet;
+
+    const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
+    const riderData = (await getDoc(riderRef)).data();
+    const riderWallet = riderData.wallet;
+    const riderTotalFootPrint = riderData.totalFootPrint;
+
+    // update for driver
+    await updateDoc(driverRef, {
+      wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+    });
+    // update for rider
+    await updateDoc(riderRef, {
+      wallet: Number(riderWallet) - Number(cost),
+      totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
+    });
+    setCompleted(true);
+    // history.replace({
+    //   pathname: '/rideComplete',
+    //   state: { isDriver,ride }
+    // });
   };
+  console.log('am I a driver', isDriver);
 
-  if (currentRides.length === 0) {
-    return <p> Not currently on ride</p>;
+  //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
+  if (currentRides.length === 0 && rideComplete.length === 0) {
+    if (isDriver) {
+      return <p> Not currently on ride</p>;
+      //Ride request sent to driver (status=0)
+    } else {
+      return <p> Waiting for driver to accept your ride request...</p>;
+    }
   }
-
-  if (currentRides.length === 0) {
-    return <p> Not currently on ride</p>;
+  //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
+  if (currentRides.length === 0 && rideComplete.length > 0) {
+    return (
+      <Redirect to={{ pathname: '/rideComplete', state: rideComplete[0] }} />
+    );
   }
 
   const RoutingAfterRideAccepted = () => {
@@ -129,9 +189,6 @@ function CurrentRide(props) {
         <div>
           {ride.driverId === userId ? (
             <div>
-              <p>
-                Rider: {ride.riderId} Driver: {ride.driverId}
-              </p>
               <UserDetails userId={ride.riderId} />{' '}
               <button
                 className='btn rounded-full'
@@ -146,11 +203,12 @@ function CurrentRide(props) {
                   isDriver={true}
                 />
               )}
-              <Link to='/home'>
+              <Link
+                to={{ pathname: '/rideComplete', state: { isDriver, ride } }}>
                 <button
                   id={ride.id}
                   className='btn rounded-full'
-                  onClick={completeRide}>
+                  onClick={() => completeRide(ride)}>
                   Ride Complete
                 </button>
               </Link>
@@ -182,7 +240,6 @@ function CurrentRide(props) {
               </button>
             </div>
           )}
-          ;
         </div>
       ))}
       ;
