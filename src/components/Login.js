@@ -3,7 +3,6 @@ import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { auth, db} from '../firebase'; // import the auth service
 import {signInWithEmailAndPassword} from "firebase/auth" // for firebase 9, signinwithemailandpwd is not on auth
-import { doc, setDoc, getDoc} from "firebase/firestore"
 
 const Login = () => {
   const { loggedIn, userId } = useAuth();
@@ -16,16 +15,6 @@ const Login = () => {
       setStatus({ loading: true, error: false }); // start loading
       const credential = await signInWithEmailAndPassword(auth, email, password);
       console.log('user credential:', credential);
-
-      // const getUser = async () => {
-      //   const userName = []
-      //   const docSnap = await getDoc(doc(db, "Users",
-      //     userId));
-      //     userName.push(docSnap.data());
-      //     console.log(userName)
-      //   }
-      // console.log(getUser())
-
     } catch (error) {
       setStatus({ loading: false, error: true }); // error
       console.log('error:', error);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { db } from '../firebase';
@@ -22,6 +22,7 @@ import L from "leaflet";
 import { greenIcon } from './MarkerIcon'
 import './userMap.css';
 import { useHistory } from 'react-router-dom';
+import { DriverContext} from '../driverContext';
 
 function CurrentRide(props) {
   const [position, setPosition] = useState({
@@ -29,7 +30,7 @@ function CurrentRide(props) {
     lng: -94.56373267199132,
   });
   const { userId } = useAuth();
-  const { isDriver, setIsDriver } = props;
+  const { isDriver, setIsDriver } = useContext(DriverContext);
   const [currentRides, setCurrentRides] = useState([]);
   const [rideComplete, setRideComplete] = useState([]);
   const [user, setCurrentUser] = useState([]);
