@@ -15,6 +15,8 @@ const DriverList = (props)=> {
   const [pickUpCoords, setPickUpCoords] = useState({}); // this is for the current rider
   const [dropOffCoords, setDropOffCoords] = useState({});// this is for the current rider
   const [distance, setDistance] = useState(0)
+  const [pickUpAddress, setPickUpAddress] = useState("");
+  const [dropOffAddress, setDropOffAddress] = useState("");
 
   // first get all drivers from database
   const getRides = async () => {
@@ -32,6 +34,8 @@ const DriverList = (props)=> {
       setPickUpCoords(doc.data().pickUp);
       setDropOffCoords (doc.data().dropOff);
       setDistance(doc.data().distanceTravelled) // need to save distanc einformation for each ride 
+      setPickUpAddress(doc.data().pickUpAddress);
+      setDropOffAddress(doc.data().dropOffAddress);
     })
   }
 
@@ -47,7 +51,9 @@ const DriverList = (props)=> {
         "status": 0,
         "riderPickUp": pickUpCoords,
         "riderDropOff": dropOffCoords,
-        "distance": distance
+        "distance": distance,
+        "pickUpAddress": pickUpAddress,
+        "dropOffAddress": dropOffAddress,
       });
     }
   };

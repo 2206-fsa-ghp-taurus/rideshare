@@ -6,51 +6,10 @@ import { CometChatMessages } from '../cometChat/src';
 import { useAuth } from '../auth';
 import * as CONSTANTS from '../constants/constants';
 
-const appSetting = new CometChat.AppSettingsBuilder()
-  .subscribePresenceForAllUsers()
-  .setRegion(CONSTANTS.REGION)
-  .build();
-CometChat.init(CONSTANTS.APP_ID, appSetting).then(
-  () => {
-    console.log('Initialization completed successfully');
-    // You can now call login function.
-  },
-  (error) => {
-    console.log('Initialization failed with error:', error);
-    // Check the reason for error and take appropriate action.
-  }
-);
-
 const Messaging = (props) => {
-  const { userId } = useAuth();
-  console.log(props);
-  const rideId = props.id;
   const { driverId } = props;
   const { riderId } = props;
   const { isDriver } = props;
-
-  const userInfo = async () => {
-    const userName = await getDoc(doc(db, 'Users', userId));
-    const firstName = userName.data().firstName;
-    return firstName;
-  };
-
-  const setUserInfo = async () => {
-    let user = new CometChat.User(userId);
-    let firstName = await userInfo();
-    user.setName(firstName);
-
-    CometChat.createUser(user, CONSTANTS.AUTH_KEY).then(
-      (user) => {
-        console.log('user created', user);
-      },
-      (error) => {
-        console.log('error', error);
-      }
-    );
-  };
-
-  setUserInfo();
 
   //will need to be changed depending on what's able to be passed through props -- determining whether other user is a driver or rider
   // const findUser = async () => {
@@ -67,8 +26,6 @@ const Messaging = (props) => {
   //     return 'Error loading messaging';
   //   }
   // };
-
-  //   //query rides db for status (), pull current ride
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
