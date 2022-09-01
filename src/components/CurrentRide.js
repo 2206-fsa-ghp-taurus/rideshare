@@ -21,10 +21,11 @@ import { useMap } from 'react-leaflet';
 import L from 'leaflet';
 import { greenIcon } from './MarkerIcon';
 import './userMap.css';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { DriverContext} from '../driverContext';
 import { CometChat } from '@cometchat-pro/chat';
 import * as CONSTANTS from '../constants/constants';
+
 
 function CurrentRide(props) {
   const [position, setPosition] = useState({
@@ -34,31 +35,19 @@ function CurrentRide(props) {
   const { userId } = useAuth();
   const { isDriver, setIsDriver } = useContext(DriverContext);
   const [currentRides, setCurrentRides] = useState([]);
-  const [rideComplete, setRideComplete] = useState([]);
+  const [rideComplete, setRideComplete] = useState({});
   const [user, setCurrentUser] = useState([]);
   const [showChat, setShowChat] = useState(true);
+  const location = useLocation();
+  const { ride } = location.state;
+ 
 
-  // for complete ride component
-  const [completed, setCompleted] = useState(false); // this way no need to query to get rideID stuff on the rideComplete page
-  const history = useHistory();
+  const getCompleteRide = () =>{
+    onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
+      setRideComplete({id: doc.id, ...doc.data()});
+    })
+  }
 
-  const getPendingRide = async () => {
-    if (!isDriver) {
-      onSnapshot(
-        query(
-          collection(db, 'Rides'),
-          where('status', '==', 2),
-          where('riderId', '==', `${userId}`)
-        ),
-        async (snapshot) =>
-          await setRideComplete(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          )
-      );
-    }
-  };
-
-  console.log(currentRides[0].id)
 
   const getCurrentRide = async () => {
     if (isDriver) {
@@ -90,7 +79,7 @@ function CurrentRide(props) {
 
   useEffect(() => {
     getCurrentRide();
-    getPendingRide();
+    getCompleteRide();
   }, []);
 
   const cancelRide = async (ride) => {
@@ -110,6 +99,7 @@ function CurrentRide(props) {
   const FormatNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
+
   const completeRide = async (ride) => {
     const rideRef = doc(db, 'Rides', ride.id);
     await updateDoc(rideRef, {
@@ -135,33 +125,28 @@ function CurrentRide(props) {
     });
     // update for rider
     await updateDoc(riderRef, {
-      wallet: Number(riderWallet) - Number(cost),
-      totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
-    });
-    setCompleted(true);
-    setIsDriver(false)
-    // history.replace({
-    //   pathname: '/rideComplete',
-    //   state: { isDriver,ride }
-    // });
-  };
-  console.log('am I a driver', isDriver);
-
-  //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
-  if (currentRides.length === 0 && rideComplete.length === 0) {
-    if (isDriver) {
+        wallet: Number(riderWallet) - Number(cost), 
+        totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
+    })
+  }
+   
+  
+  
+ 
+//Ride not initiated (no status) && No completed ride - render different messages to rider and driver
+  if(currentRides.length === 0 && rideComplete.status !== 2) {
+    if(isDriver) {
       return <p> Not currently on ride</p>;
       //Ride request sent to driver (status=0)
     } else {
-      return <p> Waiting for driver to accept your ride request...</p>;
+      return <p> Waiting for driver to accept your ride request...</p>
     }
   }
   //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
-  if (currentRides.length === 0 && rideComplete.length > 0) {
-    return (
-      <Redirect to={{ pathname: '/rideComplete', state: rideComplete[0] }} />
-    );
-  }
+  if(currentRides.length === 0 && rideComplete.status === 2) {
+      return <Redirect to={{ pathname: '/rideComplete', state: {isDriver, ride: rideComplete}}}/>
+  } 
+
 
   const RoutingAfterRideAccepted = () => {
     const map = useMap();

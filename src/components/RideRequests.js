@@ -65,11 +65,16 @@ function RideRequests(props) {
   };
 
   const acceptRide = async (riderRequest) => {
+    console.log('riderrequest', riderRequest)
+    history.replace({
+      pathname: '/currentRide',
+      state: { ride: riderRequest }
+      });
+  
     const rideRef = doc(db, 'Rides', riderRequest.id);
     await updateDoc(rideRef, {
       status: 1,
     });
-    history.replace('/currentRide');
   };
 
   const inputCarDetails = async () => {

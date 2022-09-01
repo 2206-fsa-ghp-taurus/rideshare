@@ -36,32 +36,10 @@ const UserMap = (props) => {
   const { isDriver, setIsDriver } = useContext(DriverContext);
   const { selectedDrive } = props;
   const { userDistance, setUserDistance } = props;
-  const [rideInfo, setRideInfo] = useState([]);
   const [disableConfirm, setDisableConfirm] = useState(false);
   const { userId } = useAuth();
-  const history = useHistory();
   const location = UseGeolocation();
   const mapRef = useRef();
-
-  console.log(selectedDrive)
-  // const getRideInfo = async () => {
-  //   onSnapshot(
-  //     query(
-  //       collection(db, "Rides"),
-  //       where("status", "==", 0 || 1),
-  //       where("driverId", "==", `${userId}`)
-  //     ),
-  //     async (snapshot) =>
-  //       await setRideInfo(
-  //         snapshot.docs.map((doc) => ({id: doc.id, ...doc.data()}))
-  //       )
-  //   );
-  // };
-
-  // useEffect(() => {
-  //   getRideInfo();
-  //   rideInfo.length ? setDisableConfirm(false) : setDisableConfirm(true);
-  // }, []);
 
   const beDriver = (e) => {
     addDoc(collection(db, 'Rides'), {
@@ -157,14 +135,13 @@ const UserMap = (props) => {
 
     {!selectedDrive && !isDriver ? (
        <Link to='/driverlist'>
-         {' '}
+         {' '} 
          <button className='btn rounded-full' onClick={findDriver}>
            Find Drivers
          </button>
        </Link>
      ) : ( ''
   )}
-
    </div>
   );
 };

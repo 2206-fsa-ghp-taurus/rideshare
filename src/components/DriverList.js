@@ -82,7 +82,7 @@ const DriverList = (props)=> {
         <div className='card-body'>
           <p className='my-4 card-title product-name text-center font-weight-bold'>{driver.driverId} </p>
           <UserDetails userId={driver.driverId} />
-          <Link to="/currentRide"><button className="btn rounded-full" onClick={()=>requestRide(driver.id)}>Request Ride</button></Link>
+          <Link to = {{ pathname: "/currentRide", state: {ride :driver}}}><button className="btn rounded-full" onClick={()=>requestRide(driver.id)}>Request Ride</button></Link>
         </div>
       </div>
       ))}
