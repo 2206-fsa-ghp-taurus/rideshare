@@ -36,27 +36,24 @@ const Login = () => {
   }
   return (
     <>
-      <div>
-        <Navbar />
-      </div>
       <div className='form-control h-screen flex items-center justify-center my-4'>
-        <div>
-          <label className='input-group input-group-lg'>
+        <div className=''>
+          <label className='input-group input-group-md'>
             <span> Email</span>
           </label>
           <input
-            className='input input-bordered input-lg'
+            className='input input-bordered input-lg py-2 mb-3'
             type='email'
             value={email}
             onChange={(event) => setEmail(event.target.value)}
           />
         </div>
         <div>
-          <label className='input-group input-group-lg'>
+          <label className='input-group input-group-md'>
             <span> Password</span>
           </label>
           <input
-            className='input input-bordered input-lg'
+            className='input input-bordered input-lg py-2 mb-3'
             type='password'
             value={password}
             onChange={(event) => setPassword(event.target.value)}
@@ -67,18 +64,19 @@ const Login = () => {
         {status.error && <p> Invalid email / password</p>}
 
         {/* login button */}
-        <div className='btn-group'>
+        <div className='btn-group-vertical'>
           <button
             onClick={handleLogin}
-            className='btn btn-outline bg-success mx-2'>
+            className='btn btn-outline bg-success flex items-center py-3 mt-2 mb-3 mx-auto'>
             Login
           </button>
-
-          <p>Not a member?</p>
-          <Link to='/signup' className='btn'>
-            {' '}
-            Sign Up{' '}
-          </Link>
+          <div className='flex items-center'>
+            <p className='mr-2'>Not a member?</p>
+            <Link to='/signup' className='btn hover:bg-gray-300 mx-2'>
+              {' '}
+              Sign Up{' '}
+            </Link>
+          </div>
         </div>
 
         {/* loading message */}

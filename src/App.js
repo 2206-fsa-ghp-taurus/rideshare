@@ -60,7 +60,7 @@ const App = () => {
     <div>
       <AuthContext.Provider value={authObj}>
         <DriverContext.Provider value={{ isDriver, setIsDriver }}>
-          <Navbar />
+          {/* <Navbar /> */}
           <Switch>
             <Route exact path='/login'>
               <Login />
