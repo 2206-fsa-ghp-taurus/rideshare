@@ -123,7 +123,7 @@ const CreateProfile = () => {
         <input
           className='input input-bordered'
           name='phone'
-          type='text'
+          type='number'
           value={phone}
           onChange={(event) => setPhone(event.target.value)}
           required
@@ -148,44 +148,44 @@ const CreateProfile = () => {
         </div>
 
         <h3>Car Details</h3>
-        <label class='input-group' htmlFor='carMake'>
+        <label className='input-group' htmlFor='carMake'>
           Car Make
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='carMake'
           type='text'
           value={carMake}
           onChange={(event) => event.target.value ? setMake(event.target.value) : ""}
         />
 
-        <label class='input-group' htmlFor='carModel'>
+        <label className='input-group' htmlFor='carModel'>
           Model
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='carModel'
           type='text'
           value={carModel}
           onChange={(event) => event.target.value ? setModel(event.target.value) : ""}
         />
 
-        <label class='input-group' htmlFor='carColor'>
+        <label className='input-group' htmlFor='carColor'>
           Color
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='carColor'
           type='text'
           value={carColor}
           onChange={(event) =>  event.target.value ? setColor(event.target.value) : ""}
         />
 
-        <label class='input-group' htmlFor='carLicense'>
+        <label className='input-group' htmlFor='carLicense'>
           License Plate
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='carLicense'
           type='text'
           value={carLicense}

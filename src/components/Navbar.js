@@ -15,7 +15,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav role='navigation' style={{ marginBottom: '100px' }}>
+      <nav role='navigation' style={{ marginBottom: '120px'}}>
         {loggedIn ? (
           <div className='navbar bg-base-100'>
             <div className='navbar-start'>
@@ -68,7 +68,7 @@ const Navbar = () => {
                     <path
                       strokeLinecap='round'
                       strokeLinejoin='round'
-                      stroke-width='2'
+                      strokeWidth='2'
                       d='M4 6h16M4 12h16M4 18h7'
                     />
                   </svg>
