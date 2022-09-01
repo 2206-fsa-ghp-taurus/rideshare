@@ -21,7 +21,7 @@ import {useMap} from "react-leaflet";
 import L from "leaflet";
 import { greenIcon } from './MarkerIcon'
 import './userMap.css';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 function CurrentRide(props) {
   const [position, setPosition] = useState({
@@ -31,28 +31,43 @@ function CurrentRide(props) {
   const { userId } = useAuth();
   const { isDriver, setIsDriver } = props;
   const [currentRides, setCurrentRides] = useState([]);
-  const [rideComplete, setRideComplete] = useState([]);
+  const [rideComplete, setRideComplete] = useState({});
   const [user, setCurrentUser] = useState([]);
   const [showChat, setShowChat] = useState(true);
+  const location = useLocation();
+  const { ride } = location.state;
+  console.log('location', location)
 
   // for complete ride component 
   const [completed, setCompleted] = useState(false); // this way no need to query to get rideID stuff on the rideComplete page
   const history = useHistory();
 
-  const getPendingRide = async () => {
-    if (!isDriver) {
-      onSnapshot(
-        query(
-          collection(db, 'Rides'),
-          where('status', '==', 2 ),
-          where('riderId', '==', `${userId}`)
-        ),
-        async (snapshot) =>
-          await setRideComplete(
-            snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-          )
-      );
-    }
+  // const getPendingRide = async () => {
+  //   if (!isDriver) {
+  //     onSnapshot(
+  //       query(
+  //         collection(db, 'Rides', ride.id),
+  //         where('status', '==', 2 ),
+  //         where('id', '==', ride.id),
+  //       ),
+  //       async (snapshot) =>
+  //         await setRideComplete(
+  //           snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+  //         )
+  //     );
+  //   }
+  // }
+
+  // const getPendingRide = async () => {
+  //   const rideRef = doc(db, 'Rides', ride.id);
+  //   const rideData = (await onSnapshot(rideRef)).data();
+  //   setRideComplete(rideData);
+  // }
+
+  const getPendingRide = () =>{
+    onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
+      setRideComplete({id: doc.id, ...doc.data()});
+    })
   }
 
 
@@ -131,6 +146,8 @@ function CurrentRide(props) {
         totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
     })
     setCompleted(true);
+    getPendingRide()
+    
     // history.replace({
     //   pathname: '/rideComplete',
     //   state: { isDriver,ride }
@@ -139,17 +156,20 @@ function CurrentRide(props) {
 console.log('am I a driver', isDriver)
  
 //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
-  if(currentRides.length === 0 && rideComplete.length === 0) {
+  if(currentRides.length === 0 && rideComplete.status !== 2) {
+    
     if(isDriver) {
       return <p> Not currently on ride</p>;
     //Ride request sent to driver (status=0)
     } else {
+      console.log(rideComplete)
       return <p> Waiting for driver to accept your ride request...</p>
     }
   } 
   //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
-  if(currentRides.length === 0 && rideComplete.length > 0) {
-      return <Redirect to={{ pathname: '/rideComplete', state: rideComplete[0]}}/>
+  if(currentRides.length === 0 && rideComplete.status === 2) {
+    console.log(rideComplete)
+      return <Redirect to={{ pathname: '/rideComplete', state: {isDriver, ride: rideComplete}}}/>
   } 
 
   const RoutingAfterRideAccepted = () => {

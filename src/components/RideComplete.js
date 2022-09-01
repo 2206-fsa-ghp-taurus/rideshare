@@ -7,11 +7,8 @@ import { doc, getDoc, onSnapshot} from "firebase/firestore";
 
 const RideComplete = (props) => {
     const {userId} = useAuth();
-    // const location = useLocation(props.location);
     const location = useLocation();
-    // const { isDriver, ride } = location.state;
-    const state = location.state;
-    // const state =  location.state;
+    const { isDriver, ride } = location.state;
     const [firstName, setFirstName] = useState('')
     const [distance, setDistance] = useState(0)
    
@@ -24,20 +21,12 @@ const RideComplete = (props) => {
 
 
     const getRideInfo = async () => {
-        if(state && state.isDriver) {
-            console.log('state', state)
-        const rideRef = doc(db, "Rides", state.ride.id);
+        const rideRef = doc(db, "Rides", ride.id);
         const rideData = (await getDoc(rideRef)).data();
         setDistance(rideData.distance);
-        } 
-        
-        if(state && !state.isDriver) {
-            const rideRef = doc(db, "Rides", state.id);
-            const rideData = (await getDoc(rideRef)).data();
-            setDistance(rideData.distance);
 
-        }
     }
+    
 
    
     useEffect(() => {
@@ -49,13 +38,12 @@ const RideComplete = (props) => {
     const FormatNumber = (num)=> {
         return (Math.round(num * 100) / 100).toFixed(2);
     }
-    console.log('another state', state)
-    console.log('distance', distance)
+  
     return (
         <div>
         <h1> {`Hi ${firstName}, Here is the summary of your ride` }</h1>
-        {state && state.isDriver
-        ? ( <div> 
+        {isDriver ?
+        ( <div> 
             <p> You Earned: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
             <p> You Drove the Rider for : {`${distance/1000} km`}</p>
             <p> You Helped the Rider Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
