@@ -107,7 +107,7 @@ function CurrentRide(props) {
     });
     const distance = (await getDoc(rideRef)).data().distance;
     const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
-    const carbon = FormatNumber((distance / 1000) * 650);
+    const carbon = FormatNumber((distance / 1000) * 650 / 1000);
 
     const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
     const driverData = (await getDoc(driverRef)).data();

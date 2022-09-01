@@ -53,7 +53,7 @@ const RidesHistory = () => {
                 <p> Distance (km): {FormatNumber(ride.distance/1000)}</p>
                 <p> Cost ($): {FormatNumber(ride.distance/1000 * 0.621371 * 0.585)}</p>
                 {/* m to km, to miles, 58.5 cents for IRS reimbursement rate */}
-                <p> Carbon Footprint(gram) : {FormatNumber(ride.distance/1000 * 650)}</p>
+                <p> Carbon Footprint(kg) : {FormatNumber(ride.distance/1000 * 650 /1000)}</p>
                 {/* based on BBC article: https://www.bbc.com/future/article/20200317-climate-change-cut-carbon-emissions-from-your-commute */}
               </div>
             </div>
