@@ -112,6 +112,7 @@ function CurrentRide(props) {
     const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
     const driverData = (await getDoc(driverRef)).data();
     const driverWallet = driverData.wallet;
+    const driverTotalFootPrint = driverData.totalFootPrint;
 
     const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
     const riderData = (await getDoc(riderRef)).data();
@@ -121,6 +122,7 @@ function CurrentRide(props) {
     // update for driver
     await updateDoc(driverRef, {
       wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+      totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
       driverStatus: deleteField()
     });
     // update for rider
