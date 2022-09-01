@@ -9,7 +9,7 @@ const Home = () => {
   }
   return (
     <div className='bg-gradient-to-b from-green-400 h-screen'>
-      <h1 className='text-4xl mx-4 pt-6'>hop</h1>
+      <h1 className='text-4xl mx-4 pt-6 body-font font-lobster'>hop</h1>
       <h2 className='text-l mx-4 my-2'>Hop In!</h2>
       <p className='text-m mx-4'>A green rideshare company</p>
       <img

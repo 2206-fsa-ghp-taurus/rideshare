@@ -36,15 +36,15 @@ const UserAccount= () => {
             <p> NAME: {user?.firstName} {user?.lastName}</p>
             <p> EMAIL: {user?.email }  </p>
             <p> PHONE: {user?.phone} </p>
-            <p> TOTAL CO2 SAVED (gram): {user?.totalFootPrint} </p>
+            <p> TOTAL CARBON FOOTPRINT (kg): {user?.totalFootPrint} </p>
             <p> WALLET($): {user?.wallet} </p>
             <Link to= '/ridesHistory'> <button className="btn rounded-full"> See My Carbon Footprint</button></Link>
             <p> ---------- </p>
             <p> Car Details </p>
-            <p> MAKE: {user?.make} </p>
-            <p> MODEL: {user?.model} </p>
-            <p> COLOR: {user?.color} </p>
-            <p> LICENSE: {user?.license} </p>
+            <p> MAKE: {user?.carMake} </p>
+            <p> MODEL: {user?.carModel} </p>
+            <p> COLOR: {user?.carColor} </p>
+            <p> LICENSE: {user?.carLicense} </p>
             <Link to= '/editProfile'> <button className="btn rounded-full"> Edit Profile</button></Link>
             <button className="btn rounded-full" onClick = {handleDelete}> Delete Account
              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-trash" viewBox="0 0 16 16">

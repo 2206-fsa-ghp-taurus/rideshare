@@ -10,7 +10,7 @@ const RideComplete = (props) => {
     const location = useLocation();
     const { isDriver, ride } = location.state;
     const [firstName, setFirstName] = useState('')
-    const [distance, setDistance] = useState(0)
+    // const [distance, setDistance] = useState(0)
 
     const getUserInfo = async () => {
         const userRef = doc(db, "Users", userId);
@@ -18,15 +18,17 @@ const RideComplete = (props) => {
         setFirstName(userData.firstName);
     }
 
-    const getRideInfo = async () => {
-        const rideRef = doc(db, "Rides", ride.id);
-        const rideData = (await getDoc(rideRef)).data();
-        setDistance(rideData.distance);
-    }
+    // const getRideInfo = async () => {
+    //     const rideRef = doc(db, "Rides", ride.id);
+    //     const rideData = (await getDoc(rideRef)).data();
+    //     setDistance(rideData.distance);
+    // }
+
+    const distance = ride.distance
 
     useEffect(() => {
         getUserInfo();
-        getRideInfo();
+        // getRideInfo();
     }, []);
 
     const FormatNumber = (num)=> {
@@ -38,16 +40,16 @@ const RideComplete = (props) => {
         <h1> {`Hi ${firstName}, Here is the summary of your ride` }</h1>
         {isDriver ?
          ( <div>
-            <p> You Earned: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
-            <p> You Drove the Rider for : {`${distance/1000} km`}</p>
-            <p> You Helped the Rider Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
+            <p> You Earned: {`$ ${FormatNumber(distance/1000 * 0.621371 * 0.585)}`} </p>
+            <p> You Drove the Rider for : {`${FormatNumber(distance/1000)} km`}</p>
+            <p> You Helped the Rider Saved : {`${FormatNumber(distance/1000 * 650 / 1000)} kg of carbon`}</p>
             </div>
         )
         : (
             <div>
-            <p> You Spent: {`${FormatNumber(distance/1000 * 0.621371 * 0.585)} $`} </p>
-            <p> You Travelled For : {`${distance/1000} km`}</p>
-            <p> You Saved : {`${FormatNumber(distance/1000 * 650)} grams of carbon`}</p>
+            <p> You Spent: {`$ ${FormatNumber(distance/1000 * 0.621371 * 0.585)}`} </p>
+            <p> You Travelled For : {`${FormatNumber(distance/1000)} km`}</p>
+            <p> You Saved : {`${FormatNumber(distance/1000 * 650 / 1000)} kg of carbon`}</p>
             </div>
         )
         }

@@ -107,11 +107,12 @@ function CurrentRide(props) {
     });
     const distance = (await getDoc(rideRef)).data().distance;
     const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
-    const carbon = FormatNumber((distance / 1000) * 650);
+    const carbon = FormatNumber((distance / 1000) * 650 / 1000);
 
     const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
     const driverData = (await getDoc(driverRef)).data();
     const driverWallet = driverData.wallet;
+    const driverTotalFootPrint = driverData.totalFootPrint;
 
     const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
     const riderData = (await getDoc(riderRef)).data();
@@ -121,6 +122,7 @@ function CurrentRide(props) {
     // update for driver
     await updateDoc(driverRef, {
       wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+      totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
       driverStatus: deleteField()
     });
     // update for rider
