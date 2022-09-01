@@ -93,7 +93,7 @@ const UserMap = (props) => {
       </div>
       <div>
         (
-        <button class='btn btn-xs' onClick={locateMe}>
+        <button className='btn btn-xs' onClick={locateMe}>
           Locate Me
         </button>
         )
