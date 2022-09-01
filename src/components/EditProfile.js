@@ -13,20 +13,20 @@ const EditProfile= () => {
   const [lastName, setLastName] = useState("");
   const [phone, setPhone] = useState("");
   const [pictureUrl, setPictureUrl] = useState("");
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [color, setColor] = useState();
-  const [license, setLicense] = useState("");
+  const [carMake, setMake] = useState('');
+  const [carModel, setModel] = useState('');
+  const [carColor, setColor] = useState('');
+  const [carLicense, setLicense] = useState('');
   const fileInputRef = useRef();
   const getUserInfo = () => {onSnapshot(doc(db, 'Users', userId), (doc) =>{
         setFirstName(doc.data().firstName);
         setLastName(doc.data().lastName)
         setPhone(doc.data().phone)
         setPictureUrl(doc.data().pictureUrl)
-        setMake(doc.data().make);
-        setModel(doc.data().model)
-        setColor(doc.data().color)
-        setLicense(doc.data().license)
+        setMake(doc.data().carMake);
+        setModel(doc.data().carModel)
+        setColor(doc.data().carColor)
+        setLicense(doc.data().carLicense)
   })}
   useEffect(()=>{getUserInfo()}, []) // so only sending request once
   console.log('before edit user profile', firstName, lastName)
@@ -52,7 +52,13 @@ const EditProfile= () => {
 
   const handleSaveUser = async (event) => {
     event.preventDefault();
-    const userData = { firstName, lastName, pictureUrl, phone, make, model, color, license };
+    const userData = { firstName, lastName, pictureUrl, phone };
+
+    if (carMake) Object.assign(userData, {carMake})
+    if (carModel) Object.assign(userData, {carModel})
+    if (carColor) Object.assign(userData, {carColor})
+    if (carLicense) Object.assign(userData, {carLicense})
+
     if (pictureUrl.startsWith('blob:')) { // save the image to Cloud , if starts with 'blob:'
       userData.pictureUrl = await savePicture(pictureUrl, userId);
     }
@@ -83,17 +89,17 @@ const EditProfile= () => {
         </div>
 
         <h3>Car Details</h3>
-        <label class = 'input-group' htmlFor='make'>Car Make</label>
-        <input class="input input-bordered" name='make' type='text' value = {make} onChange = {(event) => setMake(event.target.value)}/>
+        <label class = 'input-group' htmlFor='carMake'>Car Make</label>
+        <input class="input input-bordered" name='carMake' type='text' value = {carMake} onChange = {(event) => event.target.value ? setMake(event.target.value) : ""}/>
 
-        <label class = 'input-group' htmlFor='model'>Model</label>
-        <input class="input input-bordered" name='model' type='text' value = {model} onChange = {(event) => setModel(event.target.value)}/>
+        <label class = 'input-group' htmlFor='carModel'>Model</label>
+        <input class="input input-bordered" name='carModel' type='text' value = {carModel} onChange = {(event) => event.target.value ? setModel(event.target.value) : ""}/>
 
-        <label class = 'input-group' htmlFor='color'>Color</label>
-        <input class="input input-bordered" name='color' type='text' value = {color} onChange = {(event) => setColor(event.target.value)}/>
+        <label class = 'input-group' htmlFor='carColor'>Color</label>
+        <input class="input input-bordered" name='carColor' type='text' value = {carColor} onChange = {(event) => event.target.value ? setColor(event.target.value): ""}/>
 
-        <label class = 'input-group' htmlFor='license'>License Plate</label>
-        <input class="input input-bordered" name='license' type='text' value = {license} onChange = {(event) => setLicense(event.target.value)}/>
+        <label class = 'input-group' htmlFor='carLicense'>License Plate</label>
+        <input class="input input-bordered" name='carLicense' type='text' value = {carLicense} onChange = {(event) => event.target.value ? setLicense(event.target.value) : ""}/>
 
         <button className="btn rounded-full" onClick = {handleSaveUser} > Save </button>
       </form>
