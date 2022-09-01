@@ -36,35 +36,9 @@ function CurrentRide(props) {
   const [showChat, setShowChat] = useState(true);
   const location = useLocation();
   const { ride } = location.state;
-  console.log('location', location)
+ 
 
-  // for complete ride component 
-  const [completed, setCompleted] = useState(false); // this way no need to query to get rideID stuff on the rideComplete page
-  const history = useHistory();
-
-  // const getPendingRide = async () => {
-  //   if (!isDriver) {
-  //     onSnapshot(
-  //       query(
-  //         collection(db, 'Rides', ride.id),
-  //         where('status', '==', 2 ),
-  //         where('id', '==', ride.id),
-  //       ),
-  //       async (snapshot) =>
-  //         await setRideComplete(
-  //           snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-  //         )
-  //     );
-  //   }
-  // }
-
-  // const getPendingRide = async () => {
-  //   const rideRef = doc(db, 'Rides', ride.id);
-  //   const rideData = (await onSnapshot(rideRef)).data();
-  //   setRideComplete(rideData);
-  // }
-
-  const getPendingRide = () =>{
+  const getCompleteRide = () =>{
     onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
       setRideComplete({id: doc.id, ...doc.data()});
     })
@@ -101,7 +75,7 @@ function CurrentRide(props) {
 
   useEffect(() => {
     getCurrentRide();
-    getPendingRide();
+    getCompleteRide();
   }, []);
 
   const cancelRide = async (evt) => {
@@ -145,13 +119,8 @@ function CurrentRide(props) {
         wallet: Number(riderWallet) - Number(cost), 
         totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
     })
-    setCompleted(true);
-    getPendingRide()
-    
-    // history.replace({
-    //   pathname: '/rideComplete',
-    //   state: { isDriver,ride }
-    // });
+   
+  
   }
 console.log('am I a driver', isDriver)
  
