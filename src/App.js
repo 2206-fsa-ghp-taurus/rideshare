@@ -3,7 +3,7 @@ import './App.css';
 import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { AuthContext, useAuthInit } from './auth';
-import { DriverContext} from './driverContext';
+import { DriverContext } from './driverContext';
 import Login from './components/Login';
 import SelectRide from './components/SelectRide';
 import DriverList from './components/DriverList';
@@ -19,7 +19,7 @@ import EditProfile from './components/EditProfile';
 import CurrentRide from './components/CurrentRide';
 import RideComplete from './components/RideComplete';
 import RidesHistory from './components/RidesHistory';
-import { db } from "./firebase";
+import { db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
 const App = () => {
@@ -29,110 +29,107 @@ const App = () => {
   const [userDistance, setUserDistance] = useState(0);
   console.log('app is rendering with auth:', authObj);
   if (loading) {
-    return (<div className="flex justify-center items-center">
-    <div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
-      <span className="visually-hidden">Loading...</span>
-    </div>
-   </div> )
+    return (
+      <div className='flex justify-center items-center'>
+        <div
+          className='spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full'
+          role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </div>
+      </div>
+    );
   }
-
 
   const getUser = async () => {
-    const user = await authObj.userId
-    const docSnap = await getDoc(doc(db, "Users",
-    `${user}`));
-      const userName = docSnap.data();
-    if(userName.driverStatus) {
-      setIsDriver(true)
+    const user = await authObj.userId;
+    const docSnap = await getDoc(doc(db, 'Users', `${user}`));
+    const userName = docSnap.data();
+    if (userName.driverStatus) {
+      setIsDriver(true);
     } else {
-      setIsDriver(null)
+      setIsDriver(null);
     }
-  }
+  };
 
- if(authObj.loggedIn) {
-  getUser()
- }
- console.log(isDriver)
+  if (authObj.loggedIn) {
+    getUser();
+  }
+  console.log(isDriver);
 
   return (
     <div>
       <AuthContext.Provider value={authObj}>
-      <DriverContext.Provider value={{isDriver, setIsDriver}} >
-        <Navbar />
-        <Switch>
-          <Route exact path='/login'>
-            <Login />
-          </Route>
+        <DriverContext.Provider value={{ isDriver, setIsDriver }}>
+          {/* <Navbar /> */}
+          <Switch>
+            <Route exact path='/login'>
+              <Login />
+            </Route>
 
-          <Route exact path='/selectride'>
-            <SelectRide selectedDrive={selectedDrive} setSelectToDrive={setSelectToDrive}/>
-          </Route>
+            <Route exact path='/selectride'>
+              <SelectRide
+                selectedDrive={selectedDrive}
+                setSelectToDrive={setSelectToDrive}
+              />
+            </Route>
 
-          <Route exact path='/driverlist'>
-            <DriverList />
-          </Route>
+            <Route exact path='/driverlist'>
+              <DriverList />
+            </Route>
 
-          <Route exact path='/riderequestlist'>
+            <Route exact path='/riderequestlist'>
+              <RideRequests />
+            </Route>
 
-            <RideRequests />
+            <Route exact path='/signup'>
+              <Signup />
+            </Route>
 
-          </Route>
+            <Route exact path='/createProfile'>
+              <CreateProfile />
+            </Route>
 
-          <Route exact path='/signup'>
-            <Signup />
-          </Route>
+            {/* <PrivateRoute exact path='/chat' component={Messaging} /> */}
+            <Route exact path='/chat'>
+              <Messaging />
+            </Route>
 
-          <Route exact path='/createProfile'>
-            <CreateProfile />
-          </Route>
+            <Route exact path='/home'>
+              <Home />
+            </Route>
 
-          {/* <PrivateRoute exact path='/chat' component={Messaging} /> */}
-          <Route exact path='/chat'>
-            <Messaging />
-          </Route>
+            <Route exact path='/'>
+              <Redirect to='/home' />
+            </Route>
 
-          <Route exact path='/home'>
-            <Home />
-          </Route>
+            <Route exact path='/userMap'>
+              <UserMap
+                selectedDrive={selectedDrive}
+                userDistance={userDistance}
+                setUserDistance={setUserDistance}
+              />
+            </Route>
 
-          <Route exact path='/'>
-            <Redirect to='/home' />
-          </Route>
+            <Route exact path='/userAccount'>
+              <UserAccount />
+            </Route>
 
-          <Route exact path='/userMap'>
-            <UserMap
-              selectedDrive={selectedDrive}
-              userDistance={userDistance}
-              setUserDistance={setUserDistance}
-            />
-          </Route>
+            <Route exact path='/editProfile'>
+              <EditProfile />
+            </Route>
 
-          <Route exact path='/userAccount'>
-            <UserAccount />
-          </Route>
+            <Route exact path='/currentRide'>
+              <CurrentRide />
+            </Route>
 
-          <Route exact path='/editProfile'>
-            <EditProfile />
-          </Route>
+            <Route exact path='/rideComplete'>
+              <RideComplete />
+            </Route>
 
-          <Route exact path='/currentRide'>
-
-
-
-            <CurrentRide />
-
-          </Route>
-
-          <Route exact path='/rideComplete'>
-            <RideComplete />
-          </Route>
-
-          <Route exact path='/ridesHistory'>
-            <RidesHistory />
-          </Route>
-
-
-        </Switch>
+            <Route exact path='/ridesHistory'>
+              <RidesHistory />
+            </Route>
+          </Switch>
         </DriverContext.Provider>
       </AuthContext.Provider>
     </div>

@@ -15,9 +15,9 @@ const Navbar = () => {
 
   return (
     <>
-      <nav role='navigation' style={{ marginBottom: '100px' }}>
+      <nav role='navigation'>
         {loggedIn ? (
-          <div className='navbar bg-base-100'>
+          <div className='navbar bg-base-100 '>
             <div className='navbar-start'>
               <div className='dropdown'>
                 <label tabIndex='0' className='btn btn-ghost btn-circle'>
@@ -55,7 +55,7 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <div className='navbar bg-base-100'>
+          <div className='navbar bg-base-100 bg-green-400'>
             <div className='navbar-start'>
               <div className='dropdown'>
                 <label tabIndex='0' className='btn btn-ghost btn-circle'>

@@ -145,44 +145,44 @@ const CreateProfile = () => {
         </div>
 
         <h3>Car Details</h3>
-        <label class='input-group' htmlFor='make'>
+        <label className='input-group' htmlFor='make'>
           Car Make
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='make'
           type='text'
           value={make}
           onChange={(event) => setMake(event.target.value)}
         />
 
-        <label class='input-group' htmlFor='model'>
+        <label className='input-group' htmlFor='model'>
           Model
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='model'
           type='text'
           value={model}
           onChange={(event) => setModel(event.target.value)}
         />
 
-        <label class='input-group' htmlFor='color'>
+        <label className='input-group' htmlFor='color'>
           Color
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='color'
           type='text'
           value={color}
           onChange={(event) => setColor(event.target.value)}
         />
 
-        <label class='input-group' htmlFor='license'>
+        <label className='input-group' htmlFor='license'>
           License Plate
         </label>
         <input
-          class='input input-bordered'
+          className='input input-bordered'
           name='license'
           type='text'
           value={license}

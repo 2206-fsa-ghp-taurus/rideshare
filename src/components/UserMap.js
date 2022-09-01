@@ -21,7 +21,7 @@ import {
   onSnapshot,
 } from 'firebase/firestore';
 import { useHistory } from 'react-router-dom';
-import { DriverContext} from '../driverContext';
+import { DriverContext } from '../driverContext';
 
 const UserMap = (props) => {
   const [position, setPosition] = useState({
@@ -53,7 +53,7 @@ const UserMap = (props) => {
     updateDoc(doc(db, 'Users', userId), {
       driverStatus: true,
     });
-    setIsDriver(true)
+    setIsDriver(true);
     setDisableConfirm(true);
   };
 
@@ -93,7 +93,7 @@ const UserMap = (props) => {
       </div>
       <div>
         (
-        <button class='btn btn-xs' onClick={locateMe}>
+        <button className='btn btn-xs' onClick={locateMe}>
           Locate Me
         </button>
         )
@@ -114,35 +114,37 @@ const UserMap = (props) => {
       </div>
 
       {selectedDrive && !isDriver ? (
-       <div>
-         <button
-           className='btn rounded-full'
-           disabled={disableConfirm}
-           onClick={beDriver}>
-           Confirm To Be Driver
-         </button>
+        <div>
+          <button
+            className='btn rounded-full'
+            disabled={disableConfirm}
+            onClick={beDriver}>
+            Confirm To Be Driver
+          </button>
+        </div>
+      ) : (
+        ''
+      )}
 
-       </div>
-     ) : ( ''
-  )}
+      {isDriver ? (
+        <Link to='/riderequestlist'>
+          <button className='btn rounded-full'>See Requested Rides</button>
+        </Link>
+      ) : (
+        ''
+      )}
 
-     {isDriver ? (
-      <Link to='/riderequestlist'>
-      <button className='btn rounded-full'>See Requested Rides</button>
-    </Link>
-    ) : ( ''
-    )}
-
-    {!selectedDrive && !isDriver ? (
-       <Link to='/driverlist'>
-         {' '} 
-         <button className='btn rounded-full' onClick={findDriver}>
-           Find Drivers
-         </button>
-       </Link>
-     ) : ( ''
-  )}
-   </div>
+      {!selectedDrive && !isDriver ? (
+        <Link to='/driverlist'>
+          {' '}
+          <button className='btn rounded-full' onClick={findDriver}>
+            Find Drivers
+          </button>
+        </Link>
+      ) : (
+        ''
+      )}
+    </div>
   );
 };
 
