@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useMap } from 'react-leaflet';
 import { useAuth } from '../auth';
@@ -14,19 +14,24 @@ import {
   query,
   where,
   onSnapshot,
+  deleteDoc, deleteField
 } from 'firebase/firestore';
 import UserDetails from './UserDetails';
 import { MapContainer, TileLayer } from 'react-leaflet';
+import { DriverContext} from '../driverContext';
 
 function RideRequests(props) {
   const { userId } = useAuth();
   const history = useHistory();
-  const { isDriver } = props;
+  const { selectedDrive, setSelectToDrive }  = props;
   const [requests, setRideRequests] = useState([]);
+  const { currentRide, setCurrentRide } = useContext(DriverContext);
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
     lng: -94.56373267199132,
   });
+
+
 
   const getRideRequests = async () => {
     onSnapshot(
@@ -64,13 +69,25 @@ function RideRequests(props) {
     return null;
   };
 
+  const cancelDrive = async () => {
+    const rideRef = doc(db, 'Rides', `${currentRide}`)
+    await deleteDoc(rideRef)
+
+    const driverRef = doc(db, 'Users', userId)
+      await updateDoc(driverRef, {
+        driverStatus: deleteField()
+      })
+      setCurrentRide(null)
+      history.replace('/home')
+    }
+
   const acceptRide = async (riderRequest) => {
     console.log('riderrequest', riderRequest)
     history.replace({
       pathname: '/currentRide',
       state: { ride: riderRequest }
       });
-  
+
     const rideRef = doc(db, 'Rides', riderRequest.id);
     await updateDoc(rideRef, {
       status: 1,
@@ -81,7 +98,7 @@ function RideRequests(props) {
     history.replace('/editProfile');
   };
 
-  console.log(userId);
+
   return (
     <div>
       <div className='container'>
@@ -122,10 +139,15 @@ function RideRequests(props) {
       </div>
       <div className='divider'></div>
       <div>
-        <h4>Would you like to update your car details?</h4>
+
         <button className='btn rounded-full' onClick={inputCarDetails}>
           Edit Car Details
         </button>
+
+        <button className='btn rounded-full' onClick={cancelDrive}>
+          Cancel Drive
+        </button>
+
       </div>
     </div>
   );

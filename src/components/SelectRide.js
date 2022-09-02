@@ -18,10 +18,10 @@ function SelectRide(props) {
   const selectToDrive = () => {
     setSelectToDrive(true);
     console.log(selectedDrive)
-  };
+  }
   const selectToRide = () => {
     setSelectToDrive(false);
-  };
+  }
 
   return (
     <div className='flex flex-col w-full border-opacity-50'>
