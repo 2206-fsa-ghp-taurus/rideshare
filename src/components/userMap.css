@@ -1,6 +1,7 @@
 .leaflet-container {
-    max-width: 70vw;
-    height: 50vw;
+    width: 99vw;
+    height: 45vh;
+    display: flex
   }
 
 .leaflet-control-container .leaflet-routing-container-hide {

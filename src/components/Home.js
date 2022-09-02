@@ -12,7 +12,6 @@ const Home = () => {
       <div className='ml-4 pt-3'>
         <h1
           className='text-8xl mx-4 pt-6 text-white font-extrabold'
-          f
           style={{ fontFamily: 'Twinkle Star' }}>
           hop
         </h1>

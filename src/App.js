@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import UserMap from './components/UserMap';
 import { Redirect, Route, Switch } from 'react-router-dom';
@@ -12,7 +12,6 @@ import CreateProfile from './components/CreateProfile';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Messaging from './components/Messaging';
-import PrivateRoute from './components/PrivateRoute';
 import UserAccount from './components/UserAccount.js';
 import RideRequests from './components/RideRequests';
 import EditProfile from './components/EditProfile';
@@ -25,8 +24,11 @@ import { doc, getDoc } from 'firebase/firestore';
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(null);
+  const [currentRide, setCurrentRide] = useState(null);
   const [selectedDrive, setSelectToDrive] = useState(false);
   const [userDistance, setUserDistance] = useState(0);
+  const [isShow, setIsShow] = useState(false);
+
   console.log('app is rendering with auth:', authObj);
   if (loading) {
     return (
@@ -54,12 +56,12 @@ const App = () => {
   if (authObj.loggedIn) {
     getUser();
   }
-  console.log(isDriver);
 
   return (
     <div>
       <AuthContext.Provider value={authObj}>
-        <DriverContext.Provider value={{ isDriver, setIsDriver }}>
+        <DriverContext.Provider
+          value={{ isDriver, setIsDriver, currentRide, setCurrentRide }}>
           <Navbar />
           <Switch>
             <Route exact path='/login'>
@@ -89,7 +91,6 @@ const App = () => {
               <CreateProfile />
             </Route>
 
-            {/* <PrivateRoute exact path='/chat' component={Messaging} /> */}
             <Route exact path='/chat'>
               <Messaging />
             </Route>

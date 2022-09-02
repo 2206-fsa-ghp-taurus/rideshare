@@ -40,6 +40,13 @@ const Signup = () => {
   }
   return (
     <div className='form-control h-screen flex items-center justify-center my-4'>
+      <h1
+        className='text-8xl mx-4 mb-2 text-green-400 font-extrabold'
+        f
+        style={{ fontFamily: 'Twinkle Star' }}>
+        hop
+      </h1>
+      <h2 className='text-center text-xl font-semibold my-2'>Sign Up</h2>
       <div>
         <label className='input-group input-group-md'>
           <span> Email</span>
