@@ -116,11 +116,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/currentRide'>
-
-
-
-            <CurrentRide />
-
+            <CurrentRide selectedDrive={selectedDrive} setSelectToDrive={setSelectToDrive}/>
           </Route>
 
           <Route exact path='/rideComplete'>

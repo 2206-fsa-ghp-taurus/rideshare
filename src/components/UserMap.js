@@ -94,7 +94,7 @@ const UserMap = (props) => {
       <div>
         (
         <button className='btn btn-xs' onClick={locateMe}>
-          Locate Me
+        <i className="fa fa-trash-o"></i>
         </button>
         )
       </div>
