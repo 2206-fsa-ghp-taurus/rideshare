@@ -1,96 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import { useHistory } from 'react-router-dom';
+import { doc, getDoc, query, collection } from 'firebase/firestore';
 
 const Navbar = () => {
-  const { loggedIn } = useAuth();
+  const { loggedIn, userId } = useAuth();
   const history = useHistory();
+  const [userPhoto, setUserPhoto] = useState();
 
   const handleLogOut = () => {
     auth.signOut();
     history.replace('/home'); // whenever user clicks on logout, always take them to the home apge
   };
 
+  const getPhoto = async () => {
+    let grabPhoto = await getDoc(doc(db, 'Users', userId));
+    setUserPhoto(grabPhoto.data().pictureUrl);
+  };
+
+  useEffect(() => {
+    getPhoto();
+  });
+
   return (
     <>
       <nav role='navigation'>
-        {loggedIn ? (
-          <div className='navbar bg-base-100 '>
-            <div className='navbar-start'>
-              <div className='dropdown'>
-                <label tabIndex='0' className='btn btn-ghost btn-circle'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-5 w-5'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M4 6h16M4 12h16M4 18h7'
-                    />
-                  </svg>
-                </label>
-                <ul
-                  tabIndex='0'
-                  className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'>
-                  <li>
-                    {' '}
-                    <Link to='/home'>Home</Link>
-                  </li>
-                  <li>
-                    {' '}
-                    <Link to='/userAccount'>My Account</Link>
-                  </li>
-                  <li>
-                    {' '}
-                    <button onClick={handleLogOut}> Logout</button>
-                  </li>
-                </ul>
+        {loggedIn && (
+          <div className='navbar navbar-end w-full'>
+            <label
+              tabIndex='0'
+              className='btn btn-ghost btn-circle avatar online'>
+              <div className='rounded-full w-10'>
+                <Link to='/userAccount'>
+                  <img src={userPhoto} alt='user pic' />
+                </Link>
               </div>
-            </div>
-          </div>
-        ) : (
-          <div className='navbar bg-base-100 bg-green-400'>
-            <div className='navbar-start'>
-              <div className='dropdown'>
-                <label tabIndex='0' className='btn btn-ghost btn-circle'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    className='h-5 w-5'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    stroke='currentColor'>
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      strokeWidth='2'
-                      d='M4 6h16M4 12h16M4 18h7'
-                    />
-                  </svg>
-                </label>
-                <ul
-                  tabIndex='0'
-                  className='menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52'>
-                  <li>
-                    {' '}
-                    <Link to='/home'>Home</Link>
-                  </li>
-                  <li>
-                    {' '}
-                    <Link to='/login'>Login</Link>
-                  </li>
-                  <li>
-                    {' '}
-                    <Link to='/signup'>Signup</Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            </label>
+            <label tabIndex='0' className='mx-2'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                width='16'
+                height='16'
+                fill='currentColor'
+                class='bi bi-box-arrow-right'
+                viewBox='0 0 16 16'>
+                <path
+                  fill-rule='evenodd'
+                  d='M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0v2z'
+                />
+                <path
+                  fill-rule='evenodd'
+                  d='M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z'
+                />
+              </svg>
+              <button onClick={handleLogOut}> Logout</button>
+            </label>
           </div>
         )}
       </nav>

@@ -2,15 +2,19 @@
 module.exports = {
   content: ['./src/**/*.{html,js}'],
   theme: {
-    extend: {
-      colors: {
-        'Spanish Gray': '#A39594',
-        'Kelly Green': '#5DB93C',
-        'Sheen Green': '#8CD846',
-      },
-      fontFamily: {
-        lobster: ['Lobster', 'sans-serif'],
-      },
+    colors: {
+      'spanish-gray': '#A39594',
+      'kelly-green': '#5DB93C',
+      'sheen-green': '#8CD846',
+    },
+    fontFamily: {
+      lobster: ['Lobster', 'sans-serif'],
+    },
+    height: {
+      '31px': '31px',
+    },
+    width: {
+      '31px': '31px',
     },
   },
   plugins: [require('daisyui')],

@@ -25,30 +25,36 @@ function SelectRide(props) {
   };
 
   return (
-    <>
-      <div>
-        <Navbar />
+    <div className='h-screen'>
+      <div className='btm-nav'>
+        {/* <div className='grid h-20 card place-items-center'> */}
+        <Link to='/userMap' className='bg-green-200'>
+          <button className='active' onClick={selectToRide}>
+            <img
+              className='flex items-center h-5 w-5'
+              src='https://www.svgrepo.com/show/307341/hail-a-cab-signal-hitchhike-wave.svg'
+              alt='person'
+              style={{ maxWidth: '25px' }}
+            />
+            <span className='btm-nav-label'>I need a ride</span>
+          </button>
+        </Link>
+        {/* </div> */}
+        {/* <div className='grid h-20 card place-items-center'> */}
+        <Link to='/userMap' className='bg-green-700 text-white'>
+          {' '}
+          <button onClick={selectToDrive}>
+            <img
+              className='flex h-5 w-5'
+              src='https://www.svgrepo.com/show/103353/car.svg'
+              alt='car'
+            />
+            <span className='btm-nav-label'>I want to drive</span>
+          </button>
+        </Link>
+        {/* </div> */}
       </div>
-
-      <div className='flex flex-col w-full border-opacity-50'>
-        <div className='grid h-20 card place-items-center'>
-          <Link to='/userMap'>
-            <button className='btn rounded-full' onClick={selectToRide}>
-              I need a ride
-            </button>
-          </Link>
-        </div>
-        <div className='divider'>OR</div>
-        <div className='grid h-20 card place-items-center'>
-          <Link to='/userMap'>
-            {' '}
-            <button className='btn rounded-full' onClick={selectToDrive}>
-              I want to drive
-            </button>
-          </Link>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
