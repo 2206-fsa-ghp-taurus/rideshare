@@ -28,7 +28,17 @@ const RidesHistory = () => {
   useEffect(()=>{getAllRides()}, []) 
   useEffect(()=>{getAllDrives()}, []) 
 
+  // cannot get orderBy work, so create a custom comparator
+  // rides.sort(function(a,b){
+  //   return a.timestamp > b.timestamp ? -1 : 1
+  // })
+  // drives.sort(function(a,b){
+  //   return a.timestamp > b.timestamp ? -1 : 1
+  // })
   const allRides = [...rides, ...drives]
+   allRides.sort(function(a,b){
+    return a.timestamp > b.timestamp ? -1 : 1
+  })
 
   const FormatNumber = (num)=> {
     console.log(num);
@@ -45,7 +55,7 @@ const RidesHistory = () => {
           {allRides.map((ride) => (
             <div key={ride.id} >
               <p> ------------------</p>
-              <p> Role: {ride.type === 'rider' ? "Rider" : "Driver"}</p>
+              <p>  <strong>Role: {ride.type === 'rider' ? "Rider" : "Driver"}</strong> </p>
               <p> Time: {ride.timestamp.toDate().toDateString()}</p>
               <p> From: {ride.pickUpAddress}</p>
               <p> To: {ride.dropOffAddress}</p>
