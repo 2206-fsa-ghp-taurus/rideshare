@@ -71,7 +71,6 @@ const CreateProfile = () => {
       // save the image to Cloud , if starts with 'blob:'
       userData.pictureUrl = await savePicture(pictureUrl, userId);
     }
-    console.log('this user data', userData, carMake);
     await updateDoc(doc(db, 'Users', userId), userData); // change from setDoc to updateDoc otherwise original fields are overwritten
     // history.goBack();
 

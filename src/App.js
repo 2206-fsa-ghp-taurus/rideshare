@@ -25,8 +25,11 @@ import { doc, getDoc } from 'firebase/firestore';
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(null);
+  const [currentRide, setCurrentRide] = useState(null);
   const [selectedDrive, setSelectToDrive] = useState(false);
   const [userDistance, setUserDistance] = useState(0);
+  const [isShow, setIsShow] = useState(false);
+
   console.log('app is rendering with auth:', authObj);
   if (loading) {
     return (<div className="flex justify-center items-center">
@@ -35,7 +38,6 @@ const App = () => {
     </div>
    </div> )
   }
-
 
   const getUser = async () => {
     const user = await authObj.userId
@@ -52,12 +54,11 @@ const App = () => {
  if(authObj.loggedIn) {
   getUser()
  }
- console.log(isDriver)
 
   return (
     <div>
       <AuthContext.Provider value={authObj}>
-      <DriverContext.Provider value={{isDriver, setIsDriver}} >
+      <DriverContext.Provider value={{isDriver, setIsDriver, currentRide, setCurrentRide}} >
         <Navbar />
         <Switch>
           <Route exact path='/login'>
