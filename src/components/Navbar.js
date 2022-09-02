@@ -26,7 +26,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav role='navigation'>
+      <nav role='navigation' className='bg-green-100'>
         {loggedIn && (
           <div className='navbar navbar-end w-full'>
             <label

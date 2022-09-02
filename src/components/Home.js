@@ -11,12 +11,13 @@ const Home = () => {
     <div className='bg-gradient-to-b from-green-400 h-screen'>
       <div className='ml-4 pt-3'>
         <h1
-          className='text-8xl mx-4 pt-6 text-white'
+          className='text-8xl mx-4 pt-6 text-white font-extrabold'
+          f
           style={{ fontFamily: 'Twinkle Star' }}>
           hop
         </h1>
         {/* <h2 className='text-l mx-4 mt-7 text-white'>Hop In!</h2> */}
-        <h2 className='text-m mx-4 text-white my-8'>
+        <h2 className='text-m mx-4 text-white my-8 font-semibold'>
           A green rideshare company
         </h2>
       </div>

@@ -77,7 +77,8 @@ const UserMap = (props) => {
 
   return (
     <div>
-      <div className='container'>
+      {/* <div className='mx-auto'> */}
+      <div className='container flex justify-center p-4 bg'>
         <MapContainer ref={mapRef} center={position} zoom={13} scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -91,14 +92,13 @@ const UserMap = (props) => {
           />
         </MapContainer>
       </div>
-      <div>
-        (
+      {/* </div> */}
+      <div className='ml-4 my-4'>
         <button className='btn btn-xs' onClick={locateMe}>
           Locate Me
         </button>
-        )
       </div>
-      <div>
+      <div className='ml-4'>
         <LocationPickUp
           pickUpCoords={pickUpCoords}
           setPickUpCoords={setPickUpCoords}

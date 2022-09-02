@@ -5,11 +5,12 @@ import { useAuth } from '../auth';
 // import { db } from "../firebase";
 // import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
 import { Link, Redirect } from 'react-router-dom';
-import Navbar from './Navbar';
+import CarbonSaved from './CarbonSaved';
 
 function SelectRide(props) {
   const { loggedIn } = useAuth();
   const { selectedDrive, setSelectToDrive } = props;
+  const [decide, setDecide] = useState(false);
   console.log(selectedDrive);
 
   if (!loggedIn) {
@@ -18,40 +19,42 @@ function SelectRide(props) {
 
   const selectToDrive = () => {
     setSelectToDrive(true);
+    setDecide(true);
     console.log(selectedDrive);
   };
   const selectToRide = () => {
     setSelectToDrive(false);
+    setDecide(true);
   };
 
   return (
     <div className='h-screen'>
+      {decide ? <UserMap /> : <CarbonSaved />}
       <div className='btm-nav'>
         {/* <div className='grid h-20 card place-items-center'> */}
-        <Link to='/userMap' className='bg-green-200'>
-          <button className='active' onClick={selectToRide}>
-            <img
-              className='flex items-center h-5 w-5'
-              src='https://www.svgrepo.com/show/307341/hail-a-cab-signal-hitchhike-wave.svg'
-              alt='person'
-              style={{ maxWidth: '25px' }}
-            />
-            <span className='btm-nav-label'>I need a ride</span>
-          </button>
-        </Link>
+        {/* <Link to='/userMap' className='bg-green-200'> */}
+        <button className='bg-green-200' onClick={selectToRide}>
+          <img
+            className='flex items-center h-5 w-5'
+            src='https://www.svgrepo.com/show/307341/hail-a-cab-signal-hitchhike-wave.svg'
+            alt='person'
+            style={{ maxWidth: '25px' }}
+          />
+          <span className='btm-nav-label'>I need a ride</span>
+        </button>
+        {/* </Link> */}
         {/* </div> */}
         {/* <div className='grid h-20 card place-items-center'> */}
-        <Link to='/userMap' className='bg-green-700 text-white'>
-          {' '}
-          <button onClick={selectToDrive}>
-            <img
-              className='flex h-5 w-5'
-              src='https://www.svgrepo.com/show/103353/car.svg'
-              alt='car'
-            />
-            <span className='btm-nav-label'>I want to drive</span>
-          </button>
-        </Link>
+        {/* <Link to='/userMap' className='bg-green-700 text-white'> */}{' '}
+        <button className='bg-green-700 text-white' onClick={selectToDrive}>
+          <img
+            className='flex h-5 w-5'
+            src='https://www.svgrepo.com/show/103353/car.svg'
+            alt='car'
+          />
+          <span className='btm-nav-label'>I want to drive</span>
+        </button>
+        {/* </Link> */}
         {/* </div> */}
       </div>
     </div>
