@@ -22,6 +22,7 @@ import RidesHistory from './components/RidesHistory';
 import { db } from "./firebase";
 import { doc, getDoc } from 'firebase/firestore';
 
+
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(null);
