@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { auth, db } from '../firebase'; // import the auth service
 import { signInWithEmailAndPassword } from 'firebase/auth'; // for firebase 9, signinwithemailandpwd is not on auth
-import Navbar from './Navbar';
+import CarbonSaved from './CarbonSaved';
 
 const Login = () => {
   const { loggedIn, userId } = useAuth();
@@ -37,7 +37,8 @@ const Login = () => {
   return (
     <>
       <div className='form-control h-screen flex items-center justify-center my-4'>
-        <div className=''>
+        <h2 className='text-center text-lg'>Log In</h2>
+        <div>
           <label className='input-group input-group-md'>
             <span> Email</span>
           </label>

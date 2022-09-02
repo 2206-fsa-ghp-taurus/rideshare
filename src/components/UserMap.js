@@ -76,10 +76,15 @@ const UserMap = (props) => {
   console.log(isDriver, selectedDrive);
 
   return (
-    <div>
+    <>
       {/* <div className='mx-auto'> */}
-      <div className='container flex justify-center p-4 bg'>
-        <MapContainer ref={mapRef} center={position} zoom={13} scrollWheelZoom>
+      <div className='container'>
+        <MapContainer
+          ref={mapRef}
+          center={position}
+          zoom={13}
+          scrollWheelZoom
+          className='flex justify-center'>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -100,6 +105,7 @@ const UserMap = (props) => {
       </div>
       <div className='ml-4'>
         <LocationPickUp
+          className='border-4'
           pickUpCoords={pickUpCoords}
           setPickUpCoords={setPickUpCoords}
           pickUpAddress={pickUpAddress}
@@ -116,7 +122,7 @@ const UserMap = (props) => {
       {selectedDrive && !isDriver ? (
         <div>
           <button
-            className='btn rounded-full'
+            className='btn btn-outline bg-success'
             disabled={disableConfirm}
             onClick={beDriver}>
             Confirm To Be Driver
@@ -144,7 +150,7 @@ const UserMap = (props) => {
       ) : (
         ''
       )}
-    </div>
+    </>
   );
 };
 
