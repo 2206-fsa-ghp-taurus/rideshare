@@ -18,15 +18,15 @@ function UserDetails(props) {
   useEffect(() => {
     getUser()
   }, [])
-
+console.log('detail', user)
   return (
     <div>
       {driverDetails ?
         <div>
           {user.map((user) => (
-            <div key={user.userId}>
-              <img className='card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
-              <p className='my-4 card-title product-name text-center font-weight-bold'>{user.firstName} </p>
+            <div key={user?.userId}>
+              <img className='card-title product-name text-center font-weight-bold' src={user?.pictureUrl} alt="user pic"></img>
+              <p className='my-4 card-title product-name text-center font-weight-bold'>{user?.firstName} </p>
               <p className='my-4 card-title product-name text-center font-weight-bold'>{user?.carColor} {user?.carMake} {user?.carModel} </p>
               <p className='my-4 card-title product-name text-center font-weight-bold'>{user?.carLicense} </p>
             </div>
@@ -35,9 +35,9 @@ function UserDetails(props) {
       :
         <div>
           {user.map((user) => (
-            <div key={user.userId}>
-              <img className='card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
-              <p className='my-4 card-title product-name text-center font-weight-bold'>{user.firstName} </p>
+            <div key={user?.userId}>
+              <img className='card-title product-name text-center font-weight-bold' src={user?.pictureUrl} alt="user pic"></img>
+              <p className='my-4 card-title product-name text-center font-weight-bold'>{user?.firstName} </p>
             </div>
           ))}
         </div>

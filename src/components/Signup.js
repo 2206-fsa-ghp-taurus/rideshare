@@ -28,6 +28,7 @@ const Signup = () => {
         totalFootPrint: 0,
         wallet: 100, // virtual wallet, give an initial value of 100
         pictureUrl: DEFAULTimg,
+        goal: 100,
       });
     } catch (error) {
       setStatus({ loading: false, error: true });
