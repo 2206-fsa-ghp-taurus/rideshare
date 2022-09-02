@@ -40,7 +40,8 @@ function CurrentRide(props) {
   const [showChat, setShowChat] = useState(true);
   const location = useLocation();
   const { ride } = location.state;
- 
+  const { currentRide ,setCurrentRide } = useContext(DriverContext);
+
 
   const getCompleteRide = () =>{
     onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
@@ -83,18 +84,22 @@ function CurrentRide(props) {
   }, []);
 
   const cancelRide = async (ride) => {
-    const rideRef = doc(db, 'Rides', ride.id);
-    const driverRef = doc(db, 'Users', ride.driverId)
-    await updateDoc(rideRef, {
-      status: deleteField(),
-      riderId: deleteField(),
-      riderPickUp: deleteField(),
-      riderDropOff: deleteField(),
-    });
-    await updateDoc(driverRef, {
-      driveStatus: deleteField()
-    })
+    const isCancel = window.confirm('Are you sure you want to cancel ride?');
+    if(isCancel) {
+      const rideRef = doc(db, 'Rides', ride.id);
+      const driverRef = doc(db, 'Users', ride.driverId)
+      await updateDoc(rideRef, {
+        status: deleteField(),
+        riderId: deleteField(),
+        riderPickUp: deleteField(),
+        riderDropOff: deleteField(),
+      });
+      await updateDoc(driverRef, {
+        driverStatus: deleteField()
+      })
+    }
   };
+
 
   const FormatNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -105,6 +110,7 @@ function CurrentRide(props) {
     await updateDoc(rideRef, {
       status: 2,
     });
+    setCurrentRide(null)
     const distance = (await getDoc(rideRef)).data().distance;
     const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
     const carbon = FormatNumber((distance / 1000) * 650 / 1000);
@@ -127,14 +133,14 @@ function CurrentRide(props) {
     });
     // update for rider
     await updateDoc(riderRef, {
-        wallet: Number(riderWallet) - Number(cost), 
+        wallet: Number(riderWallet) - Number(cost),
         totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
     })
   }
-   
-  
-  
- 
+console.log(currentRide)
+
+
+
 //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
   if(currentRides.length === 0 && rideComplete.status !== 2) {
     if(isDriver) {
@@ -147,7 +153,7 @@ function CurrentRide(props) {
   //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
   if(currentRides.length === 0 && rideComplete.status === 2) {
       return <Redirect to={{ pathname: '/rideComplete', state: {isDriver, ride: rideComplete}}}/>
-  } 
+  }
 
 
   const RoutingAfterRideAccepted = () => {
@@ -251,7 +257,7 @@ function CurrentRide(props) {
               <button
                 id={ride.id}
                 className='btn rounded-full'
-                onClick={() => cancelRide(ride.id)}>
+                  onClick={() => cancelRide(ride.id)}>
                 Cancel Ride
               </button>
             </div>
