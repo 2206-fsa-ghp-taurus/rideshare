@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { Route } from 'react-router-dom';
 import UserMap from './UserMap';
 import { useAuth } from '../auth';
-// import { db } from "../firebase";
-// import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import CarbonSaved from './CarbonSaved';
 
 function SelectRide(props) {
   const { loggedIn } = useAuth();
-  const { selectedDrive, setSelectToDrive }  = props;
+  const { selectedDrive, setSelectToDrive } = props;
+  const [decide, setDecide] = useState(false);
 
   if (!loggedIn) {
     return <Redirect to='/home' />;
@@ -16,28 +15,36 @@ function SelectRide(props) {
 
   const selectToDrive = () => {
     setSelectToDrive(true);
-  }
+    setDecide(true);
+  };
   const selectToRide = () => {
     setSelectToDrive(false);
-  }
+    setDecide(true);
+  };
 
   return (
-    <div className='flex flex-col w-full border-opacity-50'>
-      <div className='grid h-20 card place-items-center'>
-        <Link to='/userMap'>
-          <button className='btn rounded-full' onClick={selectToRide}>
-            I need a ride
-          </button>
-        </Link>
-      </div>
-      <div className='divider'>OR</div>
-      <div className='grid h-20 card place-items-center'>
-        <Link to='/userMap'>
-          {' '}
-          <button className='btn rounded-full' onClick={selectToDrive}>
-            I want to drive
-          </button>
-        </Link>
+    <div className='wx-auto px-0'>
+      {decide ? <UserMap selectedDrive={selectedDrive} /> : <CarbonSaved />}
+      <div className='btm-nav'>
+        <button className='bg-green-100 bg-opacity-50' onClick={selectToRide}>
+          <img
+            className='flex items-center h-5 w-5'
+            src='https://www.svgrepo.com/show/307341/hail-a-cab-signal-hitchhike-wave.svg'
+            alt='person'
+            style={{ maxWidth: '25px' }}
+          />
+          <span className='btm-nav-label'>I need a ride</span>
+        </button>
+        <button
+          onClick={selectToDrive}
+          className='bg-green-700 bg-opacity-40 text-white'>
+          <img
+            className='flex h-5 w-5'
+            src='https://www.svgrepo.com/show/103353/car.svg'
+            alt='car'
+          />
+          <span className='btm-nav-label'>I want to drive</span>
+        </button>
       </div>
     </div>
   );

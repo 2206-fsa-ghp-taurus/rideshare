@@ -28,6 +28,7 @@ const Signup = () => {
         totalFootPrint: 0,
         wallet: 100, // virtual wallet, give an initial value of 100
         pictureUrl: DEFAULTimg,
+        goal: 100,
       });
     } catch (error) {
       setStatus({ loading: false, error: true });
@@ -39,24 +40,31 @@ const Signup = () => {
     return <Redirect to='/createProfile' />;
   }
   return (
-    <div className='form-control'>
+    <div className='form-control h-screen flex items-center justify-center my-4'>
+      <h1
+        className='text-8xl mx-4 mb-2 text-green-400 font-extrabold'
+        f
+        style={{ fontFamily: 'Twinkle Star' }}>
+        hop
+      </h1>
+      <h2 className='text-center text-xl font-semibold my-2'>Sign Up</h2>
       <div>
-        <label className='input-group input-group-lg'>
+        <label className='input-group input-group-md'>
           <span> Email</span>
         </label>
         <input
-          className='input input-bordered input-lg'
+          className='input input-bordered input-lg mb-3 py-2'
           type='email'
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </div>
       <div>
-        <label className='input-group input-group-lg'>
+        <label className='input-group input-group-md'>
           <span> Password </span>
         </label>
         <input
-          className='input input-bordered input-lg'
+          className='input input-bordered input-lg mb-3 py-2'
           type='password'
           value={password}
           placeholder='6 digits or longer'
@@ -67,15 +75,19 @@ const Signup = () => {
       {/* error message  */}
       {status.error && <p>Registration failed</p>}
       {/* handle register */}
-      <div className='btn-group'>
-        <button onClick={handleSignUp} className='btn btn-active'>
+      <div className='btn-group-vertical'>
+        <button
+          onClick={handleSignUp}
+          className='btn btn-outline bg-success flex items-center py-3 mt-2 mb-4 mx-auto'>
           {' '}
           Create Account{' '}
         </button>
-        <Link to='/login' className='btn'>
-          {' '}
-          Already have an account? Click to Log In{' '}
-        </Link>
+        <div className='flex items-center'>
+          <p className='mr-2'>Have an account?</p>
+          <Link to='/login' className='btn'>
+            Log In
+          </Link>
+        </div>
       </div>
 
       {/* loading message */}
