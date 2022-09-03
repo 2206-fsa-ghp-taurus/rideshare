@@ -91,6 +91,7 @@ const App = () => {
               <CreateProfile />
             </Route>
 
+            {/* <PrivateRoute exact path='/chat' component={Messaging} /> */}
             <Route exact path='/chat'>
               <Messaging />
             </Route>
@@ -120,7 +121,10 @@ const App = () => {
             </Route>
 
             <Route exact path='/currentRide'>
-              <CurrentRide />
+              <CurrentRide
+                selectedDrive={selectedDrive}
+                setSelectToDrive={setSelectToDrive}
+              />
             </Route>
 
             <Route exact path='/rideComplete'>
