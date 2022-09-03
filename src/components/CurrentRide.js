@@ -97,9 +97,12 @@ function CurrentRide(props) {
       await updateDoc(driverRef, {
         driverStatus: deleteField()
       })
+      return(
+        <Redirect to={{ pathname: '/home' }}/>
+      )
     }
   };
-
+console.log(currentRides)
 
   const FormatNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -137,7 +140,6 @@ function CurrentRide(props) {
         totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
     })
   }
-console.log(currentRide)
 
 
 
