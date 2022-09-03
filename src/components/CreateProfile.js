@@ -58,14 +58,14 @@ const CreateProfile = () => {
       firstName,
       lastName,
       pictureUrl,
-      phone
+      phone,
     };
 
     // save car details if entered
-    if (carMake) Object.assign(userData, {carMake})
-    if (carModel) Object.assign(userData, {carModel})
-    if (carColor) Object.assign(userData, {carColor})
-    if (carLicense) Object.assign(userData, {carLicense})
+    if (carMake) Object.assign(userData, { carMake });
+    if (carModel) Object.assign(userData, { carModel });
+    if (carColor) Object.assign(userData, { carColor });
+    if (carLicense) Object.assign(userData, { carLicense });
 
     if (pictureUrl.startsWith('blob:')) {
       // save the image to Cloud , if starts with 'blob:'
@@ -155,7 +155,9 @@ const CreateProfile = () => {
           name='carMake'
           type='text'
           value={carMake}
-          onChange={(event) => event.target.value ? setMake(event.target.value) : ""}
+          onChange={(event) =>
+            event.target.value ? setMake(event.target.value) : ''
+          }
         />
 
         <label className='input-group' htmlFor='carModel'>
@@ -166,7 +168,9 @@ const CreateProfile = () => {
           name='carModel'
           type='text'
           value={carModel}
-          onChange={(event) => event.target.value ? setModel(event.target.value) : ""}
+          onChange={(event) =>
+            event.target.value ? setModel(event.target.value) : ''
+          }
         />
 
         <label className='input-group' htmlFor='carColor'>
@@ -177,7 +181,9 @@ const CreateProfile = () => {
           name='carColor'
           type='text'
           value={carColor}
-          onChange={(event) =>  event.target.value ? setColor(event.target.value) : ""}
+          onChange={(event) =>
+            event.target.value ? setColor(event.target.value) : ''
+          }
         />
 
         <label className='input-group' htmlFor='carLicense'>
@@ -188,7 +194,9 @@ const CreateProfile = () => {
           name='carLicense'
           type='text'
           value={carLicense}
-          onChange={(event) => event.target.value ? setLicense(event.target.value) : ""}
+          onChange={(event) =>
+            event.target.value ? setLicense(event.target.value) : ''
+          }
         />
 
         <button className='btn rounded-full'> Save </button>
