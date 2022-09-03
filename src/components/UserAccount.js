@@ -31,7 +31,7 @@ const UserAccount = () => {
     // used to force wallet to be two digits
     return (Math.round(num * 100) / 100).toFixed(2);
   };
-
+  const percent = user?.totalFootPrint / user?.goal;
   return (
     <>
       {/* <div className="avatar">
@@ -48,10 +48,17 @@ const UserAccount = () => {
         </p>
         <p className='my-1'>EMAIL: {user?.email}</p>
         <p className='my-1'>PHONE: {user?.phone}</p>
+        <p className='my-1'>WALLET($): {FormatNumber(user?.wallet)}</p>
         <p className='my-1'>
           TOTAL CARBON FOOTPRINT: {user?.totalFootPrint} kg
         </p>
-        <p className='my-1'>WALLET($): {FormatNumber(user?.wallet)}</p>
+        <p>CARBON SAVING GOAL: {user?.goal} kg/year</p>
+        <div>
+          <progress
+            class='progress progress-accent w-56'
+            value={user?.totalFootPrint}
+            max={user ? user.goal : 100}></progress>
+        </div>
       </div>
       <div className='flex justify-center items-center my-5'>
         <Link to='/ridesHistory'>

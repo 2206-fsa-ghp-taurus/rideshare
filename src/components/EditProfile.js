@@ -11,6 +11,8 @@ const EditProfile = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
+  const [goal, setGoal] = useState(0);
+
   const [pictureUrl, setPictureUrl] = useState('');
   const [carMake, setMake] = useState('');
   const [carModel, setModel] = useState('');
@@ -27,6 +29,7 @@ const EditProfile = () => {
       setModel(doc.data().carModel);
       setColor(doc.data().carColor);
       setLicense(doc.data().carLicense);
+      setGoal(doc.data().goal);
     });
   };
   useEffect(() => {
@@ -56,7 +59,7 @@ const EditProfile = () => {
 
   const handleSaveUser = async (event) => {
     event.preventDefault();
-    const userData = { firstName, lastName, pictureUrl, phone };
+    const userData = { firstName, lastName, pictureUrl, phone, goal };
 
     if (carMake) Object.assign(userData, { carMake });
     if (carModel) Object.assign(userData, { carModel });
@@ -97,6 +100,18 @@ const EditProfile = () => {
           type='text'
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}
+          required
+        />
+
+        <label className='input-group' htmlFor='goal'>
+          Carbon Saving Goal (KG){' '}
+        </label>
+        <input
+          className='input input-bordered'
+          name='goal'
+          type='number'
+          value={goal}
+          onChange={(event) => setGoal(event.target.value)}
           required
         />
 
