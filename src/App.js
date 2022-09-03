@@ -22,6 +22,7 @@ import RidesHistory from './components/RidesHistory';
 import { db } from "./firebase";
 import { doc, getDoc } from 'firebase/firestore';
 
+
 const App = () => {
   const { loading, authObj } = useAuthInit();
   const [isDriver, setIsDriver] = useState(null);
@@ -117,11 +118,7 @@ const App = () => {
           </Route>
 
           <Route exact path='/currentRide'>
-
-
-
-            <CurrentRide />
-
+            <CurrentRide selectedDrive={selectedDrive} setSelectToDrive={setSelectToDrive}/>
           </Route>
 
           <Route exact path='/rideComplete'>

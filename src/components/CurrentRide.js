@@ -37,6 +37,7 @@ function CurrentRide(props) {
   const [currentRides, setCurrentRides] = useState([]);
   const [rideComplete, setRideComplete] = useState({});
   const [user, setCurrentUser] = useState([]);
+  const {selectedDrive, setSelectToDrive} = props
   const [showChat, setShowChat] = useState(true);
   const location = useLocation();
   const { ride } = location.state;
@@ -139,6 +140,7 @@ console.log(currentRides)
         wallet: Number(riderWallet) - Number(cost),
         totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
     })
+    setSelectToDrive(false)
   }
 
 

@@ -22,9 +22,10 @@ const UserAccount= () => {
         history.replace('/home');
     }
 
-    // if (!user) return (
-    //     <p> It is one of our test users that we grants authentication but did not create entry in user table</p>
-    // )
+    const FormatNumber = (num)=> {// used to force wallet to be two digits 
+        return (Math.round(num * 100) / 100).toFixed(2);
+      }
+
     return (
         <>
             <div className="avatar">
@@ -37,7 +38,7 @@ const UserAccount= () => {
             <p> EMAIL: {user?.email }  </p>
             <p> PHONE: {user?.phone} </p>
             <p> TOTAL CARBON FOOTPRINT (kg): {user?.totalFootPrint} </p>
-            <p> WALLET($): {user?.wallet} </p>
+            <p> WALLET($): {FormatNumber(user?.wallet)} </p>
             <Link to= '/ridesHistory'> <button className="btn rounded-full"> See My Carbon Footprint</button></Link>
             <p> ---------- </p>
             <p> Car Details </p>
