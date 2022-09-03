@@ -115,12 +115,14 @@ const UserMap = (props) => {
 
       {selectedDrive && !isDriver ? (
        <div>
-         <button
-           className='btn rounded-full'
-           disabled={disableConfirm}
-           onClick={beDriver}>
-           Confirm To Be Driver
-         </button>
+         <Link to='/riderequestlist'>
+          <button
+            className='btn rounded-full'
+            disabled={disableConfirm}
+            onClick={beDriver}>
+            Confirm To Be Driver
+          </button>
+         </Link>
 
        </div>
      ) : ( ''

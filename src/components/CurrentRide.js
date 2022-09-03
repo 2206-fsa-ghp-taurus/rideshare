@@ -36,6 +36,7 @@ function CurrentRide(props) {
   const { isDriver, setIsDriver } = useContext(DriverContext);
   const [currentRides, setCurrentRides] = useState([]);
   const [rideComplete, setRideComplete] = useState({});
+  const [rideCancelled, setRideCancelled] = useState(false);
   const [user, setCurrentUser] = useState([]);
   const {selectedDrive, setSelectToDrive} = props
   const [showChat, setShowChat] = useState(true);
@@ -45,11 +46,12 @@ function CurrentRide(props) {
 
 
   const getCompleteRide = () =>{
-    onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
-      setRideComplete({id: doc.id, ...doc.data()});
-    })
+    if(ride) {
+      onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
+        setRideComplete({id: doc.id, ...doc.data()});
+      })
+    }
   }
-
 
   const getCurrentRide = async () => {
     if (isDriver) {
@@ -85,8 +87,6 @@ function CurrentRide(props) {
   }, []);
 
   const cancelRide = async (ride) => {
-    const isCancel = window.confirm('Are you sure you want to cancel ride?');
-    if(isCancel) {
       const rideRef = doc(db, 'Rides', ride.id);
       const driverRef = doc(db, 'Users', ride.driverId)
       await updateDoc(rideRef, {
@@ -98,12 +98,8 @@ function CurrentRide(props) {
       await updateDoc(driverRef, {
         driverStatus: deleteField()
       })
-      return(
-        <Redirect to={{ pathname: '/home' }}/>
-      )
-    }
+      setRideCancelled(true)
   };
-console.log(currentRides)
 
   const FormatNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
@@ -150,6 +146,8 @@ console.log(currentRides)
     if(isDriver) {
       return <p> Not currently on ride</p>;
       //Ride request sent to driver (status=0)
+    } else if (rideCancelled) {
+      return <Redirect to={{ pathname: '/home' }}/>
     } else {
       return <p> Waiting for driver to accept your ride request...</p>
     }
@@ -261,7 +259,7 @@ console.log(currentRides)
               <button
                 id={ride.id}
                 className='btn rounded-full'
-                  onClick={() => cancelRide(ride.id)}>
+                  onClick={() => cancelRide(ride)}>
                 Cancel Ride
               </button>
             </div>

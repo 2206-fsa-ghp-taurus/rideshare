@@ -31,6 +31,7 @@ const DriverList = (props)=> {
     getRides()
   }, [])
 
+
   const getCurrentUser = () =>{
     onSnapshot(doc(db, 'Users', userId), (doc)=> {
       setPickUpCoords(doc.data().pickUp);
@@ -73,6 +74,7 @@ const DriverList = (props)=> {
       matchingDriver.push(rides[idx])
     }
   }
+  console.log(matchingDriver)
 
   if (matchingDriver.length === 0){
     return (
