@@ -23,10 +23,10 @@ function SelectRide(props) {
   };
 
   return (
-    <div className='h-fit wx-auto px-0'>
+    <div className='wx-auto px-0'>
       {decide ? <UserMap selectedDrive={selectedDrive} /> : <CarbonSaved />}
       <div className='btm-nav'>
-        <button className='bg-green-100' onClick={selectToRide}>
+        <button className='bg-green-100 bg-opacity-50' onClick={selectToRide}>
           <img
             className='flex items-center h-5 w-5'
             src='https://www.svgrepo.com/show/307341/hail-a-cab-signal-hitchhike-wave.svg'
@@ -37,7 +37,7 @@ function SelectRide(props) {
         </button>
         <button
           onClick={selectToDrive}
-          className={'bg-green-700 bg-opacity-40 text-white'}>
+          className='bg-green-700 bg-opacity-40 text-white'>
           <img
             className='flex h-5 w-5'
             src='https://www.svgrepo.com/show/103353/car.svg'

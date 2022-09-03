@@ -38,7 +38,8 @@ const LocationDropOff = (props) => {
           <input
             {...getInputProps({
               placeholder: 'Drop-Off point',
-              className: 'location-search-input border-2 my-0.5',
+              className:
+                'location-search-input border-2 my-0.5 border-gray-500',
             })}
           />
           <div className='autocomplete-dropdown-container'>

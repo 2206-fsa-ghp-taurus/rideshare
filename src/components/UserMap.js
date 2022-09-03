@@ -106,7 +106,7 @@ const UserMap = (props) => {
             : 'bg-gradient-to-t from-green-200 h-screen'
         }>
         <div>
-          <button onClick={locateMe} className=''>
+          <button onClick={locateMe} className='m-3'>
             <svg
               height='28'
               viewBox='0 0 276 276'
@@ -138,9 +138,9 @@ const UserMap = (props) => {
         </div>
 
         {selectedDrive && !isDriver ? (
-          <div>
+          <div className='mx-4'>
             <button
-              className='btn btn-outline bg-white mt-3 grid content-center'
+              className='btn btn-outline bg-white mt-3'
               disabled={disableConfirm}
               onClick={beDriver}>
               Confirm To Be Driver
@@ -161,7 +161,9 @@ const UserMap = (props) => {
         {!selectedDrive && !isDriver ? (
           <Link to='/driverlist'>
             {' '}
-            <button className='btn rounded-full' onClick={findDriver}>
+            <button
+              className='btn btn-outline bg-white mt-3 mx-4'
+              onClick={findDriver}>
               Find Drivers
             </button>
           </Link>
