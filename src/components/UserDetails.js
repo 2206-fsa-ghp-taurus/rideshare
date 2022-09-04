@@ -4,8 +4,7 @@ import { doc, getDoc } from 'firebase/firestore';
 
 function UserDetails(props) {
   const [user, setDetails] = useState([])
-  const { driverDetails } = props;
-  const userId = props.userId
+  const { userId, driverDetails } = props;
 
   const getUser = async () => {
     const userName = []

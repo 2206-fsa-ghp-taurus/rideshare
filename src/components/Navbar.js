@@ -17,7 +17,10 @@ const Navbar = () => {
 
   const getPhoto = async () => {
     let grabPhoto = await getDoc(doc(db, 'Users', userId));
-    setUserPhoto(grabPhoto.data().pictureUrl);
+    const userName = grabPhoto.data()
+    if(userName) {
+      setUserPhoto(grabPhoto.data().pictureUrl);
+    }
   };
 
   useEffect(() => {

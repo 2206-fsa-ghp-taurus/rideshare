@@ -24,14 +24,14 @@ function RideRequests(props) {
   const { userId } = useAuth();
   const history = useHistory();
   const { selectedDrive, setSelectToDrive }  = props;
-  const [requests, setRideRequests] = useState([]);
+  const [requests, setRideRequests] = useState();
   const { currentRide, setCurrentRide } = useContext(DriverContext);
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
     lng: -94.56373267199132,
   });
 
-
+console.log("current ride", currentRide)
 
   const getRideRequests = async () => {
     onSnapshot(
@@ -41,28 +41,28 @@ function RideRequests(props) {
         where('driverId', '==', `${userId}`)
       ),
       async (snapshot) =>
-        await setRideRequests(
-          snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
-        )
-    );
-  };
+      await
+          setRideRequests(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+    )
+  )};
 
   useEffect(() => {
     getRideRequests();
-  }, []);
+  },[]);
 
   //setting group of markers in case we allow more than 1 rider.
   const ShowMarkerBeforeRideAccepted = () => {
     const map = useMap();
     let markerBounds = L.latLngBounds();
     if (requests.length && requests.length > 0) {
-      requests.forEach((marker) => {
+      console.log(requests[0].requestorIds)
+      requests[0].requestorIds.forEach((marker) => {
         let markerIcon = L.marker(
-          [marker.riderPickUp.lat, marker.riderPickUp.lng],
+          [marker.pickUpCoords.lat, marker.pickUpCoords.lng],
           { icon: myIcon }
         ).addTo(map);
         markerIcon.bindPopup(`${marker.riderId}`);
-        markerBounds.extend([marker.riderPickUp.lat, marker.riderPickUp.lng]);
+        markerBounds.extend([marker.pickUpCoords.lat, marker.pickUpCoords.lng]);
       });
       map.fitBounds(markerBounds);
     }
@@ -81,8 +81,7 @@ function RideRequests(props) {
       history.replace('/home')
     }
 
-  const acceptRide = async (riderRequest) => {
-    console.log('riderrequest', riderRequest)
+  const acceptRide = async (riderRequest, requestor) => {
     history.replace({
       pathname: '/currentRide',
       state: { ride: riderRequest }
@@ -91,6 +90,13 @@ function RideRequests(props) {
     const rideRef = doc(db, 'Rides', riderRequest.id);
     await updateDoc(rideRef, {
       status: 1,
+      riderId: requestor.userId,
+      riderPickUp: requestor.pickUpCoords,
+      riderDropOff: requestor.dropOffCoords,
+      distance: requestor.distance,
+      pickUpAddress: requestor.pickUpAddress,
+      dropOffAddress: requestor.dropOffAddress,
+      requestorIds: deleteField()
     });
   };
 
@@ -98,7 +104,7 @@ function RideRequests(props) {
     history.replace('/editProfile');
   };
 
-
+console.log(requests)
   return (
     <div>
       <div className='container'>
@@ -115,28 +121,31 @@ function RideRequests(props) {
         </MapContainer>
       </div>
       <div>
-        {requests && requests.length !== 0 ? (
+        {requests && requests.length !== 0 ?(
           <div className='row col-8 justify-content-center'>
-            {requests.map((request) => (
-              <div key={request.id} className='card product-card shadow-lg'>
+              <div key={requests[0].id} className='card product-card shadow-lg'>
                 <div className='card-body'>
                   <p className='my-4 card-title product-name text-center font-weight-bold'>
                     Requested Ride:
                   </p>
-                  <UserDetails userId={request.riderId} />
+                  {requests[0].requestorIds.map((requestor) => (
+                    <div id={requests[0]}>
+                  <UserDetails userId={requestor.userId} />
                   <button
                     className='btn rounded-full'
-                    onClick={() => acceptRide(request)}>
+                    id={requests[0]}
+                    rider={requestor}
+                    onClick={() => {acceptRide(requests[0], requestor)}}>
                     Accept Ride
                   </button>
+                  </div>
+            ))}
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
+              </div>
+     ) : (
           <div>No rides requested</div>
-        )}
-      </div>
+      )}
       <div className='divider'></div>
       <div>
 
@@ -150,7 +159,9 @@ function RideRequests(props) {
 
       </div>
     </div>
+    </div>
   );
+
 }
 
 export default RideRequests;
