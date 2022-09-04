@@ -72,6 +72,8 @@ const App = () => {
               <SelectRide
                 selectedDrive={selectedDrive}
                 setSelectToDrive={setSelectToDrive}
+                userDistance={userDistance}
+                setUserDistance={setUserDistance}
               />
             </Route>
 

@@ -32,8 +32,7 @@ const UserMap = (props) => {
   const [dropOffAddress, setDropOffAddress] = useState('');
   const { isDriver, setIsDriver } = useContext(DriverContext);
   const { currentRide, setCurrentRide } = useContext(DriverContext);
-  const { selectedDrive } = props;
-  const { userDistance, setUserDistance } = props;
+  const { selectedDrive, userDistance, setUserDistance } = props;
   const [disableConfirm, setDisableConfirm] = useState(false);
   const { userId } = useAuth();
   const location = UseGeolocation();
@@ -75,7 +74,7 @@ const UserMap = (props) => {
     mapRef.current.flyTo([location.coordinates.lat, location.coordinates.lng]);
   };
 
-  console.log(isDriver, selectedDrive, currentRide);
+  console.log(isDriver, selectedDrive, currentRide, userDistance);
 
   return (
     <>
@@ -102,8 +101,8 @@ const UserMap = (props) => {
       <div
         className={
           selectedDrive
-            ? 'bg-gradient-to-t from-green-700 h-screen'
-            : 'bg-gradient-to-t from-green-200 h-screen'
+            // ? 'bg-gradient-to-t from-green-700 h-screen'
+            // : 'bg-gradient-to-t from-green-200 h-screen'
         }>
         <button onClick={locateMe} className='m-3'>
           <svg
