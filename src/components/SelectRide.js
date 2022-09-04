@@ -6,12 +6,13 @@ import CarbonSaved from './CarbonSaved';
 
 function SelectRide(props) {
   const { loggedIn } = useAuth();
-  const { selectedDrive, setSelectToDrive } = props;
+  const { selectedDrive, setSelectToDrive, userDistance, setUserDistance } = props;
   const [decide, setDecide] = useState(false);
 
   if (!loggedIn) {
     return <Redirect to='/home' />;
   }
+  console.log(userDistance)
 
   const selectToDrive = () => {
     setSelectToDrive(true);
@@ -24,7 +25,7 @@ function SelectRide(props) {
 
   return (
     <div className='wx-auto px-0'>
-      {decide ? <UserMap selectedDrive={selectedDrive} /> : <CarbonSaved />}
+      {decide ? <UserMap selectedDrive={selectedDrive}  userDistance={userDistance} setUserDistance={setUserDistance} /> : <CarbonSaved />}
       <div className='btm-nav'>
         <button className='bg-green-100 bg-opacity-50' onClick={selectToRide}>
           <img

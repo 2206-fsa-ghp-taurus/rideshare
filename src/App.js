@@ -46,9 +46,9 @@ const App = () => {
     const user = await authObj.userId;
     const docSnap = await getDoc(doc(db, 'Users', `${user}`));
     const userName = docSnap.data();
-    if (userName.driverStatus) {
+    if (userName && userName.driverStatus) {
       setIsDriver(true);
-    } else {
+    } else if (userName) {
       setIsDriver(null);
     }
   };
@@ -72,6 +72,8 @@ const App = () => {
               <SelectRide
                 selectedDrive={selectedDrive}
                 setSelectToDrive={setSelectToDrive}
+                userDistance={userDistance}
+                setUserDistance={setUserDistance}
               />
             </Route>
 
