@@ -101,8 +101,8 @@ const UserMap = (props) => {
       <div
         className={
           selectedDrive
-          // ? 'bg-gradient-to-t from-green-700 h-screen'
-          // : 'bg-gradient-to-t from-green-200 h-screen'
+            ? 'bg-gradient-to-t from-green-700 h-screen'
+            : 'bg-gradient-to-t from-green-200 h-screen'
         }>
         <div>
           <button onClick={locateMe} className='m-3'>
