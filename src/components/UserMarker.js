@@ -25,7 +25,7 @@ export const UserMarker = () => {
 
   useEffect(() => {
     map.flyTo([location.coordinates.lat, location.coordinates.lng], 15, {
-      animate: true, // set fly to to true 
+      animate: true, // set fly to to true
     });
       getTextAddress();
   }, [location.coordinates.lat, location.coordinates.lng, map]);
