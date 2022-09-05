@@ -21,25 +21,31 @@ function UserDetails(props) {
   return (
     <div>
       {driverDetails ?
+
         <div>
           {user.map((user) => (
-            <div key={user.userId}>
-              <img className='card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
-              <p className='my-4 card-title product-name text-center font-weight-bold'>{user.firstName} </p>
-              <p className='my-4 card-title product-name text-center font-weight-bold'>{user?.carColor} {user?.carMake} {user?.carModel} </p>
-              <p className='my-4 card-title product-name text-center font-weight-bold'>{user?.carLicense} </p>
+            <div key={user.userId} className='text-center'>
+              <img src={user.pictureUrl} alt="user pic"></img>
+              <p className='my-4 font-bold text-xl'>{user.firstName}</p>
+              <div className='card-body'>
+                <p className='my-2 font-semibold text-lg'>{user?.carColor} {user?.carMake} {user?.carModel} </p>
+                <p className='my-4 font-semibold text-lg'>{user?.carLicense} </p>
+              </div>
             </div>
           ))}
         </div>
-      :
+
+            :
+
         <div>
           {user.map((user) => (
             <div key={user.userId}>
-              <img className='card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
-              <p className='my-4 card-title product-name text-center font-weight-bold'>{user.firstName} </p>
+              <img src={user.pictureUrl} alt="user pic"></img>
+              <p className='my-4 font-bold text-xl'>{user.firstName}</p>
             </div>
           ))}
         </div>
+
       }
     </div>
   );

@@ -12,7 +12,7 @@ export const UserMarker = () => {
   const [textAddress, setTextAddress] = useState('');
 
   const getTextAddress = () =>{
-    const KEY = 'AIzaSyA5wgqeFPWEv0mYTOD4VJR2oh0wo1u-GC4'
+    const KEY = process.env.REACT_APP_GOOGLE_API_KEY
     if (location.coordinates.lat && location.coordinates.lng){
       const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${location.coordinates.lat},${location.coordinates.lng}&key=${KEY}`;
       fetch(url)
@@ -25,7 +25,7 @@ export const UserMarker = () => {
 
   useEffect(() => {
     map.flyTo([location.coordinates.lat, location.coordinates.lng], 15, {
-      animate: true, // set fly to to true 
+      animate: true, // set fly to to true
     });
       getTextAddress();
   }, [location.coordinates.lat, location.coordinates.lng, map]);

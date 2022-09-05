@@ -144,7 +144,7 @@ console.log(requests)
               </div>
               </div>
      ) : (
-          <div>No rides requested</div>
+          <div className='flex items-center justify-center'>No rides requested</div>
       )}
       <div className='divider'></div>
       <div>

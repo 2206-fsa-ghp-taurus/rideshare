@@ -24,7 +24,7 @@ const CarbonSaved = () => {
         Reducing my Carbon Footprint
       </h2>
       <p
-        className='pt-7 text-xl text-center mb-0'
+        className='pt-7 text-3xl text-center mb-0 my-2'
         style={{ fontFamily: 'Loved by the King' }}>
         Amount of Carbon Saved: {user?.totalFootPrint} kg
       </p>

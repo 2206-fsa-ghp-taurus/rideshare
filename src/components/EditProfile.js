@@ -140,7 +140,7 @@ const EditProfile = () => {
           <img
             id='profile-image'
             src={pictureUrl}
-            alt='profile pic'
+            alt=''
             style={{ cursor: 'pointer' }}
             // onClick={()=>fileInputRef.current.click()}
           />
