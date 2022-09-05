@@ -21,21 +21,20 @@ function UserDetails(props) {
   return (
     <div>
       {driverDetails ?
-
-        <div>
+            <div>
           {user.map((user) => (
             <div key={user.userId} className='text-center'>
               <img src={user.pictureUrl} alt="user pic"></img>
               <p className='my-4 font-bold text-xl'>{user.firstName}</p>
               <div className='card-body'>
-                <p className='my-2 font-semibold text-lg'>{user?.carColor} {user?.carMake} {user?.carModel} </p>
-                <p className='my-4 font-semibold text-lg'>{user?.carLicense} </p>
+                <p className='font-semibold text-lg'> {user?.carColor} {user?.carMake} {user?.carModel} </p>
+                <p className='font-semibold text-lg'>{user?.carLicense} </p>
               </div>
             </div>
           ))}
         </div>
 
-            :
+        :
 
         <div>
           {user.map((user) => (

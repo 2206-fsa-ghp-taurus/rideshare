@@ -88,7 +88,7 @@ const DriverList = (props)=> {
       {matchingDriver.map((driver) => (
       <div key={driver.driverId} className='card mx-5 w-auto bg-base-100 shadow-lg text-center items-center'>
         <div>
-          <UserDetails userId={driver.driverId} />
+          <UserDetails userId={driver.driverId} driverDetails={true}/>
           <Link to = {{ pathname: "/currentRide", state: {ride :driver}}}>
             <button className="btn btn-accent mb-4" onClick={()=>requestRide(driver.id)}>Request Ride</button>
           </Link>
