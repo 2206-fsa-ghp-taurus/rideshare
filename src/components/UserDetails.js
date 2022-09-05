@@ -37,6 +37,8 @@ function UserDetails(props) {
             <div key={user.userId}>
               <img className='card-title product-name text-center font-weight-bold' src={user.pictureUrl} alt="user pic"></img>
               <p className='my-4 card-title product-name text-center font-weight-bold'>{user.firstName} </p>
+              <p className='my-4 card-title product-name text-center font-weight-bold'>Pick Up: {user.pickUpAddress} </p>
+              <p className='my-4 card-title product-name text-center font-weight-bold'>Drop Off: {user.dropOffAddress} </p>
             </div>
           ))}
         </div>
