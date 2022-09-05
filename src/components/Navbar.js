@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { auth, db } from '../firebase';
 import { useHistory } from 'react-router-dom';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
 
 const Navbar = () => {
   const { loggedIn, userId } = useAuth();
@@ -16,22 +16,28 @@ const Navbar = () => {
   };
 
   const getPhoto = async () => {
-    let grabPhoto = await getDoc(doc(db, 'Users', userId));
-    const userName = grabPhoto.data()
-    if(userName) {
-      setUserPhoto(grabPhoto.data().pictureUrl);
-    }
+    let grabPhoto = await onSnapshot(doc(db, 'Users', userId), doc =>
+      setUserPhoto(doc.data().pictureUrl));
   };
 
-  useEffect(() => {
-    getPhoto();
-  });
+  // useEffect(() => {
+  //   getPhoto();
+  // });
 
   return (
     <>
       <nav role='navigation' className='bg-green-400 bg-opacity-40'>
         {loggedIn && (
           <div className='navbar navbar-end w-full'>
+            <div >
+                <Link to='/home'>
+                <p
+          className='text-2xl mx-3 text-white font-extrabold'
+          style={{ fontFamily: 'Twinkle Star' }}>
+          hop
+        </p>
+                </Link>
+              </div>
             <label
               tabIndex='0'
               className='btn btn-ghost btn-circle avatar online'>

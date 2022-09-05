@@ -63,7 +63,7 @@ const UserAccount = () => {
       <div className='flex justify-center items-center my-5'>
         <Link to='/ridesHistory'>
           {' '}
-          <button className='btn rounded-full'>See My Carbon Footprint</button>
+          <button className='btn btn-outline btn-accent py-2 mx-auto'>See My Carbon Footprint</button>
         </Link>
       </div>
       <span className='flex-shrink text-black-400'></span>
@@ -77,7 +77,7 @@ const UserAccount = () => {
       <div className='flex justify-center items-center'>
         <Link to='/editProfile'>
           {' '}
-          <button className='btn rounded-full mx-2'>Edit Profile</button>
+          <button className='btn btn-outline bg-success py-2 mx-auto'>Edit Profile</button>
         </Link>
       </div>
       <div className='flex justify-center items-center mt-7'>

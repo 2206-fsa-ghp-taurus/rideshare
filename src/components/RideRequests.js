@@ -108,7 +108,7 @@ console.log(requests)
   return (
     <div>
       <div className='container'>
-        <MapContainer center={position} zoom={8} scrollWheelZoom>
+        <MapContainer center={position} zoom={8} scrollWheelZoom className='border-2 flex items-center wx-auto'>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -132,7 +132,7 @@ console.log(requests)
                     <div id={requests[0]}>
                   <UserDetails userId={requestor.userId} />
                   <button
-                    className='btn rounded-full'
+                    className='btn btn-outline bg-white mt-3'
                     id={requests[0]}
                     rider={requestor}
                     onClick={() => {acceptRide(requests[0], requestor)}}>
@@ -149,11 +149,11 @@ console.log(requests)
       <div className='divider'></div>
       <div>
 
-        <button className='btn rounded-full' onClick={inputCarDetails}>
+        <button className='btn btn-outline btn-info mx-2' onClick={inputCarDetails}>
           Edit Car Details
         </button>
 
-        <button className='btn rounded-full' onClick={cancelDrive}>
+        <button className='btn btn-warning mx-2' onClick={cancelDrive}>
           Cancel Drive
         </button>
 

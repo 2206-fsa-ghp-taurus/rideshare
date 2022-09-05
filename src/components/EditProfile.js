@@ -77,43 +77,55 @@ const EditProfile = () => {
 
   return (
     <div>
-      <h2> Edit Profile </h2>
-      <form className='form-control' onSubmit={handleSaveUser}>
+      <h2 className='text-center font-bold my-5 text-l'> Edit Profile </h2>
+      <form className='form-control mx-5' onSubmit={handleSaveUser}>
+
+      <div className='grid gap-6 mb-6 md:grid-cols-2'>
+
+        <div>
         <label className='input-group' htmlFor='firstName'>
           First Name
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='First Name'
           name='firstName'
           type='text'
           value={firstName}
           onChange={(event) => setFirstName(event.target.value)}
           required
         />
+        </div>
 
+        <div>
         <label className='input-group' htmlFor='lastName'>
           Last Name
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='Last Name'
           name='lastName'
           type='text'
           value={lastName}
           onChange={(event) => setLastName(event.target.value)}
           required
         />
+        </div>
 
+        <div>
         <label className='input-group' htmlFor='goal'>
-          Carbon Saving Goal (KG){' '}
+          Carbon Savings Goal (kg){' '}
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='Carbon Savings Goal (kg)'
           name='goal'
           type='number'
           value={goal}
           onChange={(event) => setGoal(event.target.value)}
           required
         />
+        </div>
 
         <div>
           <label htmlFor='image'>Upload your picture</label>
@@ -121,37 +133,47 @@ const EditProfile = () => {
             name='image'
             type='file'
             accept='image/*'
+            className='my-2'
             ref={fileInputRef}
             onChange={handlePictureChange}
           />
           <img
             id='profile-image'
             src={pictureUrl}
-            alt=''
+            alt='profile pic'
             style={{ cursor: 'pointer' }}
             // onClick={()=>fileInputRef.current.click()}
           />
         </div>
+        </div>
 
-        <h3>Car Details</h3>
+        <h3 className='text-center font-bold my-5 text-l'>Car Details</h3>
+
+        <div className='grid gap-6 mb-6 md:grid-cols-2'>
+
+          <div>
         <label className='input-group' htmlFor='carMake'>
           Car Make
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
           name='carMake'
+          placeholder='Car Make'
           type='text'
           value={carMake}
           onChange={(event) =>
             event.target.value ? setMake(event.target.value) : ''
           }
         />
+        </div>
 
+        <div>
         <label className='input-group' htmlFor='carModel'>
           Model
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='Model'
           name='carModel'
           type='text'
           value={carModel}
@@ -159,34 +181,42 @@ const EditProfile = () => {
             event.target.value ? setModel(event.target.value) : ''
           }
         />
+        </div>
 
+        <div>
         <label className='input-group' htmlFor='carColor'>
           Color
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
           name='carColor'
+          placeholder='Color'
           type='text'
           value={carColor}
           onChange={(event) =>
             event.target.value ? setColor(event.target.value) : ''
           }
         />
+        </div>
 
+        <div>
         <label className='input-group' htmlFor='carLicense'>
           License Plate
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
           name='carLicense'
+          placeholder='License'
           type='text'
           value={carLicense}
           onChange={(event) =>
             event.target.value ? setLicense(event.target.value) : ''
           }
         />
+        </div>
+        </div>
 
-        <button className='btn rounded-full' onClick={handleSaveUser}>
+        <button className='btn btn-outline bg-success py-2 mx-auto' onClick={handleSaveUser}>
           {' '}
           Save{' '}
         </button>
