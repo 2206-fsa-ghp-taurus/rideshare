@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
@@ -103,33 +102,33 @@ function CurrentRide(props) {
       status: 2,
     });
     setCurrentRide(null);
-      const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
-      const driverData = (await getDoc(driverRef)).data();
-      const driverWallet = driverData.wallet;
-      const driverTotalFootPrint = driverData.totalFootPrint;
-  
-      const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
-      const riderData = (await getDoc(riderRef)).data();
-      const riderWallet = riderData.wallet;
-      const riderTotalFootPrint = riderData.totalFootPrint;
-      
-      const distance = riderData.distanceTravelled
-      const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
-      const carbon = FormatNumber(((distance / 1000) * 650) / 1000);
-      // update for driver
-      await updateDoc(driverRef, {
-        wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
-        totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
-        driverStatus: deleteField(),
-      });
-      // update for rider
-      await updateDoc(riderRef, {
-        wallet: Number(riderWallet) - Number(cost),
-        totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
-      });
-      setSelectToDrive(false);
-    }
-  
+    const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
+    const driverData = (await getDoc(driverRef)).data();
+    const driverWallet = driverData.wallet;
+    const driverTotalFootPrint = driverData.totalFootPrint;
+
+    const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
+    const riderData = (await getDoc(riderRef)).data();
+    const riderWallet = riderData.wallet;
+    const riderTotalFootPrint = riderData.totalFootPrint;
+
+    const distance = riderData.distanceTravelled;
+    const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
+    const carbon = FormatNumber(((distance / 1000) * 650) / 1000);
+    // update for driver
+    await updateDoc(driverRef, {
+      wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+      totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
+      driverStatus: deleteField(),
+    });
+    // update for rider
+    await updateDoc(riderRef, {
+      wallet: Number(riderWallet) - Number(cost),
+      totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
+    });
+    setSelectToDrive(false);
+  };
+
   //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
   if (currentRides.length === 0 && rideComplete.status !== 2) {
     if (isDriver && !rideCancelled) {
@@ -209,7 +208,7 @@ function CurrentRide(props) {
     }
   );
   return (
-    <div>
+    <>
       <div className='container'>
         <MapContainer
           center={position}
@@ -300,7 +299,7 @@ function CurrentRide(props) {
         </div>
       ))}
       ;
-    </div>
+    </>
   );
 }
 export default CurrentRide;

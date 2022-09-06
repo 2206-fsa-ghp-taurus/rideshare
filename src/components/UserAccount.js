@@ -36,10 +36,10 @@ const UserAccount = () => {
     <>
       <div className='grid gap-6 mb-6 md:grid-cols-2'>
         {/* all users will have email, footprint and wallet except for the ones we manually added to auth*/}
-        <div className='ml-6 mt-8'>
-        <h3 className='text-center font-bold my-5'>User Info</h3>
-          <div className="avatar">
-            <div className="w-24 rounded">
+        <div className='mx-6 mt-8'>
+          <h3 className='text-center font-bold my-5'>User Info</h3>
+          <div className='avatar'>
+            <div className='w-24 rounded'>
               <img src={user?.pictureUrl} />
             </div>
           </div>
@@ -61,9 +61,6 @@ const UserAccount = () => {
               value={user?.totalFootPrint}
               max={user ? user.goal : 100}></progress>
           </div>
-
-
-
         </div>
 
         <div className='ml-6 mt-8'>
@@ -74,31 +71,33 @@ const UserAccount = () => {
             <p className='my-1'>COLOR: {user?.carColor}</p>
             <p className='my-1'>LICENSE: {user?.carLicense}</p>
           </div>
-
-
-      </div>
-      </div>
-
-      <div className='flex justify-center items-center my-5'>
-          <Link to='/ridesHistory'>
-          {' '}
-            <button className='btn btn-outline btn-accent py-2 mx-auto'>See My Carbon Footprint</button>
-          </Link>
         </div>
+      </div>
 
       <div className='flex justify-center items-center my-5'>
-            <Link to='/editProfile'>
-              <button className='btn btn-outline bg-success py-2 mx-auto'>Edit Profile</button>
-            </Link>
-          </div>
+        <Link to='/ridesHistory'>
+          {' '}
+          <button className='btn btn-outline btn-accent py-2 mx-auto'>
+            See My Carbon Footprint
+          </button>
+        </Link>
+      </div>
 
-        <div className='flex justify-center items-center pt-5 mt-12'>
-          <button
+      <div className='flex justify-center items-center my-5'>
+        <Link to='/editProfile'>
+          <button className='btn btn-outline bg-success py-2 mx-auto'>
+            Edit Profile
+          </button>
+        </Link>
+      </div>
+
+      <div className='flex justify-center items-center pt-5 mt-12'>
+        <button
           className='btn btn-warning rounded-full mx-2'
           onClick={handleDelete}>
           {' '}
           Delete Account
-            <svg
+          <svg
             xmlns='http://www.w3.org/2000/svg'
             width='16'
             height='16'
@@ -110,9 +109,9 @@ const UserAccount = () => {
               fillRule='evenodd'
               d='M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z'
             />
-            </svg>
-          </button>
-        </div>
+          </svg>
+        </button>
+      </div>
     </>
   );
 };

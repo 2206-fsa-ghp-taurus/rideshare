@@ -89,13 +89,14 @@ const CreateProfile = () => {
   };
 
   return (
-    <div>
-      <h3 className='text-center font-bold my-5 text-l'> Create Profile </h3>
+    <>
+      <h3 className='text-center font-bold my-2 text-l'> Create Profile </h3>
       <form className='form-control mx-5' onSubmit={handleSaveUser}>
         <div className='grid gap-6 mb-6 md:grid-cols-2'>
-
           <div>
-            <label className='input-group' htmlFor='firstName'>First Name</label>
+            <label className='input-group' htmlFor='firstName'>
+              First Name
+            </label>
             <input
               className='input input-bordered w-full'
               placeholder='First Name'
@@ -103,11 +104,14 @@ const CreateProfile = () => {
               type='text'
               value={firstName}
               onChange={(event) => setFirstName(event.target.value)}
-              required/>
+              required
+            />
           </div>
 
           <div>
-            <label className='input-group' htmlFor='lastName'>Last Name</label>
+            <label className='input-group' htmlFor='lastName'>
+              Last Name
+            </label>
             <input
               className='input input-bordered w-full'
               placeholder='Last Name'
@@ -115,11 +119,14 @@ const CreateProfile = () => {
               type='text'
               value={lastName}
               onChange={(event) => setLastName(event.target.value)}
-              required/>
+              required
+            />
           </div>
 
           <div>
-            <label className='input-group' htmlFor='phone'>Phone</label>
+            <label className='input-group' htmlFor='phone'>
+              Phone
+            </label>
             <input
               className='input input-bordered w-full'
               placeholder='Phone'
@@ -127,102 +134,103 @@ const CreateProfile = () => {
               type='number'
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
-              required/>
+              required
+            />
           </div>
 
-
-        <div>
-          <label htmlFor='image'>Upload your picture</label>
-          <input
-            name='image'
-            type='file'
-            accept='image/*'
-            ref={fileInputRef}
-            onChange={handlePictureChange}
-            className='my-2'
-          />
-          <img
-            id='profile-image'
-            src={pictureUrl}
-            alt=''
-            style={{ cursor: 'pointer' }}
-            // onClick={()=>fileInputRef.current.click()}
-          />
-        </div>
+          <div>
+            <label htmlFor='image'>Upload your picture</label>
+            <input
+              name='image'
+              type='file'
+              accept='image/*'
+              ref={fileInputRef}
+              onChange={handlePictureChange}
+              className='my-2'
+            />
+            <img
+              id='profile-image'
+              src={pictureUrl}
+              alt=''
+              style={{ cursor: 'pointer' }}
+              // onClick={()=>fileInputRef.current.click()}
+            />
+          </div>
         </div>
 
         <h3 className='text-center font-bold my-2 text-l'>Car Details</h3>
 
-    <div className='grid gap-6 mb-6 md:grid-cols-2'>
+        <div className='grid gap-6 mb-6 md:grid-cols-2'>
+          <div>
+            <label className='input-group' htmlFor='carMake'>
+              Car Make
+            </label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='Car Make'
+              name='carMake'
+              type='text'
+              value={carMake}
+              onChange={(event) =>
+                event.target.value ? setMake(event.target.value) : ''
+              }
+            />
+          </div>
 
-      <div>
-        <label className='input-group' htmlFor='carMake'>
-          Car Make
-        </label>
-        <input
-          className='input input-bordered w-full'
-          placeholder='Car Make'
-          name='carMake'
-          type='text'
-          value={carMake}
-          onChange={(event) =>
-            event.target.value ? setMake(event.target.value) : ''
-          }
-        />
-      </div>
+          <div>
+            <label className='input-group' htmlFor='carModel'>
+              Model
+            </label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='Model'
+              name='carModel'
+              type='text'
+              value={carModel}
+              onChange={(event) =>
+                event.target.value ? setModel(event.target.value) : ''
+              }
+            />
+          </div>
 
-      <div>
-        <label className='input-group' htmlFor='carModel'>
-          Model
-        </label>
-        <input
-          className='input input-bordered w-full'
-          placeholder='Model'
-          name='carModel'
-          type='text'
-          value={carModel}
-          onChange={(event) =>
-            event.target.value ? setModel(event.target.value) : ''
-          }
-        />
-      </div>
+          <div>
+            <label className='input-group' htmlFor='carColor'>
+              Color
+            </label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='Color'
+              name='carColor'
+              type='text'
+              value={carColor}
+              onChange={(event) =>
+                event.target.value ? setColor(event.target.value) : ''
+              }
+            />
+          </div>
 
-      <div>
-        <label className='input-group' htmlFor='carColor'>
-          Color
-        </label>
-        <input
-          className='input input-bordered w-full'
-          placeholder='Color'
-          name='carColor'
-          type='text'
-          value={carColor}
-          onChange={(event) =>
-            event.target.value ? setColor(event.target.value) : ''
-          }
-        />
-      </div>
-
-      <div>
-        <label className='input-group' htmlFor='carLicense'>
-          License Plate
-        </label>
-        <input
-          className='input input-bordered w-full'
-          placeholder='License Plate'
-          name='carLicense'
-          type='text'
-          value={carLicense}
-          onChange={(event) =>
-            event.target.value ? setLicense(event.target.value) : ''
-          }
-        />
+          <div>
+            <label className='input-group' htmlFor='carLicense'>
+              License Plate
+            </label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='License Plate'
+              name='carLicense'
+              type='text'
+              value={carLicense}
+              onChange={(event) =>
+                event.target.value ? setLicense(event.target.value) : ''
+              }
+            />
+          </div>
         </div>
-
-      </div>
-        <button className='btn btn-outline bg-success py-2 mx-auto'> Save </button>
+        <button className='btn btn-outline bg-success py-2 mx-auto'>
+          {' '}
+          Save{' '}
+        </button>
       </form>
-    </div>
+    </>
   );
 };
 

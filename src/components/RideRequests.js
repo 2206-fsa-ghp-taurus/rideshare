@@ -108,7 +108,7 @@ function RideRequests(props) {
 
   console.log(requests);
   return (
-    <div>
+    <>
       <div className='container'>
         <MapContainer
           className='border-2 flex items-center wx-auto'
@@ -182,7 +182,7 @@ function RideRequests(props) {
           </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

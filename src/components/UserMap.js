@@ -77,7 +77,7 @@ const UserMap = (props) => {
   console.log(isDriver, selectedDrive, currentRide, userDistance);
 
   return (
-    <>
+    <div className='w-full'>
       {/* <div className='mx-auto'> */}
       <div className='container'>
         <MapContainer
@@ -172,7 +172,7 @@ const UserMap = (props) => {
           ''
         )}
       </div>
-    </>
+    </div>
   );
 };
 
