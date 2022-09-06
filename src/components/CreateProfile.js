@@ -160,7 +160,7 @@ const CreateProfile = () => {
 
         <h3 className='text-center font-bold my-2 text-l'>Car Details</h3>
 
-        <div className='grid gap-6 mb-6 md:grid-cols-2'>
+        <div className='gap-6 mb-6 md:grid-cols-2'>
           <div>
             <label className='input-group' htmlFor='carMake'>
               Car Make

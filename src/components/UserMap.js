@@ -121,7 +121,7 @@ const UserMap = (props) => {
             </svg>
           </button>
         </div>
-        <div className='ml-4'>
+        <div className='mx-3 my-2'>
           <LocationPickUp
             pickUpCoords={pickUpCoords}
             setPickUpCoords={setPickUpCoords}
