@@ -28,7 +28,7 @@ const CarbonSaved = () => {
         style={{ fontFamily: 'Loved by the King' }}>
         Amount of Carbon Saved: {user?.totalFootPrint} kg
       </p>
-      <div className='flex items-center justify-center h-screen mt-0 pt-0'>
+      <div className='flex items-center justify-center mt-5'>
         <img src={tree} alt='tree gif' />
       </div>
     </>

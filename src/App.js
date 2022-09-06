@@ -27,7 +27,6 @@ const App = () => {
   const [isDriver, setIsDriver] = useState(null);
   const [currentRide, setCurrentRide] = useState(null);
   const [selectedDrive, setSelectToDrive] = useState(false);
-  const [userDistance, setUserDistance] = useState(0);
   const [isShow, setIsShow] = useState(false);
 
   console.log('app is rendering with auth:', authObj);
@@ -59,7 +58,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <div style={{ maxHeight: '100vh' }}>
       <AuthContext.Provider value={authObj}>
         <DriverContext.Provider
           value={{ isDriver, setIsDriver, currentRide, setCurrentRide }}>
@@ -73,8 +72,6 @@ const App = () => {
               <SelectRide
                 selectedDrive={selectedDrive}
                 setSelectToDrive={setSelectToDrive}
-                userDistance={userDistance}
-                setUserDistance={setUserDistance}
               />
             </Route>
 
@@ -94,7 +91,6 @@ const App = () => {
               <CreateProfile />
             </Route>
 
-            {/* <PrivateRoute exact path='/chat' component={Messaging} /> */}
             <Route exact path='/chat'>
               <Messaging />
             </Route>
@@ -110,8 +106,6 @@ const App = () => {
             <Route exact path='/userMap'>
               <UserMap
                 selectedDrive={selectedDrive}
-                userDistance={userDistance}
-                setUserDistance={setUserDistance}
               />
             </Route>
 
@@ -142,7 +136,7 @@ const App = () => {
           </Switch>
         </DriverContext.Provider>
       </AuthContext.Provider>
-    </>
+    </div>
   );
 };
 
