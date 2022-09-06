@@ -153,7 +153,7 @@ const UserMap = (props) => {
 
         {isDriver ? (
           <Link to='/riderequestlist'>
-            <button className='btn rounded-full'>See Requested Rides</button>
+            <button className='btn btn-accent'>See Requested Rides</button>
           </Link>
         ) : (
           ''
