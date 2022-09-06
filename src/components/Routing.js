@@ -10,6 +10,8 @@ const Routing = (props) => {
   const { pickUpCoords } = props;
   const { dropOffCoords } = props;
   const { userDistance, setUserDistance } = props;
+  console.log('props for pickup', pickUpCoords);
+  console.log('props for dropoff', dropOffCoords);
 
   const pickUpLat = props.pickUpCoords ? props.pickUpCoords.lat : null;
   const pickUpLng = props.pickUpCoords ? props.pickUpCoords.lng : null;
@@ -23,7 +25,7 @@ const Routing = (props) => {
 
   const routing = L.Routing.control({
     waypoints: [wayPoint1, wayPoint2],
-    router: L.Routing.mapbox(`${process.env.REACT_APP_MAP_BOX_API_KEY}`),
+    // router: L.Routing.mapbox(`${process.env.REACT_APP_MAP_BOX_API_KEY}`),
     createMarker: function (i, start, n) {
       return L.marker(start.latLng, { icon: greenIcon });
     },
@@ -44,5 +46,22 @@ const Routing = (props) => {
   });
 
   routing.hide();
+  // routing.on('routeselected', function(e) {
+  //   const coord = e.route.coordinates;
+  //   setCoordsList(coord);
+
+  //  console.log(coord)
+
+  //  for(let i=0; i<coord.length; i++ ){
+  //   if((Math.abs(coord[i].lat - 51.4994425) < 0.1) && (Math.abs(coord[i].lng - (-0.197512)) < 0.1)) {
+  //     console.log("There are drivers going the same route.")
+  //     return "Drivers found."
+  //   } else {
+  //     console.log("No drivers going the same route")
+  //     return "No drivers today!"
+  //   }
+  //  }
+
+  // })
 };
 export default Routing;

@@ -41,7 +41,7 @@ const Navbar = () => {
                 </p>
                 </Link>
                 { isDriver ?
-              <Link to="/riderequestlist"><button class="indicator tab tab-lifted tab-active">Rideshare Request
+              <Link to="/riderequestlist"><button class="indicator tab tab-lifted tab-active">Ride Requests
                   {/* <svg
                     xmlns="http://www.w3.org/2000/svg"
                     class="h-5 w-5"
