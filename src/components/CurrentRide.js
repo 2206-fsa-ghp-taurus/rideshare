@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { useAuth } from '../auth';
@@ -25,7 +26,6 @@ import { useLocation } from 'react-router-dom';
 import { DriverContext } from '../driverContext';
 import { CometChat } from '@cometchat-pro/chat';
 import * as CONSTANTS from '../constants/constants';
-
 function CurrentRide(props) {
   const [position, setPosition] = useState({
     lat: 39.015979960290395,
@@ -42,7 +42,6 @@ function CurrentRide(props) {
   const location = useLocation();
   const { ride } = location.state;
   const { currentRide, setCurrentRide } = useContext(DriverContext);
-
   const getCompleteRide = () => {
     if (ride) {
       onSnapshot(doc(db, 'Rides', ride.id), (doc) => {
@@ -50,7 +49,6 @@ function CurrentRide(props) {
       });
     }
   };
-
   const getCurrentRide = async () => {
     if (isDriver) {
       onSnapshot(
@@ -78,12 +76,10 @@ function CurrentRide(props) {
       );
     }
   };
-
   useEffect(() => {
     getCurrentRide();
     getCompleteRide();
   }, []);
-
   const cancelRide = async (ride) => {
     const rideRef = doc(db, 'Rides', ride.id);
     const driverRef = doc(db, 'Users', ride.driverId);
@@ -98,52 +94,48 @@ function CurrentRide(props) {
     });
     setRideCancelled(true);
   };
-
   const FormatNumber = (num) => {
     return (Math.round(num * 100) / 100).toFixed(2);
   };
-
   const completeRide = async (ride) => {
     const rideRef = doc(db, 'Rides', ride.id);
     await updateDoc(rideRef, {
       status: 2,
     });
     setCurrentRide(null);
-    const distance = (await getDoc(rideRef)).data().distance;
-    const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
-    const carbon = FormatNumber(((distance / 1000) * 650) / 1000);
-
-    const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
-    const driverData = (await getDoc(driverRef)).data();
-    const driverWallet = driverData.wallet;
-    const driverTotalFootPrint = driverData.totalFootPrint;
-
-    const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
-    const riderData = (await getDoc(riderRef)).data();
-    const riderWallet = riderData.wallet;
-    const riderTotalFootPrint = riderData.totalFootPrint;
-
-    // update for driver
-    await updateDoc(driverRef, {
-      wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
-      totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
-      driverStatus: deleteField(),
-    });
-    // update for rider
-    await updateDoc(riderRef, {
-      wallet: Number(riderWallet) - Number(cost),
-      totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
-    });
-    setSelectToDrive(false);
-  };
-
+      const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
+      const driverData = (await getDoc(driverRef)).data();
+      const driverWallet = driverData.wallet;
+      const driverTotalFootPrint = driverData.totalFootPrint;
+  
+      const riderRef = doc(db, 'Users', ride.riderId); // whoever clicks on the button is driver
+      const riderData = (await getDoc(riderRef)).data();
+      const riderWallet = riderData.wallet;
+      const riderTotalFootPrint = riderData.totalFootPrint;
+      
+      const distance = riderData.distanceTravelled
+      const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
+      const carbon = FormatNumber(((distance / 1000) * 650) / 1000);
+      // update for driver
+      await updateDoc(driverRef, {
+        wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
+        totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
+        driverStatus: deleteField(),
+      });
+      // update for rider
+      await updateDoc(riderRef, {
+        wallet: Number(riderWallet) - Number(cost),
+        totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
+      });
+      setSelectToDrive(false);
+    }
+  
   //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
   if (currentRides.length === 0 && rideComplete.status !== 2) {
     if (isDriver && !rideCancelled) {
       return (
         <p className='text-center font-bold my-5'> Not currently on ride</p>
       );
-
       //Ride request sent to driver (status=0)
     } else if (isDriver && rideCancelled) {
       return (
@@ -181,29 +173,24 @@ function CurrentRide(props) {
       />
     );
   }
-
   const RoutingAfterRideAccepted = () => {
     const map = useMap();
-
     const pickUp = currentRides.length ? currentRides[0].riderPickUp : null;
     const dropOff = currentRides.length ? currentRides[0].riderDropOff : null;
     const wayPoint1 = L.latLng(pickUp.lat, pickUp.lng);
     const wayPoint2 = L.latLng(dropOff.lat, dropOff.lng);
-
     const routing = L.Routing.control({
       waypoints: [wayPoint1, wayPoint2],
       createMarker: function (i, start, n) {
         return L.marker(start.latLng, { icon: greenIcon });
       },
     }).addTo(map);
-
     routing.on('routeselected', function (e) {
       const bounds = L.latLngBounds(wayPoint1, wayPoint2);
       map.fitBounds(bounds);
     });
     routing.hide();
   };
-
   CometChat.getLoggedinUser().then(
     (user) => {
       if (!user) {
@@ -221,7 +208,6 @@ function CurrentRide(props) {
       console.log('Some Error Occured', { error });
     }
   );
-
   return (
     <div>
       <div className='container'>
@@ -259,7 +245,6 @@ function CurrentRide(props) {
                       isDriver={isDriver}
                     />
                   )}
-
                   <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
                     <Link
                       to={{
@@ -291,7 +276,6 @@ function CurrentRide(props) {
                   {showChat ? 'Chat with Driver' : 'Hide Chat'}
                 </button>
               </div>
-
               <div>
                 <div className='items-center flex justify-center my-5 flex-wrap'>
                   {!showChat && (
@@ -302,7 +286,6 @@ function CurrentRide(props) {
                     />
                   )}
                 </div>
-
                 <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
                   <button
                     id={ride.id}
@@ -320,5 +303,4 @@ function CurrentRide(props) {
     </div>
   );
 }
-
 export default CurrentRide;
