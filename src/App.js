@@ -58,7 +58,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <div style={{ maxHeight: '100vh' }}>
       <AuthContext.Provider value={authObj}>
         <DriverContext.Provider
           value={{ isDriver, setIsDriver, currentRide, setCurrentRide }}>
@@ -136,7 +136,7 @@ const App = () => {
           </Switch>
         </DriverContext.Provider>
       </AuthContext.Provider>
-    </>
+    </div>
   );
 };
 
