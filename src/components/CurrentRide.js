@@ -144,14 +144,18 @@ function CurrentRide(props) {
 //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
   if(currentRides.length === 0 && rideComplete.status !== 2) {
     if(isDriver && !rideCancelled) {
-      return <p> Not currently on ride</p>;
+      return <p className='text-center font-bold my-5'> Not currently on ride</p>;
+
       //Ride request sent to driver (status=0)
     } else if (isDriver && rideCancelled) {
       return <p> Rider has cancelled current ride</p>;
     } else if (rideCancelled) {
       return <Redirect to={{ pathname: '/home' }}/>
     } else {
-      return <p> Waiting for driver to accept your ride request...</p>
+      return (<>
+      <p className='text-center font-bold my-7 md:text-2xl sm:text-lg' > Waiting for a driver to accept your ride request...</p>
+      <img className='mx-auto md:w-1/2 opacity-75' src='https://acegif.com/wp-content/uploads/gifs/car-driving-77.gif'/>
+      </>)
     }
   }
   //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.

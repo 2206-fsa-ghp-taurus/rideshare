@@ -90,43 +90,46 @@ const CreateProfile = () => {
 
   return (
     <div>
-      <h2> Create Profile </h2>
-      <form className='form-control' onSubmit={handleSaveUser}>
-        <label className='input-group' htmlFor='firstName'>
-          First Name
-        </label>
-        <input
-          className='input input-bordered'
-          name='firstName'
-          type='text'
-          value={firstName}
-          onChange={(event) => setFirstName(event.target.value)}
-          required
-        />
+      <h3 className='text-center font-bold my-5 text-l'> Create Profile </h3>
+      <form className='form-control mx-5' onSubmit={handleSaveUser}>
+        <div className='grid gap-6 mb-6 md:grid-cols-2'>
 
-        <label className='input-group' htmlFor='lastName'>
-          Last Name
-        </label>
-        <input
-          className='input input-bordered'
-          name='lastName'
-          type='text'
-          value={lastName}
-          onChange={(event) => setLastName(event.target.value)}
-          required
-        />
+          <div>
+            <label className='input-group' htmlFor='firstName'>First Name</label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='First Name'
+              name='firstName'
+              type='text'
+              value={firstName}
+              onChange={(event) => setFirstName(event.target.value)}
+              required/>
+          </div>
 
-        <label className='input-group' htmlFor='phone'>
-          Phone
-        </label>
-        <input
-          className='input input-bordered'
-          name='phone'
-          type='number'
-          value={phone}
-          onChange={(event) => setPhone(event.target.value)}
-          required
-        />
+          <div>
+            <label className='input-group' htmlFor='lastName'>Last Name</label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='Last Name'
+              name='lastName'
+              type='text'
+              value={lastName}
+              onChange={(event) => setLastName(event.target.value)}
+              required/>
+          </div>
+
+          <div>
+            <label className='input-group' htmlFor='phone'>Phone</label>
+            <input
+              className='input input-bordered w-full'
+              placeholder='Phone'
+              name='phone'
+              type='number'
+              value={phone}
+              onChange={(event) => setPhone(event.target.value)}
+              required/>
+          </div>
+
 
         <div>
           <label htmlFor='image'>Upload your picture</label>
@@ -136,6 +139,7 @@ const CreateProfile = () => {
             accept='image/*'
             ref={fileInputRef}
             onChange={handlePictureChange}
+            className='my-2'
           />
           <img
             id='profile-image'
@@ -145,13 +149,19 @@ const CreateProfile = () => {
             // onClick={()=>fileInputRef.current.click()}
           />
         </div>
+        </div>
 
-        <h3>Car Details</h3>
+        <h3 className='text-center font-bold my-2 text-l'>Car Details</h3>
+
+    <div className='grid gap-6 mb-6 md:grid-cols-2'>
+
+      <div>
         <label className='input-group' htmlFor='carMake'>
           Car Make
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='Car Make'
           name='carMake'
           type='text'
           value={carMake}
@@ -159,12 +169,15 @@ const CreateProfile = () => {
             event.target.value ? setMake(event.target.value) : ''
           }
         />
+      </div>
 
+      <div>
         <label className='input-group' htmlFor='carModel'>
           Model
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='Model'
           name='carModel'
           type='text'
           value={carModel}
@@ -172,12 +185,15 @@ const CreateProfile = () => {
             event.target.value ? setModel(event.target.value) : ''
           }
         />
+      </div>
 
+      <div>
         <label className='input-group' htmlFor='carColor'>
           Color
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='Color'
           name='carColor'
           type='text'
           value={carColor}
@@ -185,12 +201,15 @@ const CreateProfile = () => {
             event.target.value ? setColor(event.target.value) : ''
           }
         />
+      </div>
 
+      <div>
         <label className='input-group' htmlFor='carLicense'>
           License Plate
         </label>
         <input
-          className='input input-bordered'
+          className='input input-bordered w-full'
+          placeholder='License Plate'
           name='carLicense'
           type='text'
           value={carLicense}
@@ -198,8 +217,10 @@ const CreateProfile = () => {
             event.target.value ? setLicense(event.target.value) : ''
           }
         />
+        </div>
 
-        <button className='btn rounded-full'> Save </button>
+      </div>
+        <button className='btn btn-outline bg-success py-2 mx-auto'> Save </button>
       </form>
     </div>
   );

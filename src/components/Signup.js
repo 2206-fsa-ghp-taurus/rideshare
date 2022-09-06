@@ -43,7 +43,6 @@ const Signup = () => {
     <div className='form-control h-screen flex items-center justify-center my-4'>
       <h1
         className='text-8xl mx-4 mb-2 text-green-400 font-extrabold'
-        f
         style={{ fontFamily: 'Twinkle Star' }}>
         hop
       </h1>
