@@ -32,11 +32,12 @@ const UserMap = (props) => {
   const [dropOffAddress, setDropOffAddress] = useState("");
   const {isDriver, setIsDriver} = useContext(DriverContext);
   const {currentRide, setCurrentRide} = useContext(DriverContext);
-  const {selectedDrive, userDistance, setUserDistance} = props;
+  const {selectedDrive} = props;
   const [disableConfirm, setDisableConfirm] = useState(false);
   const {userId} = useAuth();
   const location = UseGeolocation();
   const mapRef = useRef();
+  const [userDistance, setUserDistance] = useState();
 
   const beDriver = (e) => {
     addDoc(collection(db, "Rides"), {
@@ -70,6 +71,8 @@ const UserMap = (props) => {
     });
   };
 
+  console.log('userDistance', userDistance)
+
   const locateMe = () => {
     mapRef.current.flyTo([location.coordinates.lat, location.coordinates.lng]);
   };
@@ -93,6 +96,7 @@ const UserMap = (props) => {
           <Routing
             pickUpCoords={pickUpCoords}
             dropOffCoords={dropOffCoords}
+            userDistance={userDistance}
             setUserDistance={setUserDistance}
           />
         </MapContainer>

@@ -116,6 +116,8 @@ function CurrentRide(props) {
       const distance = riderData.distanceTravelled
       const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
       const carbon = FormatNumber(((distance / 1000) * 650) / 1000);
+      console.log('this is the ride', ride)
+      console.log('this is the rider', riderData)
       // update for driver
       await updateDoc(driverRef, {
         wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
