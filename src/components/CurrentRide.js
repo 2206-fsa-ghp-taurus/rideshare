@@ -143,9 +143,12 @@ function CurrentRide(props) {
 
 //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
   if(currentRides.length === 0 && rideComplete.status !== 2) {
-    if(isDriver) {
+    if(isDriver && !rideCancelled) {
       return <p className='text-center font-bold my-5'> Not currently on ride</p>;
+
       //Ride request sent to driver (status=0)
+    } else if (isDriver && rideCancelled) {
+      return <p> Rider has cancelled current ride</p>;
     } else if (rideCancelled) {
       return <Redirect to={{ pathname: '/home' }}/>
     } else {

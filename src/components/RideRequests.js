@@ -108,7 +108,8 @@ console.log(requests)
   return (
     <div>
       <div className='container'>
-        <MapContainer center={position} zoom={8} scrollWheelZoom className='border-2 flex items-center wx-auto'>
+        <MapContainer  className='border-2 flex items-center wx-auto'
+          center={position} zoom={8} scrollWheelZoom className='border-2 flex items-center wx-auto'>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -120,40 +121,44 @@ console.log(requests)
           )}
         </MapContainer>
       </div>
+      <h2 className='font-bold text-4xl text-center my-5' style={{ fontFamily: 'Oswald' }}>Select Rider</h2>
       <div>
+      <div className='grid gap-6 my-6 md:grid-cols-2 mx-5'>
         {requests && requests.length !== 0 ?(
-          <div className='row col-8 justify-content-center'>
-              <div key={requests[0].id} className='card product-card shadow-lg'>
-                <div className='card-body'>
+          <>
+          {/* <div className='ml-3 card w-auto bg-base-100 shadow-xl my-3'> */}
+              <div key={requests[0].id} className='ml-3 card w-auto bg-base-100 shadow-xl my-3 items-center'>
+                {/* <div className='card-body'> */}
                   <p className='my-4 card-title product-name text-center font-weight-bold'>
-                    Requested Ride:
+                    Requested Rider:
                   </p>
                   {requests[0].requestorIds.map((requestor) => (
-                    <div id={requests[0]}>
-                  <UserDetails userId={requestor.userId} />
-                  <button
-                    className='btn btn-outline bg-white mt-3'
-                    id={requests[0]}
-                    rider={requestor}
-                    onClick={() => {acceptRide(requests[0], requestor)}}>
-                    Accept Ride
-                  </button>
+                  <div id={requests[0]}>
+                    <UserDetails userId={requestor.userId} />
+                    <button
+                      className='btn btn-accent mb-4'
+                      id={requests[0]}
+                      rider={requestor}
+                      onClick={() => {acceptRide(requests[0], requestor)}}>
+                      Accept Ride
+                    </button>
                   </div>
             ))}
-                </div>
+                {/* </div> */}
               </div>
-              </div>
+            </>
      ) : (
-          <div className='flex items-center justify-center'>No rides requested</div>
+          <div className='text-center font-bold my-7 text-2xl'>No rides requested</div>
       )}
-      <div className='divider'></div>
+      </div>
       <div>
 
-        <button className='btn btn-outline btn-info mx-2' onClick={inputCarDetails}>
+        <button className='btn btn-outline btn-info mx-2 my-5 flex justify-center items-center' onClick={inputCarDetails}>
           Edit Car Details
         </button>
-
-        <button className='btn btn-warning mx-2' onClick={cancelDrive}>
+      </div>
+      <div>
+        <button className='btn btn-warning mx-2 mt-3  flex justify-center items-center' onClick={cancelDrive}>
           Cancel Drive
         </button>
 

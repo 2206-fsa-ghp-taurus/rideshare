@@ -92,6 +92,7 @@ const DriverList = (props)=> {
           <Link to = {{ pathname: "/currentRide", state: {ride :driver}}}>
             <button className="btn btn-accent mb-4" onClick={()=>requestRide(driver.id)}>Request Ride</button>
           </Link>
+
         </div>
       </div>
       ))}
