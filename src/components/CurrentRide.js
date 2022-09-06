@@ -22,10 +22,9 @@ import L from 'leaflet';
 import { greenIcon } from './MarkerIcon';
 import './userMap.css';
 import { useLocation } from 'react-router-dom';
-import { DriverContext} from '../driverContext';
+import { DriverContext } from '../driverContext';
 import { CometChat } from '@cometchat-pro/chat';
 import * as CONSTANTS from '../constants/constants';
-
 
 function CurrentRide(props) {
   const [position, setPosition] = useState({
@@ -38,20 +37,19 @@ function CurrentRide(props) {
   const [rideComplete, setRideComplete] = useState({});
   const [rideCancelled, setRideCancelled] = useState(false);
   const [user, setCurrentUser] = useState([]);
-  const {selectedDrive, setSelectToDrive} = props
+  const { selectedDrive, setSelectToDrive } = props;
   const [showChat, setShowChat] = useState(true);
   const location = useLocation();
   const { ride } = location.state;
-  const { currentRide ,setCurrentRide } = useContext(DriverContext);
+  const { currentRide, setCurrentRide } = useContext(DriverContext);
 
-
-  const getCompleteRide = () =>{
-    if(ride) {
-      onSnapshot(doc(db, 'Rides', ride.id), (doc)=> {
-        setRideComplete({id: doc.id, ...doc.data()});
-      })
+  const getCompleteRide = () => {
+    if (ride) {
+      onSnapshot(doc(db, 'Rides', ride.id), (doc) => {
+        setRideComplete({ id: doc.id, ...doc.data() });
+      });
     }
-  }
+  };
 
   const getCurrentRide = async () => {
     if (isDriver) {
@@ -87,18 +85,18 @@ function CurrentRide(props) {
   }, []);
 
   const cancelRide = async (ride) => {
-      const rideRef = doc(db, 'Rides', ride.id);
-      const driverRef = doc(db, 'Users', ride.driverId)
-      await updateDoc(rideRef, {
-        status: deleteField(),
-        riderId: deleteField(),
-        riderPickUp: deleteField(),
-        riderDropOff: deleteField(),
-      });
-      await updateDoc(driverRef, {
-        driverStatus: deleteField()
-      })
-      setRideCancelled(true)
+    const rideRef = doc(db, 'Rides', ride.id);
+    const driverRef = doc(db, 'Users', ride.driverId);
+    await updateDoc(rideRef, {
+      status: deleteField(),
+      riderId: deleteField(),
+      riderPickUp: deleteField(),
+      riderDropOff: deleteField(),
+    });
+    await updateDoc(driverRef, {
+      driverStatus: deleteField(),
+    });
+    setRideCancelled(true);
   };
 
   const FormatNumber = (num) => {
@@ -110,10 +108,10 @@ function CurrentRide(props) {
     await updateDoc(rideRef, {
       status: 2,
     });
-    setCurrentRide(null)
+    setCurrentRide(null);
     const distance = (await getDoc(rideRef)).data().distance;
     const cost = FormatNumber((distance / 1000) * 0.621371 * 0.585);
-    const carbon = FormatNumber((distance / 1000) * 650 / 1000);
+    const carbon = FormatNumber(((distance / 1000) * 650) / 1000);
 
     const driverRef = doc(db, 'Users', userId); // whoever clicks on the button is driver
     const driverData = (await getDoc(driverRef)).data();
@@ -129,40 +127,60 @@ function CurrentRide(props) {
     await updateDoc(driverRef, {
       wallet: Number(driverWallet) + Number(cost), // parseInt doesn't work, but number works
       totalFootPrint: Number(driverTotalFootPrint) + Number(carbon),
-      driverStatus: deleteField()
+      driverStatus: deleteField(),
     });
     // update for rider
     await updateDoc(riderRef, {
-        wallet: Number(riderWallet) - Number(cost),
-        totalFootPrint: Number(riderTotalFootPrint) + Number(carbon) // only update footprint for rider
-    })
-    setSelectToDrive(false)
-  }
+      wallet: Number(riderWallet) - Number(cost),
+      totalFootPrint: Number(riderTotalFootPrint) + Number(carbon), // only update footprint for rider
+    });
+    setSelectToDrive(false);
+  };
 
-
-
-//Ride not initiated (no status) && No completed ride - render different messages to rider and driver
-  if(currentRides.length === 0 && rideComplete.status !== 2) {
-    if(isDriver && !rideCancelled) {
-      return <p className='text-center font-bold my-5'> Not currently on ride</p>;
+  //Ride not initiated (no status) && No completed ride - render different messages to rider and driver
+  if (currentRides.length === 0 && rideComplete.status !== 2) {
+    if (isDriver && !rideCancelled) {
+      return (
+        <p className='text-center font-bold my-5'> Not currently on ride</p>
+      );
 
       //Ride request sent to driver (status=0)
     } else if (isDriver && rideCancelled) {
-      return <p  className='text-center font-bold my-5'> Rider has cancelled current ride</p>;
+      return (
+        <p className='text-center font-bold my-5'>
+          {' '}
+          Rider has cancelled current ride
+        </p>
+      );
     } else if (rideCancelled) {
-      return <Redirect to={{ pathname: '/home' }}/>
+      return <Redirect to={{ pathname: '/home' }} />;
     } else {
-      return (<>
-      <p className='text-center font-bold my-7 md:text-2xl sm:text-lg' > Waiting for a driver to accept your ride request...</p>
-      <img className='mx-auto md:w-1/2 opacity-75' src='https://acegif.com/wp-content/uploads/gifs/car-driving-77.gif'/>
-      </>)
+      return (
+        <>
+          <p className='text-center font-bold my-7 md:text-2xl sm:text-lg'>
+            {' '}
+            Waiting for a driver to accept your ride request...
+          </p>
+          <img
+            className='mx-auto w-1/4 opacity-75'
+            src='https://cdn.dribbble.com/users/778626/screenshots/4339853/car-middle.gif'
+            alt='car loading gif'
+          />
+        </>
+      );
     }
   }
   //Ride status chnaged from In-Progress (status-1) to Completed (status-2). Redirect rider to Ride Complete page.
-  if(currentRides.length === 0 && rideComplete.status === 2) {
-      return <Redirect to={{ pathname: '/rideComplete', state: {isDriver, ride: rideComplete}}}/>
+  if (currentRides.length === 0 && rideComplete.status === 2) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/rideComplete',
+          state: { isDriver, ride: rideComplete },
+        }}
+      />
+    );
   }
-
 
   const RoutingAfterRideAccepted = () => {
     const map = useMap();
@@ -207,7 +225,11 @@ function CurrentRide(props) {
   return (
     <div>
       <div className='container'>
-        <MapContainer center={position} zoom={8} className='border-2 flex items-center wx-auto' scrollWheelZoom>
+        <MapContainer
+          center={position}
+          zoom={8}
+          className='border-2 flex items-center wx-auto'
+          scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -221,36 +243,39 @@ function CurrentRide(props) {
             <div className='text-center'>
               <UserDetails userId={ride.riderId} />{' '}
               <div className='flex justify-center items-center'>
-              <button
-                className='btn btn-outline bg-success'
-                onClick={() => setShowChat(!showChat)}>
-                {showChat ? 'Chat with Rider' : 'Hide Chat'}
-              </button>
+                <button
+                  className='btn btn-outline bg-success'
+                  onClick={() => setShowChat(!showChat)}>
+                  {showChat ? 'Chat with Rider' : 'Hide Chat'}
+                </button>
               </div>
               <div>
                 <div className='items-center flex justify-center my-5 flex-wrap'>
-              {!showChat && (
-                <Messaging
-                  id={ride.id}
-                  driverId={ride.driverId}
-                  riderId={ride.riderId}
-                  isDriver={isDriver}
-                />
-              )}
+                  {!showChat && (
+                    <Messaging
+                      id={ride.id}
+                      driverId={ride.driverId}
+                      riderId={ride.riderId}
+                      isDriver={isDriver}
+                    />
+                  )}
 
-              <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
-              <Link
-                to={{ pathname: '/rideComplete', state: { isDriver, ride } }}>
-                <button
-                  id={ride.id}
-                  className='btn btn-outline btn-success'
-                  onClick={() => completeRide(ride)}>
-                  Ride Complete
-                </button>
-              </Link>
+                  <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
+                    <Link
+                      to={{
+                        pathname: '/rideComplete',
+                        state: { isDriver, ride },
+                      }}>
+                      <button
+                        id={ride.id}
+                        className='btn btn-outline btn-success'
+                        onClick={() => completeRide(ride)}>
+                        Ride Complete
+                      </button>
+                    </Link>
+                  </div>
+                </div>
               </div>
-            </div>
-            </div>
             </div>
           ) : (
             <div className='my-4'>
@@ -276,19 +301,18 @@ function CurrentRide(props) {
                       riderId={ride.riderId}
                     />
                   )}
-              </div>
+                </div>
 
-            <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
-              <button
-                id={ride.id}
-                className='btn btn-warning'
-                  onClick={() => cancelRide(ride)}>
-                Cancel Ride
-              </button>
+                <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
+                  <button
+                    id={ride.id}
+                    className='btn btn-warning'
+                    onClick={() => cancelRide(ride)}>
+                    Cancel Ride
+                  </button>
+                </div>
               </div>
             </div>
-            </div>
-
           )}
         </div>
       ))}
