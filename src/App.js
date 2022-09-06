@@ -18,7 +18,7 @@ import EditProfile from './components/EditProfile';
 import CurrentRide from './components/CurrentRide';
 import RideComplete from './components/RideComplete';
 import RidesHistory from './components/RidesHistory';
-import NotFound from './components/NotFound'
+import NotFound from './components/NotFound';
 import { db } from './firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
@@ -59,7 +59,7 @@ const App = () => {
   }
 
   return (
-    <div>
+    <>
       <AuthContext.Provider value={authObj}>
         <DriverContext.Provider
           value={{ isDriver, setIsDriver, currentRide, setCurrentRide }}>
@@ -139,11 +139,10 @@ const App = () => {
             </Route>
 
             <Route component={NotFound} />
-
           </Switch>
         </DriverContext.Provider>
       </AuthContext.Provider>
-    </div>
+    </>
   );
 };
 
