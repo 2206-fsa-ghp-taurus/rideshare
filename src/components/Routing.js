@@ -10,8 +10,6 @@ const Routing = (props) => {
   const { pickUpCoords } = props;
   const { dropOffCoords } = props;
   const { userDistance, setUserDistance } = props;
-  console.log('props for pickup', pickUpCoords);
-  console.log('props for dropoff', dropOffCoords);
 
   const pickUpLat = props.pickUpCoords ? props.pickUpCoords.lat : null;
   const pickUpLng = props.pickUpCoords ? props.pickUpCoords.lng : null;
