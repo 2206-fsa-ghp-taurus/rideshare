@@ -121,19 +121,19 @@ console.log(requests)
           )}
         </MapContainer>
       </div>
-      <h2 className='font-bold text-4xl text-center my-5' style={{ fontFamily: 'Oswald' }}>Select Rider</h2>
+      <h2 className='font-bold text-4xl text-center my-5' style={{ fontFamily: 'Oswald' }}>Requested Riders</h2>
       <div>
-      <div className='grid gap-6 my-6 md:grid-cols-2 mx-5'>
+      <div>
         {requests && requests.length !== 0 ?(
           <>
           {/* <div className='ml-3 card w-auto bg-base-100 shadow-xl my-3'> */}
-              <div key={requests[0].id} className='ml-3 card w-auto bg-base-100 shadow-xl my-3 items-center'>
-                {/* <div className='card-body'> */}
-                  <p className='my-4 card-title product-name text-center font-weight-bold'>
-                    Requested Rider:
+              <div key={requests[0].id} >
+                  <p className='my-4 text-center font-bold'>
+                    Please accept a rider
                   </p>
+                <div className='grid gap-10 my-6 md:grid-cols-2 mx-7'>
                   {requests[0].requestorIds.map((requestor) => (
-                  <div id={requests[0]}>
+                  <div id={requests[0]} className='mx-3 card w-auto bg-base-100 shadow-xl my-3 items-center'>
                     <UserDetails userId={requestor.userId} />
                     <button
                       className='btn btn-accent mb-4'
@@ -144,25 +144,26 @@ console.log(requests)
                     </button>
                   </div>
             ))}
-                {/* </div> */}
+                </div>
               </div>
             </>
      ) : (
           <div className='text-center font-bold my-7 text-2xl'>No rides requested</div>
       )}
       </div>
-      <div>
 
-        <button className='btn btn-outline btn-info mx-2 my-5 flex justify-center items-center' onClick={inputCarDetails}>
+      <div className='flex items-center justify-center'>
+        <button className='btn btn-outline btn-info my-5' onClick={inputCarDetails}>
           Edit Car Details
         </button>
       </div>
-      <div>
-        <button className='btn btn-warning mx-2 mt-3  flex justify-center items-center' onClick={cancelDrive}>
+
+      <div className='flex items-center justify-center'>
+        <button className='btn btn-warning my-5 flex justify-center items-center' onClick={cancelDrive}>
           Cancel Drive
         </button>
-
       </div>
+
     </div>
     </div>
   );

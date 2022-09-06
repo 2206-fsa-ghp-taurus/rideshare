@@ -39,10 +39,12 @@ function UserDetails(props) {
         <div>
           {user.map((user) => (
             <div key={user.userId} className='center-content'>
-              <img src={user.pictureUrl} className='avatar w-24 my-2 center-content' alt="user pic" />
-              <p className='my-4 font-bold text-xl text-center'>{user.firstName}</p>
-              <p className='my-1 font-semibold text-lg'>Pick Up: {user.pickUpAddress} </p>
-              <p className='my-1 font-semibold text-lg'>Drop Off: {user.dropOffAddress} </p>
+              <img src={user.pictureUrl} className='avatar w-24 my-2 rounded flex justify-center center-content mx-auto' alt="user pic" />
+              <div className='card-body mx-3'>
+                <p className='my-4 font-bold text-xl text-center'>{user.firstName}</p>
+                <p className='my-1 font-semibold text-lg'>Pick Up: {user.pickUpAddress} </p>
+                <p className='my-1 font-semibold text-lg'>Drop Off: {user.dropOffAddress} </p>
+              </div>
             </div>
           ))}
         </div>
