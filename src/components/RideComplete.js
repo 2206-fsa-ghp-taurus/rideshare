@@ -34,22 +34,27 @@ const RideComplete = (props) => {
     const FormatNumber = (num)=> {
         return (Math.round(num * 100) / 100).toFixed(2);
     }
-  
+
     return (
         <div>
-        <h1> {`Hi ${firstName}, Here is the summary of your ride` }</h1>
+        <h2 className='text-center font-bold text-4xl my-3' style={{ fontFamily: 'Oswald' }}>Ride Complete</h2>
+        <h3 className='text-center font-semibold md:text-lg sm:text-md my-3'>{`Hi ${firstName}, Here is the summary of your ride`}</h3>
         {isDriver ?
-         ( <div>
-            <p> You Earned: {`$ ${FormatNumber(distance/1000 * 0.621371 * 0.585)}`} </p>
-            <p> You Drove the Rider for : {`${FormatNumber(distance/1000)} km`}</p>
-            <p> You Helped the Rider Saved : {`${FormatNumber(distance/1000 * 650 / 1000)} kg of carbon`}</p>
+         ( <div className="mx-5 text-center">
+                <p className='py-2'>You Earned: {`$ ${FormatNumber(distance/1000 * 0.621371 * 0.585)}`} </p>
+                <p className='py-2'>You Drove the Rider for: {`${FormatNumber(distance/1000)} km`}</p>
+                <p className='py-2'>You Helped the Rider Save: {`${FormatNumber(distance/1000 * 650 / 1000)} kg of carbon`}</p>
+                <img src='https://miro.medium.com/max/606/1*e78xMjlb8Xd0YeIs9PyaaA.png' alt='environmental pic' className='mx-auto w-1/4 opacity-60'/>
+                <p className='py-2'>Thank you for helping save our environment!</p>
             </div>
         )
         : (
-            <div>
-            <p> You Spent: {`$ ${FormatNumber(distance/1000 * 0.621371 * 0.585)}`} </p>
-            <p> You Travelled For : {`${FormatNumber(distance/1000)} km`}</p>
-            <p> You Saved : {`${FormatNumber(distance/1000 * 650 / 1000)} kg of carbon`}</p>
+            <div className='mx-5 text-center'>
+                <p className='py-2'>You Spent: {`$ ${FormatNumber(distance/1000 * 0.621371 * 0.585)}`} </p>
+                <p className='py-2'>You Traveled For: {`${FormatNumber(distance/1000)} km`}</p>
+                <p className='py-2'>You Saved: {`${FormatNumber(distance/1000 * 650 / 1000)} kg of carbon`}</p>
+                <img src='https://miro.medium.com/max/606/1*e78xMjlb8Xd0YeIs9PyaaA.png' alt='environmental pic' className='mx-auto md:w-1/4 opacity-60'/>
+                <p className='py-2'>Thank you for helping save our environment!</p>
             </div>
         )
         }

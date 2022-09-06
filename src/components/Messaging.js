@@ -2,12 +2,10 @@ import React from 'react';
 import { CometChatMessages } from '../cometChat/src';
 
 const Messaging = (props) => {
-  const { driverId } = props;
-  const { riderId } = props;
-  const { isDriver } = props;
+  const { driverId, riderId, isDriver } = props;
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '50vw', height: '20vh' }} className='outline-6'>
       <CometChatMessages chatWithUser={isDriver ? riderId : driverId} />
     </div>
   );

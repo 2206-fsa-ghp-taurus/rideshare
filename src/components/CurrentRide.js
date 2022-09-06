@@ -148,7 +148,7 @@ function CurrentRide(props) {
 
       //Ride request sent to driver (status=0)
     } else if (isDriver && rideCancelled) {
-      return <p> Rider has cancelled current ride</p>;
+      return <p  className='text-center font-bold my-5'> Rider has cancelled current ride</p>;
     } else if (rideCancelled) {
       return <Redirect to={{ pathname: '/home' }}/>
     } else {
@@ -207,7 +207,7 @@ function CurrentRide(props) {
   return (
     <div>
       <div className='container'>
-        <MapContainer center={position} zoom={8} scrollWheelZoom>
+        <MapContainer center={position} zoom={8} className='border-2 flex items-center wx-auto' scrollWheelZoom>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
             url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -218,13 +218,17 @@ function CurrentRide(props) {
       {currentRides.map((ride) => (
         <div>
           {ride.driverId === userId ? (
-            <div>
+            <div className='text-center'>
               <UserDetails userId={ride.riderId} />{' '}
+              <div className='flex justify-center items-center'>
               <button
-                className='btn rounded-full'
+                className='btn btn-outline bg-success'
                 onClick={() => setShowChat(!showChat)}>
                 {showChat ? 'Chat with Rider' : 'Hide Chat'}
               </button>
+              </div>
+              <div>
+                <div className='items-center flex justify-center my-5 flex-wrap'>
               {!showChat && (
                 <Messaging
                   id={ride.id}
@@ -233,42 +237,58 @@ function CurrentRide(props) {
                   isDriver={isDriver}
                 />
               )}
+
+              <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
               <Link
                 to={{ pathname: '/rideComplete', state: { isDriver, ride } }}>
                 <button
                   id={ride.id}
-                  className='btn rounded-full'
+                  className='btn btn-outline btn-success'
                   onClick={() => completeRide(ride)}>
                   Ride Complete
                 </button>
               </Link>
+              </div>
+            </div>
+            </div>
             </div>
           ) : (
-            <div>
+            <div className='my-4'>
               <UserDetails
                 userId={ride.driverId}
                 currentRide={ride.id}
                 driverDetails={true}
               />
-              <button
-                className='btn rounded-full'
-                onClick={() => setShowChat(!showChat)}>
-                {showChat ? 'Chat with Driver' : 'Hide Chat'}
-              </button>
-              {!showChat && (
-                <Messaging
-                  id={ride.id}
-                  driverId={ride.driverId}
-                  riderId={ride.riderId}
-                />
-              )}
+              <div className='items-center flex justify-center my-5'>
+                <button
+                  className='btn btn-outline bg-success'
+                  onClick={() => setShowChat(!showChat)}>
+                  {showChat ? 'Chat with Driver' : 'Hide Chat'}
+                </button>
+              </div>
+
+              <div>
+                <div className='items-center flex justify-center my-5 flex-wrap'>
+                  {!showChat && (
+                    <Messaging
+                      id={ride.id}
+                      driverId={ride.driverId}
+                      riderId={ride.riderId}
+                    />
+                  )}
+              </div>
+
+            <div className='items-center flex justify-center pt-6 my-5 flex-wrap'>
               <button
                 id={ride.id}
-                className='btn rounded-full'
+                className='btn btn-warning'
                   onClick={() => cancelRide(ride)}>
                 Cancel Ride
               </button>
+              </div>
             </div>
+            </div>
+
           )}
         </div>
       ))}
