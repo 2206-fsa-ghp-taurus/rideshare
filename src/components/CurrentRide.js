@@ -276,7 +276,7 @@ function CurrentRide(props) {
                 </button>
               </div>
               <div>
-                <div className='items-center flex justify-center my-5 flex-wrap'>
+                <div className='items-center flex justify-center my-2 flex-wrap'>
                   {!showChat && (
                     <Messaging
                       id={ride.id}
