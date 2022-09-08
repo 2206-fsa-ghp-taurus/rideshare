@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../auth';
 import { auth, db, storage } from '../firebase';
-import { doc, updateDoc } from 'firebase/firestore';
+import { doc, updateDoc, deleteField } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { CometChat } from '@cometchat-pro/chat';
 import * as CONSTANTS from '../constants/constants';
@@ -73,6 +73,27 @@ const CreateProfile = () => {
     }
     await updateDoc(doc(db, 'Users', userId), userData); // change from setDoc to updateDoc otherwise original fields are overwritten
     // history.goBack();
+
+    if(userData.carMake === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carMake: deleteField()
+      })
+    }
+    if(userData.carModel === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carModel: deleteField()
+      })
+    }
+    if(userData.carColor === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carColor: deleteField()
+      })
+    }
+    if(userData.carLicense === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carLicense: deleteField()
+      })
+    }
 
     let cometUser = new CometChat.User(userId);
     cometUser.setName(firstName);
@@ -171,9 +192,7 @@ const CreateProfile = () => {
               name='carMake'
               type='text'
               value={carMake}
-              onChange={(event) =>
-                event.target.value ? setMake(event.target.value) : ''
-              }
+              onChange={(event) => setMake(event.target.value)}
             />
           </div>
 
@@ -187,9 +206,7 @@ const CreateProfile = () => {
               name='carModel'
               type='text'
               value={carModel}
-              onChange={(event) =>
-                event.target.value ? setModel(event.target.value) : ''
-              }
+              onChange={(event) => setModel(event.target.value)}
             />
           </div>
 
@@ -203,9 +220,7 @@ const CreateProfile = () => {
               name='carColor'
               type='text'
               value={carColor}
-              onChange={(event) =>
-                event.target.value ? setColor(event.target.value) : ''
-              }
+              onChange={(event) => setColor(event.target.value)}
             />
           </div>
 
@@ -219,9 +234,7 @@ const CreateProfile = () => {
               name='carLicense'
               type='text'
               value={carLicense}
-              onChange={(event) =>
-                event.target.value ? setLicense(event.target.value) : ''
-              }
+              onChange={(event) => setLicense(event.target.value)}
             />
           </div>
         </div>
