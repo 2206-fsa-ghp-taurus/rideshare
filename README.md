@@ -6,7 +6,7 @@ Hop is a carpooling app that connects riders and drivers heading the same direct
 DEMO VIDEO: https://www.youtube.com/watch?v=LBItiybtLn8
 
 ## Collaborators
-- Kandance Ferguson:
+- Kandance Ferguson: [LinkedIn](https://www.linkedin.com/in/kandance-ferguson/)
 - Yao Guo: 
 - Sheryl Kwan: 
 - Kristin Levine: [LinkedIn](https://www.linkedin.com/in/kristin-levine/)
