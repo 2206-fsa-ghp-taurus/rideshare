@@ -72,7 +72,7 @@ const UserMap = (props) => {
   };
 
   console.log('userDistance', userDistance)
-
+  console.log(isDriver)
   const locateMe = () => {
     mapRef.current.flyTo([location.coordinates.lat, location.coordinates.lng]);
   };
