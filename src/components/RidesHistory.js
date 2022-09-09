@@ -62,7 +62,7 @@ const RidesHistory = () => {
     <div>
       <div>
         <h3 className='text-center text-4xl my-3' style={{ fontFamily: 'Oswald' }}>Rider History</h3>
-      {allRides.length >0
+      {(rides.length + drives.length) >0
       ? (
         <div className='m-3'>
           <div className='flex my-2'>

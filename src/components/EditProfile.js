@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../auth';
-import { auth, db, storage } from '../firebase';
-import { doc, updateDoc, onSnapshot } from 'firebase/firestore';
-import { ref, getStorage, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, storage } from '../firebase';
+import { doc, updateDoc, onSnapshot, deleteField } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 const EditProfile = () => {
   const { userId } = useAuth();
@@ -14,9 +14,9 @@ const EditProfile = () => {
   const [goal, setGoal] = useState(0);
 
   const [pictureUrl, setPictureUrl] = useState('');
-  const [carMake, setMake] = useState('');
+  const [carMake, setMake] = useState("");
   const [carModel, setModel] = useState('');
-  const [carColor, setColor] = useState('');
+  const [carColor, setColor] = useState("");
   const [carLicense, setLicense] = useState('');
   const fileInputRef = useRef();
   const getUserInfo = () => {
@@ -31,11 +31,11 @@ const EditProfile = () => {
       setLicense(doc.data().carLicense);
       setGoal(doc.data().goal);
     });
+
   };
   useEffect(() => {
     getUserInfo();
   }, []); // so only sending request once
-  console.log('before edit user profile', firstName, lastName);
 
   const savePicture = async (blobUrl, userId) => {
     // save picture to firebase storage
@@ -59,9 +59,9 @@ const EditProfile = () => {
 
   const handleSaveUser = async (event) => {
     event.preventDefault();
-    const userData = { firstName, lastName, pictureUrl, phone, goal };
+    const userData = { firstName, lastName, pictureUrl, phone, goal};
 
-    if (carMake) Object.assign(userData, { carMake });
+    if (carMake) Object.assign(userData, { carMake })
     if (carModel) Object.assign(userData, { carModel });
     if (carColor) Object.assign(userData, { carColor });
     if (carLicense) Object.assign(userData, { carLicense });
@@ -72,6 +72,28 @@ const EditProfile = () => {
     }
     console.log('this user data', userData);
     await updateDoc(doc(db, 'Users', userId), userData); // change from setDoc to updateDoc otherwise original fields are overwritten
+
+    if(userData.carMake === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carMake: deleteField()
+      })
+    }
+    if(userData.carModel === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carModel: deleteField()
+      })
+    }
+    if(userData.carColor === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carColor: deleteField()
+      })
+    }
+    if(userData.carLicense === undefined) {
+      await updateDoc(doc(db, 'Users', userId), {
+        carLicense: deleteField()
+      })
+    }
+
     history.goBack();
   };
 
@@ -161,9 +183,7 @@ const EditProfile = () => {
           placeholder='Car Make'
           type='text'
           value={carMake}
-          onChange={(event) =>
-            event.target.value ? setMake(event.target.value) : ''
-          }
+          onChange={(event) => setMake(event.target.value)}
         />
         </div>
 
@@ -177,9 +197,7 @@ const EditProfile = () => {
           name='carModel'
           type='text'
           value={carModel}
-          onChange={(event) =>
-            event.target.value ? setModel(event.target.value) : ''
-          }
+          onChange={(event) => setModel(event.target.value)}
         />
         </div>
 
@@ -193,9 +211,7 @@ const EditProfile = () => {
           placeholder='Color'
           type='text'
           value={carColor}
-          onChange={(event) =>
-            event.target.value ? setColor(event.target.value) : ''
-          }
+          onChange={(event) => setColor(event.target.value)}
         />
         </div>
 
@@ -209,9 +225,7 @@ const EditProfile = () => {
           placeholder='License'
           type='text'
           value={carLicense}
-          onChange={(event) =>
-            event.target.value ? setLicense(event.target.value) : ''
-          }
+          onChange={(event) => setLicense(event.target.value)}
         />
         </div>
         </div>
