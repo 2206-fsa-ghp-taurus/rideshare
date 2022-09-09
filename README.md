@@ -25,3 +25,20 @@ DEMO VIDEO: https://www.youtube.com/watch?v=LBItiybtLn8
 - Google Maps API
 - CometChat
 - DaisyUI
+
+## Setup 
+Feel free to clone our repo! 
+
+After cloning, please create a file called .env and import your Google Maps API / Mapbox API config: 
+
+```
+REACT_APP_MAP_BOX_API_KEY='[API KEY HERE]'
+REACT_APP_GOOGLE_API_KEY='[API KEY HERE]'
+```
+
+Then enter the following commands:
+
+```
+npm install
+npm run start
+```
