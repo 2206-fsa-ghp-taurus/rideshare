@@ -14,7 +14,7 @@ DEMO VIDEO: https://www.youtube.com/watch?v=LBItiybtLn8
 ## Collaborators
 - Kandance Ferguson: [LinkedIn](https://www.linkedin.com/in/kandance-ferguson/)
 - Yao Guo: 
-- Sheryl Kwan: 
+- Sheryl Kuan: 
 - Kristin Levine: [LinkedIn](https://www.linkedin.com/in/kristin-levine/)
 
 ## Built Using
