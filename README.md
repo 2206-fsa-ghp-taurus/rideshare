@@ -5,6 +5,12 @@ Hop is a carpooling app that connects riders and drivers heading the same direct
 
 DEMO VIDEO: https://www.youtube.com/watch?v=LBItiybtLn8
 
+<div style="display: flex;">
+<img src="https://github.com/2206-fsa-ghp-taurus/rideshare/blob/main/public/readme/riderdemo.gif">
+</div>
+
+
+
 ## Collaborators
 - Kandance Ferguson: [LinkedIn](https://www.linkedin.com/in/kandance-ferguson/)
 - Yao Guo: 
